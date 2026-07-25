@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
   THEME: 'smartprep_theme',
   SUBJECTS: 'smartprep_subjects',
   LAST_PLAN: 'smartprep_last_plan',
+  QUIZ_HISTORY: 'smartprep_quiz_history',
 };
 
 // Subject colors cycling palette
@@ -34,6 +35,378 @@ const AI = {
 
     // Comprehensive exam-oriented revision knowledge map
     const knowledgeBase = {
+      c: {
+        definition: 'C is a foundational, general-purpose, compiled procedural programming language developed by Dennis Ritchie at Bell Labs (1972). It provides structured control flow, low-level memory access via pointers, and minimal runtime overhead.',
+        keyConcepts: [
+          'Pointers & Memory Addresses: Directly access and manipulate memory locations using `*` (dereference) and `&` (address-of) operators.',
+          'Manual Memory Management: Allocate dynamic heap memory using `malloc()`, `calloc()`, `realloc()` and free it using `free()`.',
+          'Structures & Unions: `struct` groups heterogeneous variables into a custom record; `union` shares a single memory location among members.'
+        ],
+        features: [
+          'Fast execution speed due to direct compilation to machine architecture binary.',
+          'High portability across hardware platforms using standard compilers (GCC, Clang).'
+        ],
+        functions: [
+          'Used for building operating system kernels (Linux, Windows kernel), embedded systems, device drivers, compilers, and database engines.'
+        ],
+        types: [
+          'Primitive Types: `int`, `char`, `float`, `double`, `void`.',
+          'Derived Types: Arrays, Pointers, Structures (`struct`), Unions (`union`), Enums (`enum`).'
+        ],
+        advantages: [
+          'Unmatched execution efficiency and fine-grained hardware memory control.',
+          'Forms the syntactic foundation for C++, Java, C#, and JavaScript.'
+        ],
+        disadvantages: [
+          'No automatic garbage collection — highly susceptible to memory leaks, dangling pointers, and buffer overflows.',
+          'Lacks modern object-oriented features (classes, inheritance, polymorphism).'
+        ],
+        syntax: '#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int num = 42;\n    int *ptr = &num;\n    printf("Value: %d, Address: %p\\n", *ptr, (void*)ptr);\n    return 0;\n}',
+        example: 'Allocating dynamic memory with `int *arr = (int*) malloc(10 * sizeof(int));` and freeing it with `free(arr);`.',
+        examQuestions: [
+          { q: 'What is a Dangling Pointer in C and how do you prevent it?', a: 'A dangling pointer points to a memory location that has been deallocated with `free()`. Prevent it by setting the pointer to `NULL` immediately after freeing memory.' },
+          { q: 'Differentiate between `malloc()` and `calloc()` in C.', a: '`malloc(size)` allocates uninitialized memory containing garbage values. `calloc(n, size)` allocates memory for `n` elements and initializes all bytes to zero.' }
+        ]
+      },
+
+      java: {
+        definition: 'Java is a high-level, class-based, object-oriented, strongly-typed programming language designed to have minimal implementation dependencies ("Write Once, Run Anywhere").',
+        keyConcepts: [
+          'Bytecode & JVM: Source code compiles into `.class` bytecode which executes on the Java Virtual Machine across operating systems.',
+          'OOP Pillars: Encapsulation, Abstraction, Inheritance (`extends`), and Polymorphism (`@Override`).',
+          'Garbage Collection: Automatic background heap memory management reclaiming unreferenced objects.'
+        ],
+        features: [
+          'Platform independence through JVM execution environment.',
+          'Built-in multi-threading support and comprehensive Collections Framework (`List`, `Set`, `Map`).'
+        ],
+        functions: [
+          'Powers enterprise web backends (Spring Boot), Android application development, financial systems, and big data tools (Hadoop).'
+        ],
+        types: [
+          'JDK (Java Development Kit): Compiler (`javac`) + JRE + tools.',
+          'JRE (Java Runtime Environment): JVM + core Java class libraries.'
+        ],
+        advantages: [
+          'Strict type checking and automatic garbage collection prevent memory corruption.',
+          'Vast enterprise ecosystem, open-source frameworks, and active developer community.'
+        ],
+        disadvantages: [
+          'Higher RAM memory footprint and slower startup time compared to compiled C/C++.',
+          'Verbose syntax requiring boilerplate class declarations.'
+        ],
+        syntax: 'public class Main {\n    public static void main(String[] args) {\n        java.util.List<String> items = new java.util.ArrayList<>();\n        items.add("SmartPrep AI");\n        System.out.println(items.get(0));\n    }\n}',
+        example: 'Creating an `ArrayList<String>` to dynamically add records and sorting with `Collections.sort()`.',
+        examQuestions: [
+          { q: 'How does Method Overloading differ from Method Overriding in Java?', a: 'Method Overloading occurs in the same class (same name, different parameters, compile-time). Method Overriding occurs in subclasses (same signature, `@Override`, runtime polymorphism).' },
+          { q: 'Why is `String` immutable in Java?', a: 'Immutability guarantees security (network/database connections), thread safety without synchronization locks, and enables String Pool memory caching.' }
+        ]
+      },
+
+      python: {
+        definition: 'Python is an interpreted, high-level, dynamically-typed, multi-paradigm programming language known for clear readable syntax, automatic memory management, and extensive scientific packages.',
+        keyConcepts: [
+          'Dynamic Typing: Variables adopt types automatically at runtime without explicit declaration.',
+          'Indentation Syntax: Code blocks are demarcated by white space indentation instead of curly braces.',
+          'Garbage Collection: Automatic reference counting and generational memory reclamation.'
+        ],
+        features: [
+          'Rich ecosystem of third-party packages (PyPI, NumPy, Pandas, PyTorch, Scikit-learn).',
+          'Cross-platform compatibility running seamlessly on Windows, macOS, and Linux.'
+        ],
+        functions: [
+          'Dominates Data Science, Artificial Intelligence / Machine Learning engineering, Web Backends (Django, Flask), and Scripting Automation.'
+        ],
+        types: [
+          'Mutable Types: Lists `[]`, Dictionaries `{k:v}`, Sets `{}`.',
+          'Immutable Types: Tuples `()`, Strings `""`, Integers, Floats.'
+        ],
+        advantages: [
+          'Rapid prototyping with concise, pseudocode-like syntax.',
+          'Massive community support and comprehensive standard library.'
+        ],
+        disadvantages: [
+          'Slower execution speed compared to C/C++ due to GIL (Global Interpreter Lock) and dynamic typing.',
+          'Risk of runtime type errors if input data types are unverified.'
+        ],
+        syntax: '# List comprehension & dictionary usage\neven_squares = {x: x**2 for x in range(10) if x % 2 == 0}\nprint(even_squares)  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}',
+        example: 'Importing pandas to load a CSV dataset with `df = pd.read_csv("data.csv")` and analyzing statistics.',
+        examQuestions: [
+          { q: 'What is the Global Interpreter Lock (GIL) in Python?', a: 'A mutex mechanism in CPython preventing multiple native threads from executing Python bytecodes simultaneously, limiting multi-threaded CPU parallel execution.' },
+          { q: 'How does a Python List differ from a Tuple?', a: 'Lists are mutable (modifiable) defined with `[]`; Tuples are immutable (read-only) defined with `()`, rendering tuples faster and hashable.' }
+        ]
+      },
+
+      cpp: {
+        definition: 'C++ is a compiled, middle-level, general-purpose programming language created by Bjarne Stroustrup as an extension of C, adding Object-Oriented Programming (OOP), templates, and generic programming.',
+        keyConcepts: [
+          'OOP Integration: Classes, inheritance, virtual functions, destructors.',
+          'Standard Template Library (STL): Pre-built containers (`std::vector`, `std::map`) and algorithms.',
+          'Pointers & References: Direct memory manipulation combined with safe reference passing.'
+        ],
+        features: [
+          'Zero-cost abstractions: high-level OOP constructs compile to machine code without runtime performance penalty.',
+          'Direct hardware control and fine-grained CPU memory management.'
+        ],
+        functions: [
+          'Used for Game Engines (Unreal Engine), High-Frequency Trading systems, Web Browsers (V8/Chromium), Graphics Rendering, and Operating Systems.'
+        ],
+        types: [
+          'C++ Standards: C++98, C++11 (smart pointers, auto, lambdas), C++17, C++20 (concepts, coroutines).'
+        ],
+        advantages: [
+          'Blazing fast execution speed and low-level system memory control.',
+          'Comprehensive template metaprogramming and powerful STL library.'
+        ],
+        disadvantages: [
+          'Complex syntax with steep learning curve (undefined behavior, manual pointers).',
+          'Manual memory allocation (`new`/`delete`) requires strict RAII practices to avoid memory leaks.'
+        ],
+        syntax: '#include <iostream>\n#include <vector>\n\nint main() {\n    std::vector<int> nums = {10, 20, 30};\n    for (int n : nums) std::cout << n << " ";\n    return 0;\n}',
+        example: 'Using `std::unique_ptr<Widget>` to automatically manage dynamic object lifetime without manual `delete`.',
+        examQuestions: [
+          { q: 'What is RAII (Resource Acquisition Is Initialization) in C++?', a: 'A programming idiom where resource ownership (memory, file handles, locks) is tied to object lifetime, freeing resources automatically in the destructor when scope ends.' },
+          { q: 'What is a Virtual Function in C++?', a: 'A member function declared `virtual` in a base class that enables runtime dynamic polymorphism, ensuring the derived class override is invoked through base class pointers.' }
+        ]
+      },
+
+      javascript: {
+        definition: 'JavaScript is a high-level, interpreted/JIT-compiled, multi-paradigm, event-driven programming language that powers interactive web interfaces, single-page apps, and server backends (Node.js).',
+        keyConcepts: [
+          'Event Loop & Asynchrony: Non-blocking single-threaded I/O model using call stack, task queues, Promises, and `async/await`.',
+          'First-Class Functions & Closures: Functions can be assigned to variables, passed as arguments, and capture surrounding lexical scope.',
+          'Prototypes: Object inheritance based on prototype chain linking.'
+        ],
+        features: [
+          'Runs natively inside 100% of modern web browsers.',
+          'Full-stack application development using Node.js, Express, React, and Vue.'
+        ],
+        functions: [
+          'Building interactive frontend UIs, single-page web applications (SPAs), web APIs, mobile apps (React Native), and real-time backend servers.'
+        ],
+        types: [
+          'Primitive Types: `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint`.',
+          'Reference Types: `Object`, `Array`, `Function`, `Date`, `Map`, `Set`.'
+        ],
+        advantages: [
+          'Universal web browser compatibility.',
+          'Huge package ecosystem via npm and rapid event-driven asynchronous execution.'
+        ],
+        disadvantages: [
+          'Dynamic weak typing can lead to unexpected type coercion behavior.',
+          'Single-threaded event loop can freeze if CPU-bound heavy calculations block the call stack.'
+        ],
+        syntax: 'const fetchData = async () => {\n  try {\n    const res = await fetch("https://api.example.com/data");\n    const data = await res.json();\n    console.log(data);\n  } catch (err) { console.error(err); }\n};',
+        example: 'Attaching an event listener `button.addEventListener("click", handler)` to dynamically update DOM nodes.',
+        examQuestions: [
+          { q: 'Explain `==` vs `===` in JavaScript.', a: '`==` compares values with implicit type coercion. `===` (strict equality) compares both value and data type without type conversion.' },
+          { q: 'What is a Closure in JavaScript?', a: 'A function that retains access to variables from its parent lexical scope even after the parent function has finished executing.' }
+        ]
+      },
+
+      sql: {
+        definition: 'SQL (Structured Query Language) is the domain-specific standard language used for defining, querying, manipulating, and managing data stored in relational database management systems (RDBMS).',
+        keyConcepts: [
+          'ACID Transactions: Atomicity, Consistency, Isolation, and Durability.',
+          'Relational Keys: Primary Key (unique row identifier) and Foreign Key (referential integrity link).',
+          'Relational Joins: `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN` combining records across tables.'
+        ],
+        features: [
+          'Declarative syntax — specifies WHAT data to retrieve rather than HOW to navigate storage.',
+          'High query execution efficiency using database indexes and query planners.'
+        ],
+        functions: [
+          'Querying, updating, inserting, and deleting relational data across enterprise databases (PostgreSQL, MySQL, Oracle, SQL Server, SQLite).'
+        ],
+        types: [
+          'DDL (Data Definition Language): `CREATE`, `ALTER`, `DROP`, `TRUNCATE`.',
+          'DML (Data Manipulation Language): `SELECT`, `INSERT`, `UPDATE`, `DELETE`.',
+          'DCL (Data Control Language): `GRANT`, `REVOKE`.'
+        ],
+        advantages: [
+          'Standardized, reliable data persistence with strong transactional integrity.',
+          'Powerful aggregation (`GROUP BY`, `SUM`, `AVG`) and multi-table join capabilities.'
+        ],
+        disadvantages: [
+          'Strict relational schema structure can be rigid for unstructured, fast-changing data.',
+          'Scaling across distributed server nodes requires complex sharding or database replication.'
+        ],
+        syntax: 'SELECT u.name, COUNT(o.id) AS total_orders\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE u.status = "active"\nGROUP BY u.id\nHAVING total_orders > 5\nORDER BY total_orders DESC;',
+        example: 'Creating a user table with `PRIMARY KEY (id)` and querying top customers using aggregated `GROUP BY`.',
+        examQuestions: [
+          { q: 'What is the difference between `WHERE` and `HAVING` clauses in SQL?', a: '`WHERE` filters individual rows before grouping takes place. `HAVING` filters aggregate groups produced by `GROUP BY`.' },
+          { q: 'Explain Database Normalization (1NF, 2NF, 3NF).', a: 'Normalization reorganizes database tables to eliminate duplicate data redundancies and prevent insertion, update, and deletion anomalies.' }
+        ]
+      },
+
+      dsa: {
+        definition: 'Data Structures and Algorithms (DSA) is the foundational computer science study of organizing data efficiently in memory (structures) and designing step-by-step procedures to solve computational problems (algorithms).',
+        keyConcepts: [
+          'Asymptotic Complexity: Measuring runtime (Time Complexity) and memory growth (Space Complexity) using Big-O notation.',
+          'Linear vs Non-Linear Structures: Arrays, Linked Lists, Stacks, Queues vs Trees, Graphs, Hash Tables.',
+          'Algorithmic Paradigms: Divide & Conquer, Greedy Algorithms, Dynamic Programming, Backtracking.'
+        ],
+        features: [
+          'Provides mathematical proofs for software runtime efficiency and memory bounds.',
+          'Forms the fundamental technical foundation for software engineering system design.'
+        ],
+        functions: [
+          'Optimizes database indexes, search engines, network routing (Dijkstra), graphics rendering, and OS memory allocation.'
+        ],
+        types: [
+          'Data Structures: Array, Linked List, Stack (LIFO), Queue (FIFO), Hash Table, Binary Search Tree, Heap, Graph.',
+          'Algorithms: Sorting (QuickSort, MergeSort), Searching (Binary Search), Graph Traversal (DFS, BFS).'
+        ],
+        advantages: [
+          'Drastically accelerates software execution speed (e.g. O(log N) binary search vs O(N) linear search).',
+          'Minimizes system memory overhead and compute operational costs.'
+        ],
+        disadvantages: [
+          'Complex algorithms demand rigorous edge-case handling and memory safety.',
+          'Over-engineering complex structures for simple small datasets adds unnecessary code overhead.'
+        ],
+        syntax: '// Binary Search O(log N)\nfunction binarySearch(arr, target) {\n  let low = 0, high = arr.length - 1;\n  while (low <= high) {\n    let mid = Math.floor((low + high) / 2);\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) low = mid + 1;\n    else high = mid - 1;\n  }\n  return -1;\n}',
+        example: 'Using a Hash Map to reduce a 2-Sum lookup from O(N²) quadratic time to O(N) linear time.',
+        examQuestions: [
+          { q: 'Why is QuickSort preferred over MergeSort for arrays, and vice versa for linked lists?', a: 'QuickSort operates in-place (O(1) space) with high cache locality for contiguous arrays. MergeSort does not require random indexing, making it optimal for Linked Lists.' },
+          { q: 'Compare Stack (LIFO) vs Queue (FIFO) data structures.', a: 'Stack uses Last-In First-Out (push/pop) e.g., call stack, undo buffer. Queue uses First-In First-Out (enqueue/dequeue) e.g., print queue, web server requests.' }
+        ]
+      },
+
+      os: {
+        definition: 'An Operating System (OS) is essential system software that acts as an intermediary between physical hardware and user applications, managing process scheduling, RAM memory allocation, file systems, and hardware I/O.',
+        keyConcepts: [
+          'Process & Thread Management: Process isolation (PCB), context switching, CPU scheduling algorithms (Round Robin, SJF).',
+          'Memory Management: Virtual memory, paging, segmentation, page fault handling, and TLB cache.',
+          'Concurrency & Deadlocks: Semaphores, mutex locks, critical sections, and deadlock prevention.'
+        ],
+        features: [
+          'Provides hardware abstraction layer, file system security access control, and process isolation.',
+          'Enables multi-tasking and multi-user resource sharing.'
+        ],
+        functions: [
+          'Powers all computers, smartphones, enterprise servers, and embedded hardware (Linux, Windows, macOS, Android, iOS).'
+        ],
+        types: [
+          'Batch OS, Time-Sharing OS, Distributed OS, Real-Time OS (RTOS).'
+        ],
+        advantages: [
+          'Protects memory address spaces from unauthorized process corruption.',
+          'Optimizes hardware resource utilization across concurrent software programs.'
+        ],
+        disadvantages: [
+          'OS kernel overhead consumes system CPU cycles and RAM memory.',
+          'Kernel bugs or bad drivers can cause total system crashes (Kernel Panic / BSOD).'
+        ],
+        syntax: '// POSIX Fork Process Creation\n#include <unistd.h>\n#include <stdio.h>\n\nint main() {\n    pid_t pid = fork();\n    if (pid == 0) printf("Child Process\\n");\n    else printf("Parent Process\\n");\n    return 0;\n}',
+        example: 'OS managing Virtual Memory paging to swap inactive RAM pages to disk swap space when physical RAM is full.',
+        examQuestions: [
+          { q: 'What are the 4 necessary conditions for a Deadlock to occur?', a: '1. Mutual Exclusion, 2. Hold and Wait, 3. No Preemption, 4. Circular Wait.' },
+          { q: 'Explain the difference between a Process and a Thread.', a: 'A Process is an independent program with its own address space. A Thread is a lightweight execution unit within a process that shares process memory.' }
+        ]
+      },
+
+      networks: {
+        definition: 'Computer Networking is the study of interconnecting autonomous computing devices to exchange data, resources, and communication using standardized network protocols and physical media.',
+        keyConcepts: [
+          'Layered Models: OSI 7-Layer Model (Physical to Application) and TCP/IP 4-Layer Model.',
+          'Protocols: IP (routing), TCP (reliable connection), UDP (unreliable fast datagram), HTTP/HTTPS, DNS, DHCP.',
+          'Addressing & Routing: MAC address (Data Link), IP address (Network), Port numbers (Transport).'
+        ],
+        features: [
+          'Enables global web browsing, email transmission, video streaming, and cloud services.',
+          'Secured using SSL/TLS encryption, firewalls, and VPN tunnels.'
+        ],
+        functions: [
+          'Facilitates client-server communication, packet switching, data routing across routers/switches, and domain name resolution.'
+        ],
+        types: [
+          'LAN (Local Area Network), WAN (Wide Area Network), MAN, WLAN (Wi-Fi), PAN (Bluetooth).'
+        ],
+        advantages: [
+          'Enables instant global communication and resource sharing.',
+          'Scales seamlessly using standardized Internet protocols.'
+        ],
+        disadvantages: [
+          'Vulnerable to cyber attacks (DDoS, MITM, packet sniffing).',
+          'Network congestion can introduce latency and packet loss.'
+        ],
+        syntax: 'HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 45\n\n{"status":"success","message":"Data received"}',
+        example: 'Typing `https://google.com` triggers DNS IP lookup, TCP 3-way handshake, TLS encryption, and HTTP GET request.',
+        examQuestions: [
+          { q: 'Explain TCP 3-Way Handshake.', a: '1. Client sends SYN packet to Server. 2. Server responds with SYN-ACK packet. 3. Client sends ACK packet back to establish reliable connection.' },
+          { q: 'Compare TCP vs UDP.', a: 'TCP is connection-oriented, reliable, ordered, error-checked, but slower (e.g. Web, Email). UDP is connectionless, fast, unreliable, unordered (e.g. Gaming, Video Streaming).' }
+        ]
+      },
+
+      html_css: {
+        definition: 'HTML (HyperText Markup Language) provides the structural skeleton of web pages, while CSS (Cascading Style Sheets) controls visual layout, presentation, typography, and responsive design.',
+        keyConcepts: [
+          'Semantic HTML5: `<article>`, `<section>`, `<nav>`, `<header>`, `<footer>` for accessibility and SEO.',
+          'CSS Box Model: Content, Padding, Border, and Margin dimensions.',
+          'Modern Layout Systems: CSS Flexbox (1D alignment) and CSS Grid (2D layout grid).'
+        ],
+        features: [
+          'Underpins all visual user interfaces across the World Wide Web.',
+          'Supports responsive media queries for desktop, tablet, and mobile displays.'
+        ],
+        functions: [
+          'Renders web application user interfaces, typography, color palettes, and interactive component layouts.'
+        ],
+        types: [
+          'HTML Elements: Block-level vs Inline elements.',
+          'CSS Selectors: Class (`.`), ID (`#`), Attribute, Pseudo-classes (`:hover`).'
+        ],
+        advantages: [
+          'Universal standard supported by 100% of web browsers.',
+          'Easy to learn, inspect via Browser DevTools, and customize.'
+        ],
+        disadvantages: [
+          'Cross-browser rendering inconsistencies across legacy browsers.',
+          'CSS specificity issues can make styling maintenance complex in large codebases.'
+        ],
+        syntax: '/* CSS Flexbox Layout */\n.card-container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 1rem;\n  border-radius: 8px;\n}',
+        example: 'Building a responsive 3-column feature grid using `display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));`.',
+        examQuestions: [
+          { q: 'Explain the CSS Box Model.', a: 'Every HTML element is a box containing: Content (text/images) → Padding (internal space) → Border (outline) → Margin (external spacing).' },
+          { q: 'Why are Semantic HTML5 tags important?', a: 'Semantic tags provide clear structural meaning to browsers, search engines (improving SEO), and screen readers (improving accessibility).' }
+        ]
+      },
+
+      oop: {
+        definition: 'Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects", which combine data attributes (fields/properties) and code behaviors (methods/functions).',
+        keyConcepts: [
+          'Encapsulation: Restricting direct access to object state by exposing public methods while keeping fields private.',
+          'Abstraction: Hiding complex implementation details, showing only essential functionality.',
+          'Inheritance: Allowing a child subclass to derive properties and methods from a parent superclass.',
+          'Polymorphism: Allowing different objects to respond to the same method interface in specialized ways.'
+        ],
+        features: [
+          'Promotes high code reusability, modular design, and maintainability.',
+          'Directly models real-world entities into software domain classes.'
+        ],
+        functions: [
+          'Used as the core architecture in Java, C++, Python, C#, Swift, and corporate enterprise software.'
+        ],
+        types: [
+          'Class-based OOP (Java, C++) vs Prototype-based OOP (JavaScript).'
+        ],
+        advantages: [
+          'Protects data integrity through encapsulated access control.',
+          'Simplifies code maintenance and large team collaboration.'
+        ],
+        disadvantages: [
+          'Can create larger code footprint and unnecessary object creation overhead.',
+          'Deep inheritance hierarchies can introduce class coupling complexity.'
+        ],
+        syntax: 'class Animal {\n  private String name;\n  public Animal(String name) { this.name = name; }\n  public void speak() { System.out.println(name + " makes a sound"); }\n}',
+        example: 'Creating a `Shape` base class with a virtual `calculateArea()` method overridden by `Circle` and `Rectangle` subclasses.',
+        examQuestions: [
+          { q: 'What is the difference between an Abstract Class and an Interface?', a: 'Abstract Classes can contain state (instance variables) and implemented methods. Interfaces contain only method contracts (until Java 8 default methods) and cannot hold state.' },
+          { q: 'Explain Encapsulation with an example.', a: 'Encapsulation hides internal fields (e.g. `private double balance`) and forces modifications through public methods (e.g. `deposit(amount)`), validating input before mutating state.' }
+        ]
+      },
+
       photosynthesis: {
         definition: 'Photosynthesis is the endothermic biochemical process by which autotrophic organisms (plants, algae, cyanobacteria) synthesize glucose (C₆H₁₂O₆) and oxygen (O₂) from carbon dioxide (CO₂), water (H₂O), and solar energy.',
         keyConcepts: [
@@ -43,7 +416,7 @@ const AI = {
         ],
         features: [
           'Occurs inside chloroplast organelles containing thylakoid membranes and stroma.',
-          'Driven by photosynthetic pigments (Chlorophyll a, Chlorophyll b, and Carotenoids).',
+          'Driven by photosynthetic pigments (Chlorophyll a, Chlorophyll b, and Carotenoids).'
         ],
         functions: [
           'Converts solar radiation into storable chemical bond energy.',
@@ -69,6 +442,7 @@ const AI = {
           { q: 'Why is photorespiration considered wasteful in C3 plants?', a: 'Because RuBisCO binds with O₂ instead of CO₂, consuming energy and releasing CO₂ without producing ATP or sugars.' }
         ]
       },
+
       programming: {
         definition: 'Programming is the systematic process of designing, writing, testing, debugging, and maintaining instruction code for computing systems to perform automated algorithms.',
         keyConcepts: [
@@ -104,40 +478,7 @@ const AI = {
           { q: 'What are the 4 main pillars of OOP?', a: 'Encapsulation, Abstraction, Inheritance, and Polymorphism.' }
         ]
       },
-      python: {
-        definition: 'Python is a high-level, interpreted, dynamically typed, multi-paradigm programming language known for clear syntax, automatic memory management, and extensive standard libraries.',
-        keyConcepts: [
-          'Dynamic Typing: Variables adopt types automatically at runtime without explicit declarations.',
-          'Indentation Syntax: Code blocks are demarcated by white space indentation instead of curly braces.',
-          'Garbage Collection: Automatic reference counting and memory reclamation.'
-        ],
-        features: [
-          'Rich ecosystem of third-party packages (PyPI, NumPy, Pandas, PyTorch).',
-          'Cross-platform compatibility (runs on Windows, macOS, Linux).'
-        ],
-        functions: [
-          'Used for web backends (Django, Flask), data science, AI/ML engineering, and automation scripts.'
-        ],
-        types: [
-          'C-Python: Reference implementation written in C.',
-          'PyPy: JIT-compiled high-performance implementation.',
-          'Jython & IronPython: Java and .NET runtime integrations.'
-        ],
-        advantages: [
-          'Extremely rapid prototyping and minimal boilerplate code.',
-          'Huge developer ecosystem and extensive documentation.'
-        ],
-        disadvantages: [
-          'Slower execution speed compared to C/C++ due to GIL (Global Interpreter Lock).',
-          'High memory consumption and runtime type error risk.'
-        ],
-        syntax: '# List comprehension syntax\neven_squares = [x**2 for x in range(10) if x % 2 == 0]',
-        example: 'Importing pandas to load a CSV dataset with `df = pd.read_csv("data.csv")` and running statistical analysis.',
-        examQuestions: [
-          { q: 'What is the Global Interpreter Lock (GIL) in Python?', a: 'A mutex mechanism that allows only one native thread to execute Python bytecodes at a time, preventing true multi-threaded CPU parallel execution.' },
-          { q: 'How does a Python List differ from a Tuple?', a: 'Lists are mutable (modifiable) defined with `[]`; Tuples are immutable (read-only) defined with `()`, rendering tuples faster and hashable.' }
-        ]
-      },
+
       calculus: {
         definition: 'Calculus is the branch of mathematics studying continuous change, divided into Differential Calculus (rates of change) and Integral Calculus (accumulation of quantities).',
         keyConcepts: [
@@ -170,10 +511,270 @@ const AI = {
           { q: 'What does the Fundamental Theorem of Calculus state?', a: 'It proves that differentiation and integration are inverse operations: if F\'(x) = f(x), then ∫ₐᵇ f(x)dx = F(b) - F(a).' },
           { q: 'How do you find local extrema (maxima/minima) using calculus?', a: 'Set the first derivative to zero (f\'(x) = 0) to find critical points, then test second derivative: f\'\'(x) > 0 is local minimum, f\'\'(x) < 0 is local maximum.' }
         ]
+      },
+
+      physics: {
+        definition: 'Physics is the natural science studying matter, motion, energy, and fundamental forces in the universe.',
+        keyConcepts: [
+          'Newton\'s Laws of Motion: Inertia, F = m·a, and Action-Reaction.',
+          'Conservation Laws: Conservation of Energy, Momentum, and Electric Charge.',
+          'Electromagnetism & Waves: Ohm\'s Law (V = I·R), wave optics, and electromagnetic radiation.'
+        ],
+        features: [
+          'Uses mathematical equations to formulate universal physical laws.',
+          'Validates theoretical models through quantitative empirical experiment.'
+        ],
+        functions: [
+          'Forms the core physical foundation of all technological engineering disciplines.'
+        ],
+        types: [
+          'Classical Mechanics, Electromagnetism, Thermodynamics, Quantum Mechanics, Relativity.'
+        ],
+        advantages: [
+          'Explains physical phenomena from subatomic particles to cosmic galaxies.',
+          'Drives technological innovations like semiconductors, lasers, and spaceflight.'
+        ],
+        disadvantages: [
+          'Requires high-level vector calculus and differential equations.',
+          'Idealized theoretical models simplify real-world friction and atmospheric drag.'
+        ],
+        syntax: 'F = m · a\nE = m · c²\nV = I · R',
+        example: 'Calculating projectile trajectory distance given initial velocity and launch angle using kinematic equations.',
+        examQuestions: [
+          { q: 'State Newton\'s Second Law of Motion.', a: 'Force equals mass times acceleration (F = m·a).' },
+          { q: 'What is the Law of Conservation of Energy?', a: 'Energy can neither be created nor destroyed; it only transforms from one form to another.' }
+        ]
+      },
+
+      chemistry: {
+        definition: 'Chemistry is the scientific study of the properties, composition, structure, and reactivity of matter, elements, and compounds.',
+        keyConcepts: [
+          'Atomic Structure: Protons, neutrons, electrons, and periodic trends.',
+          'Chemical Bonding: Covalent (electron sharing), Ionic (electron transfer), and Metallic.',
+          'Stoichiometry & Equilibrium: Molar calculations, Le Chatelier\'s Principle, and pH scale.'
+        ],
+        features: [
+          'Explains physical matter transformations and energetic reaction changes.',
+          'Serves as the central science connecting physics and biology.'
+        ],
+        functions: [
+          'Used in pharmaceutical drug discovery, materials synthesis, battery technology, and chemical manufacturing.'
+        ],
+        types: [
+          'Organic Chemistry, Inorganic Chemistry, Physical Chemistry, Analytical Chemistry, Biochemistry.'
+        ],
+        advantages: [
+          'Enables creation of life-saving medicines and modern synthetic materials.',
+          'Provides quantitative methods to measure chemical concentrations and reaction yields.'
+        ],
+        disadvantages: [
+          'Hazardous chemical reactions require strict laboratory safety controls.',
+          'Complex reaction mechanisms require multi-step stoichiometric calculations.'
+        ],
+        syntax: '2H₂ + O₂ → 2H₂O\npH = -log10[H⁺]\nMoles = Mass / Molar Mass',
+        example: 'Titrating an acid against a standard base using phenolphthalein indicator to determine unknown concentration.',
+        examQuestions: [
+          { q: 'What is Le Chatelier\'s Principle?', a: 'If a chemical system at equilibrium is disturbed, the system shifts reaction direction to counteract the disturbance.' },
+          { q: 'Differentiate between Ionic and Covalent bonds.', a: 'Ionic bonds form via complete electron transfer between metals and non-metals. Covalent bonds form via electron pair sharing between non-metal atoms.' }
+        ]
+      },
+
+      biology: {
+        definition: 'Biology is the natural science studying life and living organisms, including structural cell biology, genetics, physiology, and ecosystems.',
+        keyConcepts: [
+          'Cell Theory: All living organisms are composed of cells; cells are the fundamental unit of life.',
+          'Genetics & DNA: Transmission of hereditary genetic information via DNA and RNA.',
+          'Homeostasis & Metabolism: Maintaining internal biological equilibrium through enzymatic regulation.'
+        ],
+        features: [
+          'Operates across biological levels: molecules → cells → tissues → organs → organisms → ecosystems.',
+          'Explains evolutionary adaptations and biological diversity.'
+        ],
+        functions: [
+          'Powers medical diagnostics, biotechnology, agriculture, disease treatment, and environmental conservation.'
+        ],
+        types: [
+          'Cellular Biology, Genetics, Human Physiology, Botany, Zoology, Ecology.'
+        ],
+        advantages: [
+          'Essential for health sciences, medical therapies, and biological conservation.',
+          'Helps understand human body mechanisms and disease prevention.'
+        ],
+        disadvantages: [
+          'Biological systems involve thousands of complex, interconnected metabolic pathways.',
+          'Requires memorizing extensive anatomical terminology and biochemical cycles.'
+        ],
+        syntax: 'Central Dogma: DNA → mRNA → Protein\nCellular Respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + 36-38 ATP',
+        example: 'Tracing cellular respiration inside mitochondria to generate ATP energy for metabolic work.',
+        examQuestions: [
+          { q: 'What is the difference between Mitosis and Meiosis?', a: 'Mitosis produces 2 identical diploid daughter cells for body growth. Meiosis produces 4 non-identical haploid gametes (sperm/egg) for sexual reproduction.' },
+          { q: 'What is Homeostasis and why is it vital?', a: 'Homeostasis is the biological process of maintaining stable internal physiological conditions despite external changes.' }
+        ]
+      },
+
+      history: {
+        definition: 'History is the systematic study and critical interpretation of past human events, civilizations, political movements, economic transformations, and cultural developments recorded through historical evidence.',
+        keyConcepts: [
+          'Historiography & Evidence: Primary sources (eyewitness artifacts/diaries) vs Secondary sources (textbooks/essays).',
+          'Causation & Consequence: Analyzing immediate triggers vs long-term socio-political causes.',
+          'Institutional Transformation: Evolutions in governance, treaties, revolutions, and trade routes.'
+        ],
+        features: [
+          'Evaluates human experiences across chronological eras.',
+          'Analyzes historical bias, propaganda, and source reliability.'
+        ],
+        functions: [
+          'Explains modern geopolitical borders, constitutional democracy, and international relations.'
+        ],
+        types: [
+          'Political History, Socio-Cultural History, Economic History, Military & Diplomatic History.'
+        ],
+        advantages: [
+          'Prevents past policy mistakes by analyzing historical precedent.',
+          'Fosters critical thinking, source evaluation, and global cultural perspective.'
+        ],
+        disadvantages: [
+          'Archival records can contain ideological bias or missing documentation.',
+          'Requires memorizing chronologies, historical actors, and complex socio-political contexts.'
+        ],
+        syntax: 'Historical Framework:\nPre-existing Conditions → Trigger Event → Crisis / Conflict → Treaty / Resolution → Long-term Impact',
+        example: 'Analyzing how the Industrial Revolution led to rapid urban migration, trade union movements, and labor laws.',
+        examQuestions: [
+          { q: 'Why are Primary Sources crucial in historical analysis?', a: 'Primary sources provide unmediated first-hand evidence from contemporary participants, reflecting original attitudes without modern retrospective bias.' },
+          { q: 'What were the main causes of World War I?', a: 'Militarism, Alliances, Imperialism, Nationalism (MAIN), triggered by the assassination of Archduke Franz Ferdinand in 1914.' }
+        ]
+      },
+
+      geography: {
+        definition: 'Geography is the spatial science studying Earth\'s physical landforms, climate systems, environmental processes, population distributions, and human-environmental interactions.',
+        keyConcepts: [
+          'Physical Earth Systems: Plate tectonics, atmospheric circulation, hydrological cycle, biomes.',
+          'Spatial Analysis & Scale: Map projections, GIS (Geographic Information Systems), ground distance scales.',
+          'Human Geography: Urbanization, demographic transition, economic trade spatial patterns.'
+        ],
+        features: [
+          'Bridges physical sciences (geology, meteorology) with social sciences (demography, urban planning).',
+          'Analyzes spatial variation across Earth\'s surface.'
+        ],
+        functions: [
+          'Guides urban planning, natural disaster mitigation, climate change policy, and natural resource management.'
+        ],
+        types: [
+          'Physical Geography (Geomorphology, Climatology, Hydrology) and Human Geography (Population, Economic, Urban).'
+        ],
+        advantages: [
+          'Essential for spatial planning, environmental sustainability, and disaster response.',
+          'Combines digital satellite technology (GIS) with field environmental studies.'
+        ],
+        disadvantages: [
+          'Complex multi-variable interaction makes exact long-term climate prediction challenging.',
+          'Requires understanding both global macro-scale systems and local micro-level geography.'
+        ],
+        syntax: 'Map Scale Formula:\nReal World Distance = Map Distance × Scale Denominator',
+        example: 'Analyzing how ocean currents (Gulf Stream) modulate coastal European temperatures creating temperate climates.',
+        examQuestions: [
+          { q: 'What is Plate Tectonics and what geological features does it create?', a: 'Plate Tectonics is the movement of lithospheric plates over mantle convection currents, creating earthquakes, volcanoes, ocean trenches, and mountain ranges.' },
+          { q: 'Explain the Demographic Transition Model.', a: 'A model describing population shifts from high birth/death rates in pre-industrial societies to low birth/death rates in industrialized societies.' }
+        ]
+      },
+
+      economics: {
+        definition: 'Economics is the social science studying how individuals, businesses, governments, and societies allocate scarce resources to satisfy unlimited human needs and market demands.',
+        keyConcepts: [
+          'Scarcity & Opportunity Cost: Evaluating trade-offs when allocating limited resources.',
+          'Supply & Demand Equilibrium: Price discovery where quantity supplied equals quantity demanded.',
+          'Macroeconomic Indicators: GDP, inflation rates, unemployment, fiscal and monetary policies.'
+        ],
+        features: [
+          'Uses mathematical models, supply-demand curves, and empirical statistical indicators.',
+          'Predicts human producer and consumer choices under incentive structures.'
+        ],
+        functions: [
+          'Guides central bank monetary policy, corporate pricing strategies, taxation, and international trade policies.'
+        ],
+        types: [
+          'Microeconomics (individual markets/firms) and Macroeconomics (aggregate national economy).'
+        ],
+        advantages: [
+          'Provides quantitative framework for maximizing market efficiency and social welfare.',
+          'Enables policymakers to control hyperinflation and mitigate economic recessions.'
+        ],
+        disadvantages: [
+          'Economic models often rely on simplifying assumptions (e.g. rational choice, ceteris paribus).',
+          'Unforeseen global supply shocks can disrupt economic forecasts.'
+        ],
+        syntax: 'Market Equilibrium: Qd = Qs\nGDP = C + I + G + (X - M)\nElasticity = (% Δ Quantity) / (% Δ Price)',
+        example: 'Analyzing how central banks raise interest rates to reduce consumer borrowing and cool inflationary pressure.',
+        examQuestions: [
+          { q: 'What is the difference between Fiscal Policy and Monetary Policy?', a: 'Fiscal policy is set by government taxation and public spending budgets. Monetary policy is managed by central banks via interest rates and money supply.' },
+          { q: 'Explain the Law of Supply and Demand.', a: 'Law of Demand: as price rises, quantity demanded falls (inverse). Law of Supply: as price rises, quantity supplied rises (direct).' }
+        ]
       }
     };
 
-    // Match topic or build structured generic exam content
+    // Regex resolver for exact language/topic matching
+    if (/\b(c|c programming|c language|c coding|c basics)\b/i.test(t) && !/c\+\+|cpp|c\#|css/i.test(t)) {
+      return knowledgeBase.c;
+    }
+    if (/\b(java|java programming|java language|oops in java|jdk|jvm)\b/i.test(t) && !/javascript|js/i.test(t)) {
+      return knowledgeBase.java;
+    }
+    if (/\b(python|python programming|py|python3)\b/i.test(t)) {
+      return knowledgeBase.python;
+    }
+    if (/\b(c\+\+|cpp|c plus plus)\b/i.test(t)) {
+      return knowledgeBase.cpp;
+    }
+    if (/\b(javascript|js|es6|ecmascript|front end|frontend)\b/i.test(t)) {
+      return knowledgeBase.javascript;
+    }
+    if (/\b(sql|dbms|database|mysql|postgresql|sqlite|rdbms)\b/i.test(t)) {
+      return knowledgeBase.sql;
+    }
+    if (/\b(dsa|data structures|algorithms|data structure|sorting|searching|binary search|stack|queue|linked list|trees|graphs)\b/i.test(t)) {
+      return knowledgeBase.dsa;
+    }
+    if (/\b(operating system|operating systems|os|linux|process scheduling|deadlock)\b/i.test(t)) {
+      return knowledgeBase.os;
+    }
+    if (/\b(computer networks|networking|tcp\/ip|osi model|ip address|http|https)\b/i.test(t)) {
+      return knowledgeBase.networks;
+    }
+    if (/\b(html|css|web design|flexbox|grid)\b/i.test(t)) {
+      return knowledgeBase.html_css;
+    }
+    if (/\b(oop|oops|object oriented programming|object oriented)\b/i.test(t)) {
+      return knowledgeBase.oop;
+    }
+    if (/\b(photosynthesis|light reaction|calvin cycle)\b/i.test(t)) {
+      return knowledgeBase.photosynthesis;
+    }
+    if (/\b(periodic table|mendeleev|atomic number|elements)\b/i.test(t)) {
+      return knowledgeBase.periodicTable || knowledgeBase.chemistry;
+    }
+    if (/\b(calculus|derivative|integration|integrals|derivatives|differentiation)\b/i.test(t)) {
+      return knowledgeBase.calculus;
+    }
+    if (/\b(economics|microeconomics|macroeconomics|gdp|inflation|demand supply)\b/i.test(t)) {
+      return knowledgeBase.economics;
+    }
+    if (/\b(physics|newton|kinematics|thermodynamics|optics|gravity)\b/i.test(t)) {
+      return knowledgeBase.physics;
+    }
+    if (/\b(chemistry|organic chemistry|acids bases|chemical bonding|stoichiometry)\b/i.test(t)) {
+      return knowledgeBase.chemistry;
+    }
+    if (/\b(biology|cell biology|genetics|dna|genomics|anatomy|physiology)\b/i.test(t)) {
+      return knowledgeBase.biology;
+    }
+    if (/\b(history|world war|revolutions|ancient history|medieval history)\b/i.test(t)) {
+      return knowledgeBase.history;
+    }
+    if (/\b(geography|physical geography|plate tectonics|climatology|topography)\b/i.test(t)) {
+      return knowledgeBase.geography;
+    }
+
+    // Substring fallback
     for (const [key, data] of Object.entries(knowledgeBase)) {
       if (t.includes(key)) {
         return data;
@@ -914,7 +1515,503 @@ const AI = {
   generateQuiz(topic) {
     const t = topic.trim().toLowerCase();
 
+    // Support text/notes input directly in quiz generator
+    if (topic.length > 50 || topic.includes('\n') || (topic.match(/\./g) || []).length >= 2) {
+      const sentences = topic.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20);
+      if (sentences.length >= 3) {
+        return this.generateNotesBasedQuiz(sentences);
+      }
+    }
+
     const quizBank = {
+      c: [
+        {
+          q: 'What is the output of `printf("%d", 5 / 2);` in standard C?',
+          options: ['2.5', '2', '2.0', 'Compilation Error'],
+          answer: 1,
+          explanation: 'In C, dividing two integers performs integer division, truncating any fractional remainder to return integer 2.',
+        },
+        {
+          q: 'Which operator is used to retrieve the memory address of a variable in C?',
+          options: ['*', '&', '->', '%'],
+          answer: 1,
+          explanation: 'The `&` (address-of) operator returns the memory address location of a variable.',
+        },
+        {
+          q: 'What is a Pointer variable in C?',
+          options: [
+            'A variable that stores floating-point numbers',
+            'A variable that stores the memory address of another variable',
+            'A constant defined with #define',
+            'A data type for handling text strings'
+          ],
+          answer: 1,
+          explanation: 'A pointer holds the memory address of another variable or function in memory.',
+        },
+        {
+          q: 'Which standard library function dynamically allocates memory on the heap in C?',
+          options: ['alloc()', 'malloc()', 'new()', 'create()'],
+          answer: 1,
+          explanation: '`malloc()` (memory allocation) allocates specified bytes in heap memory and returns a void pointer to the memory block.',
+        },
+        {
+          q: 'What is the default return type of the `main()` function in standard C?',
+          options: ['void', 'int', 'float', 'char'],
+          answer: 1,
+          explanation: 'Standard C (C99/C11/C17) specifies `int` as the return type of `main()`, where returning 0 indicates successful execution.',
+        },
+      ],
+
+      java: [
+        {
+          q: 'What is the primary role of the Java Virtual Machine (JVM)?',
+          options: [
+            'To compile Java source code into bytecode',
+            'To execute compiled Java bytecode on any platform',
+            'To write and format Java source files',
+            'To manage local database tables'
+          ],
+          answer: 1,
+          explanation: 'The JVM parses and executes Java bytecode, enabling Java\'s cross-platform "Write Once, Run Anywhere" capability.',
+        },
+        {
+          q: 'Which keyword is used in Java for class inheritance?',
+          options: ['implements', 'extends', 'inherits', 'super'],
+          answer: 1,
+          explanation: 'The `extends` keyword is used for class inheritance in Java, whereas `implements` is used for interfaces.',
+        },
+        {
+          q: 'Which of the following is NOT a primitive data type in Java?',
+          options: ['int', 'boolean', 'double', 'String'],
+          answer: 3,
+          explanation: '`String` in Java is a reference class object (an immutable sequence of characters), not a primitive data type like int or double.',
+        },
+        {
+          q: 'What happens when an exception is NOT caught in Java?',
+          options: [
+            'The program ignores it and continues',
+            'The thread executing the code terminates abruptly with a stack trace',
+            'The JVM restarts automatically',
+            'The operating system reboots'
+          ],
+          answer: 1,
+          explanation: 'Uncaught exceptions cause the thread to terminate execution and print an unhandled exception stack trace.',
+        },
+        {
+          q: 'How does Garbage Collection function in Java?',
+          options: [
+            'Developers must manually call free() for every object',
+            'The JVM automatically reclaims heap memory occupied by unreachable objects',
+            'It deletes temporary Java source files',
+            'It clears CPU registers'
+          ],
+          answer: 1,
+          explanation: 'Java includes an automatic Garbage Collector that frees heap memory allocated to unreferenced objects in the background.',
+        },
+      ],
+
+      python: [
+        {
+          q: 'Which of the following data structures is IMMUTABLE in Python?',
+          options: ['List', 'Dictionary', 'Tuple', 'Set'],
+          answer: 2,
+          explanation: 'Tuples are immutable sequence types in Python; their elements cannot be altered, added, or removed after creation.',
+        },
+        {
+          q: 'Which keyword is used to define a function in Python?',
+          options: ['function', 'define', 'def', 'fun'],
+          answer: 2,
+          explanation: 'In Python, the `def` keyword defines a function followed by the function name and parameter list.',
+        },
+        {
+          q: 'What is the output of `len([10, [20, 30], 40])` in Python?',
+          options: ['4', '3', '2', 'Error'],
+          answer: 1,
+          explanation: 'The list contains 3 top-level elements: integer `10`, nested list `[20, 30]`, and integer `40`.',
+        },
+        {
+          q: 'How are code blocks demarcated in Python syntax?',
+          options: [
+            'Curly braces `{}`',
+            'Parentheses `()`',
+            'Consistent whitespace indentation',
+            'Semicolons `;`'
+          ],
+          answer: 2,
+          explanation: 'Python relies on whitespace indentation instead of curly braces to specify block scope for loops, functions, and classes.',
+        },
+        {
+          q: 'What is a List Comprehension in Python?',
+          options: [
+            'A documentation string inside a class',
+            'A concise syntax to create new lists: `[expr for item in iterable if condition]`',
+            'A debugger command to inspect variables',
+            'A built-in method for sorting lists'
+          ],
+          answer: 1,
+          explanation: 'List comprehension provides a succinct, readable way to construct lists from existing iterables in one line.',
+        },
+      ],
+
+      cpp: [
+        {
+          q: 'Which C++ feature allows multiple functions to share the same name with different parameters?',
+          options: ['Function Overriding', 'Function Overloading', 'Virtual Inheritance', 'Encapsulation'],
+          answer: 1,
+          explanation: 'Function Overloading allows multiple functions in the same scope to share an identifier if their signatures differ.',
+        },
+        {
+          q: 'Which header file is required for input/output stream operations in C++?',
+          options: ['<stdio.h>', '<iostream>', '<conio.h>', '<stdlib.h>'],
+          answer: 1,
+          explanation: '`<iostream>` defines standard console input/output stream objects like `std::cin` and `std::cout`.',
+        },
+        {
+          q: 'What is a Destructor in C++?',
+          options: [
+            'A function that deletes source files',
+            'A special member function `~ClassName()` executed when an object is destroyed',
+            'A compiler error flag',
+            'A keyword to erase global variables'
+          ],
+          answer: 1,
+          explanation: 'Destructors clean up object resources and free dynamic heap memory automatically when an object goes out of scope.',
+        },
+        {
+          q: 'Which operator dynamically allocates memory on the heap in C++?',
+          options: ['malloc', 'alloc', 'new', 'create'],
+          answer: 2,
+          explanation: 'The `new` operator allocates dynamic memory on the heap and invokes the constructor of the class.',
+        },
+        {
+          q: 'What does declaring a base class method `virtual` achieve in C++?',
+          options: [
+            'Prevents any derived class from modifying it',
+            'Enables runtime dynamic polymorphism so the derived class override is invoked through base pointers',
+            'Makes function execution faster',
+            'Restricts function access to private members'
+          ],
+          answer: 1,
+          explanation: 'Virtual functions ensure method calls are resolved at runtime based on the actual target object type.',
+        },
+      ],
+
+      javascript: [
+        {
+          q: 'What is the difference between `==` and `===` operators in JavaScript?',
+          options: [
+            '== performs type coercion before comparison; === compares both value and type strictly',
+            '== is for strings; === is for numbers',
+            '== is deprecated; === is used only for arrays',
+            'There is no difference between them'
+          ],
+          answer: 0,
+          explanation: '`==` converts operands to a common type before comparing, whereas `===` (strict equality) requires type and value match.',
+        },
+        {
+          q: 'Which keyword declares a block-scoped variable that CANNOT be reassigned in JavaScript?',
+          options: ['var', 'let', 'const', 'static'],
+          answer: 2,
+          explanation: '`const` creates a block-scoped read-only reference that cannot be reassigned after declaration.',
+        },
+        {
+          q: 'What is a Closure in JavaScript?',
+          options: [
+            'A function that closes browser tabs',
+            'A function bundled together with references to its surrounding lexical environment',
+            'A syntax error handler',
+            'A method to stop infinite loops'
+          ],
+          answer: 1,
+          explanation: 'A closure gives an inner function access to variables in its outer enclosing scope even after the outer function has returned.',
+        },
+        {
+          q: 'What is the role of the Event Loop in JavaScript?',
+          options: [
+            'Renders HTML and CSS styles to DOM',
+            'Monitors the Call Stack and Callback Queue to handle non-blocking asynchronous tasks',
+            'Compiles JS into C++ machine code',
+            'Manages GPU hardware rendering'
+          ],
+          answer: 1,
+          explanation: 'The Event Loop checks if the Call Stack is empty and pushes pending callbacks from the micro/macro task queues.',
+        },
+        {
+          q: 'Which method converts a JavaScript object into a JSON string?',
+          options: ['JSON.parse()', 'JSON.stringify()', 'Object.toString()', 'JSON.encode()'],
+          answer: 1,
+          explanation: '`JSON.stringify()` converts JavaScript objects or values into a standard JSON string format.',
+        },
+      ],
+
+      sql: [
+        {
+          q: 'Which SQL keyword retrieves only unique non-duplicate column values?',
+          options: ['UNIQUE', 'DISTINCT', 'DIFFERENT', 'SINGLE'],
+          answer: 1,
+          explanation: '`SELECT DISTINCT` filters out duplicate rows from query results.',
+        },
+        {
+          q: 'Which clause filters aggregated records AFTER a `GROUP BY` clause in SQL?',
+          options: ['WHERE', 'HAVING', 'ORDER BY', 'FILTER'],
+          answer: 1,
+          explanation: '`WHERE` filters individual rows before grouping; `HAVING` filters aggregate groups formed by `GROUP BY`.',
+        },
+        {
+          q: 'What does ACID stand for in relational database systems?',
+          options: [
+            'Atomicity, Consistency, Isolation, Durability',
+            'Accuracy, Control, Integrity, Data',
+            'Access, Connection, Index, Directory',
+            'Automatic, Concurrent, Internal, Distributed'
+          ],
+          answer: 0,
+          explanation: 'ACID properties guarantee reliable transaction processing in database management systems.',
+        },
+        {
+          q: 'What is a Foreign Key in a relational database?',
+          options: [
+            'An encryption key for passwords',
+            'A column in a table that references the Primary Key of another table',
+            'A temporary query index',
+            'A key stored on an external cloud'
+          ],
+          answer: 1,
+          explanation: 'Foreign Keys enforce referential integrity between related database tables.',
+        },
+        {
+          q: 'Which command permanently deletes a table structure AND all its data in SQL?',
+          options: ['DELETE TABLE', 'DROP TABLE', 'TRUNCATE TABLE', 'REMOVE TABLE'],
+          answer: 1,
+          explanation: '`DROP TABLE` deletes both the table schema definition and all row data permanently.',
+        },
+      ],
+
+      dsa: [
+        {
+          q: 'Which data structure operates on a FIFO (First In, First Out) basis?',
+          options: ['Stack', 'Queue', 'Binary Search Tree', 'Max Heap'],
+          answer: 1,
+          explanation: 'A Queue operates on FIFO — the first element enqueued is the first one dequeued.',
+        },
+        {
+          q: 'What is the worst-case time complexity of QuickSort?',
+          options: ['O(n log n)', 'O(n)', 'O(n²)', 'O(1)'],
+          answer: 2,
+          explanation: 'QuickSort degrades to O(n²) worst-case when bad pivot choices occur (e.g. sorted array with first element as pivot).',
+        },
+        {
+          q: 'Which data structure provides O(1) average time complexity for lookup, insertion, and deletion?',
+          options: ['Hash Table / Dictionary', 'Sorted Array', 'Singly Linked List', 'Binary Tree'],
+          answer: 0,
+          explanation: 'Hash Tables compute direct array indices using hash functions to achieve O(1) average operations.',
+        },
+        {
+          q: 'What is the height of a balanced Binary Search Tree containing N nodes?',
+          options: ['O(N)', 'O(log N)', 'O(N²)', 'O(1)'],
+          answer: 1,
+          explanation: 'A balanced BST maintains logarithmic height O(log N), keeping search and insertion operations bounded by O(log N).',
+        },
+        {
+          q: 'Which algorithm design paradigm does Merge Sort use?',
+          options: ['Greedy Method', 'Dynamic Programming', 'Divide and Conquer', 'Backtracking'],
+          answer: 2,
+          explanation: 'Merge Sort recursively divides the array into halves, sorts them, and conquers by merging the sorted subarrays.',
+        },
+      ],
+
+      os: [
+        {
+          q: 'What is a Deadlock in Operating Systems?',
+          options: [
+            'A crash due to disk space overload',
+            'A condition where two or more processes are blocked forever waiting for each other\'s resources',
+            'A hardware fan failure',
+            'An unhandled memory reference'
+          ],
+          answer: 1,
+          explanation: 'Deadlock happens when processes hold resources while waiting for resources held by others in a circular dependency.',
+        },
+        {
+          q: 'Which scheduling algorithm assigns fixed time slices (quanta) to processes in cyclic order?',
+          options: ['First-Come First-Served', 'Shortest Job First', 'Round Robin', 'Priority Scheduling'],
+          answer: 2,
+          explanation: 'Round Robin allocates CPU execution time in fixed quanta, cycling through ready queue processes.',
+        },
+        {
+          q: 'What is Virtual Memory?',
+          options: [
+            'RAM chips on GPU cards',
+            'A memory management technique extending RAM capacity using secondary disk space',
+            'Cloud backup storage',
+            'Cache memory in CPU cores'
+          ],
+          answer: 1,
+          explanation: 'Virtual memory pages inactive memory chunks between RAM and secondary disk storage to run large applications.',
+        },
+        {
+          q: 'What is a Semaphore in process synchronization?',
+          options: [
+            'A physical bus wire',
+            'An integer variable accessed through atomic wait() and signal() operations to manage critical sections',
+            'A file system permission flag',
+            'A compiler optimization flag'
+          ],
+          answer: 1,
+          explanation: 'Semaphores synchronize concurrent process access to shared critical section resources.',
+        },
+        {
+          q: 'What is the key difference between a Process and a Thread?',
+          options: [
+            'Processes share memory; Threads have isolated memory',
+            'Processes have isolated virtual address spaces; Threads share process memory and resources',
+            'Threads execute slower than processes',
+            'Processes run only inside web browsers'
+          ],
+          answer: 1,
+          explanation: 'Processes have independent virtual address spaces; threads within the same process share code, data, and OS resources.',
+        },
+      ],
+
+      networks: [
+        {
+          q: 'How many layers are in the OSI (Open Systems Interconnection) reference model?',
+          options: ['4', '5', '7', '9'],
+          answer: 2,
+          explanation: 'The OSI model defines 7 layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.',
+        },
+        {
+          q: 'Which Transport layer protocol provides reliable, connection-oriented data transfer?',
+          options: ['UDP', 'IP', 'TCP', 'HTTP'],
+          answer: 2,
+          explanation: 'TCP (Transmission Control Protocol) provides reliable, ordered, error-checked data delivery using 3-way handshakes.',
+        },
+        {
+          q: 'What is the primary role of DNS (Domain Name System) on the Internet?',
+          options: [
+            'Encrypting web page traffic',
+            'Translating human-friendly domain names (e.g. example.com) into numerical IP addresses',
+            'Boosting WiFi signal strength',
+            'Storing user account passwords'
+          ],
+          answer: 1,
+          explanation: 'DNS maps human-readable domain names to numerical IP addresses required for network packet routing.',
+        },
+        {
+          q: 'Which IP address version uses 128-bit addresses written in hexadecimal format?',
+          options: ['IPv4', 'IPv6', 'MAC Address', 'Subnet Mask'],
+          answer: 1,
+          explanation: 'IPv6 uses 128-bit hexadecimal addressing to provide a massive address space compared to IPv4\'s 32-bit format.',
+        },
+        {
+          q: 'What is the standard port number for HTTPS secure web traffic?',
+          options: ['80', '21', '443', '8080'],
+          answer: 2,
+          explanation: 'Port 443 is the standard port for encrypted HTTPS traffic (Port 80 is unencrypted HTTP).',
+        },
+      ],
+
+      html_css: [
+        {
+          q: 'What is the main purpose of semantic HTML5 tags like `<header>`, `<nav>`, `<article>`, and `<footer>`?',
+          options: [
+            'To automatically add CSS animations',
+            'To provide structural meaning for browsers, search engines (SEO), and screen readers',
+            'To speed up JavaScript execution',
+            'To connect to SQL databases'
+          ],
+          answer: 1,
+          explanation: 'Semantic HTML tags describe the role of content elements, enhancing accessibility, SEO, and document clarity.',
+        },
+        {
+          q: 'In the CSS Box Model, what is the space located between the element border and inner content?',
+          options: ['Margin', 'Padding', 'Outline', 'Gap'],
+          answer: 1,
+          explanation: 'Padding is the interior space within an element\'s border; Margin is exterior spacing outside the border.',
+        },
+        {
+          q: 'Which CSS Flexbox property aligns flex items along the main axis?',
+          options: ['align-items', 'justify-content', 'flex-direction', 'align-content'],
+          answer: 1,
+          explanation: '`justify-content` manages alignment along the main flex axis, whereas `align-items` operates on the cross axis.',
+        },
+        {
+          q: 'What does the CSS `z-index` property control?',
+          options: [
+            'Font size scale factor',
+            'The vertical stacking order of positioned overlapping elements',
+            'Horizontal alignment spacing',
+            'Element opacity'
+          ],
+          answer: 1,
+          explanation: '`z-index` specifies the z-axis stacking order of elements positioned with relative, absolute, fixed, or sticky positioning.',
+        },
+        {
+          q: 'Which HTML attribute provides alternate text for screen readers if an image fails to load?',
+          options: ['title', 'alt', 'src', 'caption'],
+          answer: 1,
+          explanation: 'The `alt` attribute provides accessible textual descriptions for images.',
+        },
+      ],
+
+      oop: [
+        {
+          q: 'What are the four fundamental pillars of Object-Oriented Programming (OOP)?',
+          options: [
+            'Input, Output, Processing, Storage',
+            'Encapsulation, Abstraction, Inheritance, Polymorphism',
+            'Classes, Methods, Variables, Loops',
+            'Compiling, Linking, Executing, Debugging'
+          ],
+          answer: 1,
+          explanation: 'The core OOP principles are Encapsulation, Abstraction, Inheritance, and Polymorphism.',
+        },
+        {
+          q: 'What does Encapsulation achieve in OOP design?',
+          options: [
+            'Allows any function to modify object properties directly',
+            'Bundles internal state data and methods together while restricting direct access from outside',
+            'Deletes unused objects from heap memory',
+            'Converts object code into SQL database queries'
+          ],
+          answer: 1,
+          explanation: 'Encapsulation protects object state integrity by exposing controlled public methods while hiding internal private variables.',
+        },
+        {
+          q: 'What is Polymorphism in OOP?',
+          options: [
+            'Creating multiple copies of a class file',
+            'The ability of different classes to respond to the same method call in unique ways',
+            'Storing objects in binary files',
+            'Preventing classes from inheriting properties'
+          ],
+          answer: 1,
+          explanation: 'Polymorphism allows objects of different types to be treated through a shared interface, executing specialized behaviors.',
+        },
+        {
+          q: 'How does an Abstract Class differ from a standard Class?',
+          options: [
+            'Abstract classes cannot be instantiated directly and often contain unimplemented abstract methods',
+            'Abstract classes cannot contain any variables',
+            'Abstract classes execute faster than normal classes',
+            'Abstract classes are used only for database connections'
+          ],
+          answer: 0,
+          explanation: 'Abstract classes serve as blueprints for derived subclasses and cannot be instantiated directly with `new`.',
+        },
+        {
+          q: 'What is Inheritance in OOP?',
+          options: [
+            'A mechanism where a child class acquires properties and behaviors of a parent class',
+            'Copying source code files into another directory',
+            'Sharing variables across multiple threads',
+            'Importing third-party libraries'
+          ],
+          answer: 0,
+          explanation: 'Inheritance allows new subclasses to reuse code and extend capabilities from existing superclasses.',
+        },
+      ],
+
       photosynthesis: [
         {
           q: 'Where does photosynthesis primarily take place in a plant cell?',
@@ -926,236 +2023,463 @@ const AI = {
           q: 'Which gas is produced as a byproduct of photosynthesis?',
           options: ['Carbon Dioxide', 'Nitrogen', 'Oxygen', 'Hydrogen'],
           answer: 2,
-          explanation: 'Oxygen (O₂) is released as a byproduct when water molecules are split during the light reactions.',
+          explanation: 'Oxygen (O₂) is released as a byproduct when water molecules are split during light reactions.',
         },
         {
           q: 'What is the main energy source for photosynthesis?',
           options: ['Heat', 'Sunlight', 'Wind', 'Water'],
           answer: 1,
-          explanation: 'Sunlight provides the energy that drives the light-dependent reactions of photosynthesis.',
+          explanation: 'Sunlight provides the radiant energy that drives the light-dependent reactions of photosynthesis.',
         },
         {
-          q: 'Which compound is the primary product of photosynthesis?',
+          q: 'Which compound is the primary carbohydrate product of photosynthesis?',
           options: ['Starch', 'Protein', 'Glucose (C₆H₁₂O₆)', 'Lipids'],
           answer: 2,
-          explanation: 'Glucose is the primary carbohydrate product, used as energy by the plant or stored as starch.',
+          explanation: 'Glucose is the primary carbohydrate product, used as cellular energy or stored as starch.',
         },
         {
           q: 'What does the Calvin Cycle produce?',
           options: ['ATP only', 'Oxygen', 'Glucose precursors (G3P)', 'Water'],
           answer: 2,
-          explanation: 'The Calvin Cycle (light-independent reactions) uses CO₂ and ATP to produce G3P, which is used to make glucose.',
+          explanation: 'The Calvin Cycle (light-independent reactions) uses CO₂ and ATP to produce G3P, which is synthesized into glucose.',
         },
       ],
+
       'machine learning': [
         {
           q: 'Which type of machine learning uses labeled training data?',
           options: ['Unsupervised Learning', 'Reinforcement Learning', 'Supervised Learning', 'Deep Learning'],
           answer: 2,
-          explanation: 'Supervised Learning trains a model on labeled data, where the correct output is provided for each input.',
+          explanation: 'Supervised Learning trains models on labeled datasets where ground-truth outputs are provided.',
         },
         {
-          q: 'What is overfitting in machine learning?',
+          q: 'What is Overfitting in machine learning?',
           options: [
             'Model performs well on both training and test data',
-            'Model memorizes training data and performs poorly on new data',
+            'Model memorizes training data noise and performs poorly on unseen test data',
             'Model is too simple to capture patterns',
-            'Model trains too slowly',
+            'Model trains too slowly'
           ],
           answer: 1,
-          explanation: 'Overfitting occurs when a model learns the training data too well, including noise, and fails to generalize to new data.',
+          explanation: 'Overfitting happens when a model fits training noise too closely, failing to generalize to new test data.',
         },
         {
           q: 'Which algorithm is commonly used for classification tasks?',
           options: ['K-Means Clustering', 'Principal Component Analysis', 'Decision Tree', 'Linear Regression'],
           answer: 2,
-          explanation: 'Decision Trees are widely used for classification by splitting data based on feature values at each node.',
+          explanation: 'Decision Trees classify data by splitting feature space at node branches based on feature values.',
         },
         {
           q: 'What does the term "epoch" mean in machine learning?',
           options: [
-            'A single training example',
+            'A single training sample',
             'One complete pass through the entire training dataset',
             'A type of neural network layer',
-            'The learning rate value',
+            'The learning rate multiplier'
           ],
           answer: 1,
-          explanation: 'An epoch represents one full pass over the entire training dataset during the training process.',
+          explanation: 'An epoch represents one full forward and backward pass over the entire training dataset.',
         },
         {
-          q: 'What is the purpose of a training-test split?',
+          q: 'What is the purpose of a train-test split?',
           options: [
             'To make the model train faster',
-            'To reduce the dataset size',
+            'To reduce dataset file size',
             'To evaluate model performance on unseen data',
-            'To increase the number of features',
+            'To increase feature dimension'
           ],
           answer: 2,
-          explanation: 'The test set contains data the model has never seen, allowing an unbiased evaluation of its performance.',
+          explanation: 'Evaluating models on an unseen test set provides an unbiased estimate of real-world performance.',
         },
       ],
-      programming: [
-        {
-          q: 'What does OOP stand for in programming?',
-          options: ['Open-Ordered Programming', 'Object-Oriented Programming', 'Operator-Only Process', 'Output-Oriented Program'],
-          answer: 1,
-          explanation: 'OOP is a programming paradigm based on objects that combine data (attributes) and behavior (methods).',
-        },
-        {
-          q: 'Which data structure operates on a LIFO (Last In, First Out) basis?',
-          options: ['Queue', 'Array', 'Stack', 'Linked List'],
-          answer: 2,
-          explanation: 'A Stack uses LIFO — the last element pushed is the first one popped, like a stack of plates.',
-        },
-        {
-          q: 'What is the time complexity of Binary Search?',
-          options: ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'],
-          answer: 2,
-          explanation: 'Binary Search has O(log n) complexity because it halves the search space with each comparison.',
-        },
-        {
-          q: 'Which keyword is used to define a function in Python?',
-          options: ['function', 'define', 'def', 'fun'],
-          answer: 2,
-          explanation: 'In Python, the "def" keyword is used to define a function, followed by the function name and parentheses.',
-        },
-        {
-          q: 'What is Git primarily used for?',
-          options: ['Running programs', 'Managing databases', 'Version control and collaboration', 'Web hosting'],
-          answer: 2,
-          explanation: 'Git is a distributed version control system that tracks changes in source code during software development.',
-        },
-      ],
+
       'periodic table': [
         {
-          q: 'Who created the modern Periodic Table?',
+          q: 'Who created the modern Periodic Table framework in 1869?',
           options: ['Albert Einstein', 'Marie Curie', 'Dmitri Mendeleev', 'John Dalton'],
           answer: 2,
-          explanation: 'Dmitri Mendeleev created the Periodic Table in 1869, arranging elements by atomic mass and grouping similar properties.',
+          explanation: 'Dmitri Mendeleev arranged elements by atomic mass and predicted properties of undiscovered elements.',
         },
         {
-          q: 'How many groups (columns) are in the modern Periodic Table?',
+          q: 'How many groups (vertical columns) are in the modern Periodic Table?',
           options: ['7', '14', '18', '10'],
           answer: 2,
-          explanation: 'The modern Periodic Table has 18 groups (vertical columns), each containing elements with similar electron configurations.',
+          explanation: 'The modern IUPAC Periodic Table has 18 vertical groups of elements with similar valence electron configurations.',
         },
         {
-          q: 'What determines an element\'s position in the Periodic Table?',
-          options: ['Atomic mass', 'Atomic number', 'Number of neutrons', 'Melting point'],
+          q: 'What fundamental atomic property determines an element\'s position in the modern Periodic Table?',
+          options: ['Atomic mass', 'Atomic number (protons)', 'Neutron count', 'Melting point'],
           answer: 1,
-          explanation: 'Elements are arranged by increasing atomic number (number of protons), not atomic mass.',
+          explanation: 'Elements are ordered by increasing atomic number (number of protons in the nucleus).',
         },
         {
           q: 'Elements in the same group of the Periodic Table share:',
           options: ['Same atomic mass', 'Same number of neutrons', 'Same number of valence electrons', 'Same melting point'],
           answer: 2,
-          explanation: 'Elements in the same group have the same number of valence electrons, giving them similar chemical properties.',
+          explanation: 'Elements in the same vertical group share the same number of outer-shell valence electrons.',
         },
         {
           q: 'Which block of the Periodic Table contains the transition metals?',
           options: ['s-block', 'p-block', 'd-block', 'f-block'],
           answer: 2,
-          explanation: 'Transition metals are in the d-block (Groups 3-12), characterized by their partially filled d-electron orbitals.',
+          explanation: 'Transition metals occupy the d-block (Groups 3-12), characterized by partially filled d-orbitals.',
         },
       ],
+
       calculus: [
         {
-          q: 'What does the derivative of a function represent?',
-          options: ['Area under the curve', 'Instantaneous rate of change', 'Average value', 'The y-intercept'],
+          q: 'What does the derivative of a function represent geometrically?',
+          options: ['Area under the curve', 'Instantaneous rate of change / tangent slope', 'Average function value', 'The y-intercept'],
           answer: 1,
-          explanation: 'The derivative represents the instantaneous rate of change of a function at any given point.',
+          explanation: 'The first derivative f\'(x) measures the instantaneous rate of change or tangent slope at any point x.',
         },
         {
-          q: 'What is the derivative of f(x) = x³?',
+          q: 'What is the derivative of f(x) = x³ with respect to x?',
           options: ['x²', '3x²', '3x', 'x⁴/4'],
           answer: 1,
-          explanation: 'Using the Power Rule: d/dx(xⁿ) = nxⁿ⁻¹. So d/dx(x³) = 3x².',
+          explanation: 'Applying the Power Rule: d/dx(xⁿ) = n·xⁿ⁻¹. Thus d/dx(x³) = 3x².',
         },
         {
-          q: 'What does an integral represent geometrically?',
-          options: ['The slope of the tangent line', 'The maximum value', 'The area under a curve', 'The average rate of change'],
+          q: 'What does a definite integral represent geometrically?',
+          options: ['The slope of the tangent line', 'The maximum value', 'The exact net area under a curve', 'The average rate of change'],
           answer: 2,
-          explanation: 'A definite integral represents the area between a function and the x-axis over a given interval.',
+          explanation: 'A definite integral evaluates the net area bounded between a function curve f(x) and the x-axis.',
         },
         {
           q: 'The Fundamental Theorem of Calculus connects which two operations?',
           options: ['Addition and Subtraction', 'Differentiation and Integration', 'Multiplication and Division', 'Limits and Sequences'],
           answer: 1,
-          explanation: 'The FTC states that differentiation and integration are inverse operations of each other.',
+          explanation: 'The FTC proves that differentiation and integration are inverse operations.',
         },
         {
-          q: 'Which rule is used to differentiate a product of two functions?',
+          q: 'Which rule is used to differentiate a product of two functions u(x)·v(x)?',
           options: ['Chain Rule', 'Power Rule', 'Product Rule', 'Quotient Rule'],
           answer: 2,
-          explanation: 'The Product Rule: d/dx[u·v] = u·v\' + v·u\', used when differentiating two functions multiplied together.',
+          explanation: 'The Product Rule state: d/dx[u·v] = u·v\' + v·u\'.',
         },
       ],
+
       economics: [
         {
-          q: 'What does GDP stand for?',
+          q: 'What does GDP stand for in economics?',
           options: ['General Domestic Price', 'Gross Domestic Product', 'Government Data Plan', 'Global Distribution Pattern'],
           answer: 1,
-          explanation: 'GDP (Gross Domestic Product) measures the total monetary value of all goods and services produced in a country.',
+          explanation: 'GDP measures the total monetary value of all final goods and services produced within a country in a given period.',
         },
         {
-          q: 'What happens to quantity demanded when price increases (normal goods)?',
+          q: 'According to the Law of Demand, what happens to quantity demanded when price increases?',
           options: ['Increases', 'Stays the same', 'Decreases', 'Doubles'],
           answer: 2,
-          explanation: 'The Law of Demand states: as price rises, quantity demanded falls, all else being equal (inverse relationship).',
+          explanation: 'The Law of Demand states that price and quantity demanded have an inverse relationship.',
         },
         {
-          q: 'What is opportunity cost?',
+          q: 'What is Opportunity Cost?',
           options: [
-            'The total cost of production',
-            'The value of the next best alternative forgone',
-            'Government taxes on goods',
-            'The market price of a good',
+            'The monetary cost of goods',
+            'The value of the next best alternative forgone when making a choice',
+            'Government taxes on sales',
+            'Market price index'
           ],
           answer: 1,
-          explanation: 'Opportunity cost is the value of what you give up when you choose one option over the next best alternative.',
+          explanation: 'Opportunity cost represents the lost benefits of the next best option given up when making a decision.',
         },
         {
           q: 'Inflation is best described as:',
           options: [
-            'A decrease in government spending',
+            'A decrease in central bank spending',
             'A fall in interest rates',
-            'A sustained rise in the general price level',
-            'An increase in GDP',
+            'A sustained rise in the general price level of goods and services',
+            'An increase in real GDP'
           ],
           answer: 2,
-          explanation: 'Inflation is a persistent increase in the average price level of goods and services in an economy over time.',
+          explanation: 'Inflation is a persistent increase in average price levels, reducing purchasing power over time.',
         },
         {
-          q: 'Fiscal policy involves:',
+          q: 'Fiscal Policy involves:',
           options: [
             'Setting interest rates by the central bank',
-            'Government spending and taxation decisions',
-            'Trade agreements between countries',
-            'Corporate profit strategies',
+            'Government decisions regarding taxation and public spending',
+            'International trade tariffs',
+            'Corporate profit strategies'
           ],
           answer: 1,
-          explanation: 'Fiscal policy refers to government decisions about taxation and spending to influence the economy.',
+          explanation: 'Fiscal policy refers to government tax and spending decisions used to guide economic activity.',
         },
       ],
+
+      physics: [
+        {
+          q: 'What is Newton\'s Second Law of Motion equation?',
+          options: ['E = m·c²', 'F = m·a', 'V = I·R', 'P = W / t'],
+          answer: 1,
+          explanation: 'Newton\'s 2nd Law states Force equals mass times acceleration (F = m·a).',
+        },
+        {
+          q: 'What is the standard acceleration due to gravity on Earth\'s surface?',
+          options: ['5.8 m/s²', '9.81 m/s²', '12.4 m/s²', '3.0 × 10⁸ m/s²'],
+          answer: 1,
+          explanation: 'Standard gravitational acceleration near Earth\'s surface is approximately 9.81 m/s².',
+        },
+        {
+          q: 'What is the SI unit of electrical resistance?',
+          options: ['Volt', 'Ampere', 'Ohm (Ω)', 'Watt'],
+          answer: 2,
+          explanation: 'Electrical resistance is measured in Ohms (Ω), defined by Ohm\'s Law: R = V / I.',
+        },
+        {
+          q: 'According to the Law of Conservation of Energy:',
+          options: [
+            'Total energy decreases as work is performed',
+            'Energy cannot be created or destroyed, only transformed from one form to another',
+            'Kinetic energy is always greater than potential energy',
+            'Energy disappears due to friction'
+          ],
+          answer: 1,
+          explanation: 'Energy is conserved in isolated systems; it converts between forms (e.g. potential to kinetic).',
+        },
+        {
+          q: 'What is the speed of light in a vacuum (c)?',
+          options: ['300,000 m/s', '3.0 × 10⁸ m/s', '1,500 m/s', '9.8 m/s'],
+          answer: 1,
+          explanation: 'The speed of light in vacuum is approximately 3.0 × 10⁸ meters per second.',
+        },
+      ],
+
+      chemistry: [
+        {
+          q: 'What is the pH value of pure neutral water at 25°C?',
+          options: ['0', '7', '14', '1'],
+          answer: 1,
+          explanation: 'Pure water has a neutral pH of 7 ([H⁺] = 10⁻⁷ M). pH < 7 is acidic; pH > 7 is basic.',
+        },
+        {
+          q: 'Which type of chemical bond involves the SHARING of electron pairs between non-metal atoms?',
+          options: ['Ionic Bond', 'Covalent Bond', 'Metallic Bond', 'Hydrogen Bond'],
+          answer: 1,
+          explanation: 'Covalent bonds form when non-metal atoms share electron pairs to attain stable octets.',
+        },
+        {
+          q: 'What is Avogadro\'s Number (particles per mole of substance)?',
+          options: ['3.14 × 10²³', '6.022 × 10²³', '9.81 × 10¹⁰', '1.602 × 10⁻¹⁹'],
+          answer: 1,
+          explanation: 'One mole of any chemical substance contains 6.022 × 10²³ elementary entities.',
+        },
+        {
+          q: 'Which element has the atomic number 1 on the Periodic Table?',
+          options: ['Helium', 'Carbon', 'Hydrogen', 'Oxygen'],
+          answer: 2,
+          explanation: 'Hydrogen (H) has atomic number 1, containing 1 proton in its nucleus.',
+        },
+        {
+          q: 'What occurs during an Oxidation reaction?',
+          options: ['Loss of electrons', 'Gain of electrons', 'Gain of protons', 'Loss of neutrons'],
+          answer: 0,
+          explanation: 'Oxidation involves the loss of electrons (OIL: Oxidation Is Loss).',
+        },
+      ],
+
+      biology: [
+        {
+          q: 'Which organelle is known as the "Powerhouse of the Cell"?',
+          options: ['Ribosome', 'Mitochondria', 'Golgi Apparatus', 'Endoplasmic Reticulum'],
+          answer: 1,
+          explanation: 'Mitochondria generate cellular ATP energy through aerobic respiration.',
+        },
+        {
+          q: 'What molecule carries hereditary genetic instructions in living organisms?',
+          options: ['RNA', 'DNA', 'ATP', 'Glucose'],
+          answer: 1,
+          explanation: 'DNA (Deoxyribonucleic Acid) stores genetic instructions for cellular growth, development, and reproduction.',
+        },
+        {
+          q: 'What cellular process produces two identical diploid daughter cells for body growth?',
+          options: ['Meiosis', 'Mitosis', 'Binary Fission', 'Budding'],
+          answer: 1,
+          explanation: 'Mitosis is somatic cell division producing two genetically identical diploid daughter cells.',
+        },
+        {
+          q: 'What is the role of Enzymes in biological systems?',
+          options: ['Store genetic code', 'Act as biological catalysts to speed up chemical reactions', 'Transport oxygen in blood', 'Form structural cell walls'],
+          answer: 1,
+          explanation: 'Enzymes lower activation energy to accelerate biochemical metabolic reactions.',
+        },
+        {
+          q: 'Which blood cells defend the human body against foreign pathogens and infections?',
+          options: ['Red Blood Cells (Erythrocytes)', 'White Blood Cells (Leukocytes)', 'Platelets (Thrombocytes)', 'Plasma'],
+          answer: 1,
+          explanation: 'Leukocytes (White Blood Cells) are primary immune cells fighting infections.',
+        },
+      ],
+
+      history: [
+        {
+          q: 'Which major world conflict began in 1914 following the assassination of Archduke Franz Ferdinand?',
+          options: ['World War II', 'World War I', 'The French Revolution', 'The Cold War'],
+          answer: 1,
+          explanation: 'World War I was ignited in July 1914 after Archduke Franz Ferdinand was assassinated in Sarajevo.',
+        },
+        {
+          q: 'What is a Primary Source in historical research?',
+          options: ['Secondary textbook analysis', 'Original first-hand contemporary evidence (e.g. diaries, letters, original treaties)', 'Modern encyclopedia entry', 'Historical movie'],
+          answer: 1,
+          explanation: 'Primary sources are original first-hand records created during the historical period under study.',
+        },
+        {
+          q: 'Which ancient civilization constructed the Pyramids of Giza along the Nile River?',
+          options: ['Ancient Rome', 'Mesopotamia', 'Ancient Egypt', 'Indus Valley Civilization'],
+          answer: 2,
+          explanation: 'Ancient Egyptians built the Giza pyramid complex along the fertile Nile River.',
+        },
+        {
+          q: 'What was the primary transformation during the Industrial Revolution?',
+          options: [
+            'Shift from agrarian manual craft to mechanized factory manufacturing and steam power',
+            'Invention of microprocessors',
+            'Expansion of feudalism',
+            'Decline of maritime trade'
+          ],
+          answer: 0,
+          explanation: 'The Industrial Revolution transformed economies from handcrafting to machine manufacturing.',
+        },
+        {
+          q: 'What was the central cultural movement of the European Renaissance?',
+          options: [
+            'Revival of classical art, literature, scientific inquiry, and humanism',
+            'Fall of the Roman Empire',
+            'Rise of feudal monarchies',
+            'Collapse of international trade'
+          ],
+          answer: 0,
+          explanation: 'The Renaissance was a cultural rebirth in Europe that revitalized classical learning and arts.',
+        },
+      ],
+
+      geography: [
+        {
+          q: 'Which layer of Earth\'s atmosphere contains the ozone layer that shields against UV radiation?',
+          options: ['Troposphere', 'Stratosphere', 'Mesosphere', 'Thermosphere'],
+          answer: 1,
+          explanation: 'The Stratosphere houses the ozone layer (O₃), filtering harmful solar ultraviolet radiation.',
+        },
+        {
+          q: 'What geological process causes continental drift and earthquake activity?',
+          options: ['Atmospheric pressure', 'Plate Tectonics', 'Oceanic tides', 'Solar radiation'],
+          answer: 1,
+          explanation: 'Plate tectonics describes motion of lithospheric plates driven by mantle convection.',
+        },
+        {
+          q: 'What is the longest river in the world by length?',
+          options: ['Amazon River', 'Nile River', 'Mississippi River', 'Yangtze River'],
+          answer: 1,
+          explanation: 'The Nile River in Africa is historically recognized as the longest river (~6,650 km).',
+        },
+        {
+          q: 'What does map scale express in geography?',
+          options: ['Elevation height', 'Ratio between distance on a map and actual ground distance', 'City population density', 'Longitude degrees'],
+          answer: 1,
+          explanation: 'Map scale defines the quantitative ratio between map distance and real-world ground distance.',
+        },
+        {
+          q: 'What is the Pacific "Ring of Fire"?',
+          options: [
+            'A desert in Africa',
+            'A major Pacific basin area prone to frequent earthquakes and volcanic eruptions',
+            'A solar eclipse phenomenon',
+            'An ocean current'
+          ],
+          answer: 1,
+          explanation: 'The Ring of Fire is a Pacific basin perimeter marked by intense seismic activity and volcanoes.',
+        },
+      ]
     };
 
-    // Support text/notes input directly in quiz generator
-    if (topic.length > 50 || topic.includes('\n') || (topic.match(/\./g) || []).length >= 2) {
-      const sentences = topic.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20);
-      if (sentences.length >= 3) {
-        return this.generateNotesBasedQuiz(sentences);
+    // Determine base question pool
+    let pool;
+
+    // 1. Topic Regex Resolver for exact language/subject matching
+    if (/\b(c|c programming|c language|c coding|c basics)\b/i.test(t) && !/c\+\+|cpp|c\#|css/i.test(t)) {
+      pool = quizBank.c;
+    } else if (/\b(java|java programming|java language|oops in java|jdk|jvm)\b/i.test(t) && !/javascript|js/i.test(t)) {
+      pool = quizBank.java;
+    } else if (/\b(python|python programming|py|python3)\b/i.test(t)) {
+      pool = quizBank.python;
+    } else if (/\b(c\+\+|cpp|c plus plus)\b/i.test(t)) {
+      pool = quizBank.cpp;
+    } else if (/\b(javascript|js|es6|ecmascript|front end|frontend)\b/i.test(t)) {
+      pool = quizBank.javascript;
+    } else if (/\b(sql|dbms|database|mysql|postgresql|sqlite|rdbms)\b/i.test(t)) {
+      pool = quizBank.sql;
+    } else if (/\b(dsa|data structures|algorithms|data structure|sorting|searching|binary search|stack|queue|linked list|trees|graphs)\b/i.test(t)) {
+      pool = quizBank.dsa;
+    } else if (/\b(operating system|operating systems|os|linux|process scheduling|deadlock)\b/i.test(t)) {
+      pool = quizBank.os;
+    } else if (/\b(computer networks|networking|tcp\/ip|osi model|ip address|http|https)\b/i.test(t)) {
+      pool = quizBank.networks;
+    } else if (/\b(html|css|web design|flexbox|grid)\b/i.test(t)) {
+      pool = quizBank.html_css;
+    } else if (/\b(oop|oops|object oriented programming|object oriented)\b/i.test(t)) {
+      pool = quizBank.oop;
+    } else if (/\b(photosynthesis|light reaction|calvin cycle)\b/i.test(t)) {
+      pool = quizBank.photosynthesis;
+    } else if (/\b(machine learning|deep learning|ai|artificial intelligence|supervised learning)\b/i.test(t)) {
+      pool = quizBank['machine learning'];
+    } else if (/\b(periodic table|mendeleev|atomic number|elements)\b/i.test(t)) {
+      pool = quizBank['periodic table'];
+    } else if (/\b(calculus|derivative|integration|integrals|derivatives|differentiation)\b/i.test(t)) {
+      pool = quizBank.calculus;
+    } else if (/\b(economics|microeconomics|macroeconomics|gdp|inflation|demand supply)\b/i.test(t)) {
+      pool = quizBank.economics;
+    } else if (/\b(physics|newton|kinematics|thermodynamics|optics|gravity)\b/i.test(t)) {
+      pool = quizBank.physics;
+    } else if (/\b(chemistry|organic chemistry|acids bases|chemical bonding|stoichiometry)\b/i.test(t)) {
+      pool = quizBank.chemistry;
+    } else if (/\b(biology|cell biology|genetics|dna|genomics|anatomy|physiology)\b/i.test(t)) {
+      pool = quizBank.biology;
+    } else if (/\b(history|world war|revolutions|ancient history|medieval history)\b/i.test(t)) {
+      pool = quizBank.history;
+    } else if (/\b(geography|physical geography|plate tectonics|climatology|topography)\b/i.test(t)) {
+      pool = quizBank.geography;
+    } else {
+      // 2. Check substring keys in bank
+      for (const [key, questions] of Object.entries(quizBank)) {
+        if (t.includes(key)) { pool = questions; break; }
       }
+      // 3. Dynamic fallback
+      if (!pool) pool = this.generateGenericQuiz(topic.trim());
     }
 
-    // Check quiz bank for matching topic
-    for (const [key, questions] of Object.entries(quizBank)) {
-      if (t.includes(key)) {
-        return questions;
-      }
+    return pool;
+  },
+
+  /**
+   * Apply difficulty filter and count limit to a question pool.
+   * opts: { difficulty: 'easy'|'medium'|'hard', numQuestions: number }
+   */
+  applyQuizOpts(pool, opts = {}) {
+    const { difficulty = 'medium', numQuestions = 5 } = opts;
+    const n = parseInt(numQuestions, 10) || 5;
+
+    // Difficulty tags embedded in q text
+    const diffMap = { easy: ['Easy', 'easy'], medium: ['Medium', 'medium'], hard: ['Hard', 'hard'] };
+    const tags = diffMap[difficulty] || diffMap.medium;
+
+    let filtered = pool.filter(q =>
+      tags.some(tag => q.q.includes(`[${tag}]`))
+    );
+
+    // If no tagged questions exist in pool, serve all (curated banks have no tags)
+    if (filtered.length === 0) filtered = [...pool];
+
+    // Shuffle deterministically to vary output
+    const shuffled = filtered.slice().sort(() => 0.5 - Math.random());
+
+    // If we need more questions than available, pad from full pool
+    if (shuffled.length < n) {
+      const extra = pool.filter(q => !shuffled.includes(q)).sort(() => 0.5 - Math.random());
+      shuffled.push(...extra);
     }
 
-    // Generate textbook-style objective MCQs
-    return this.generateGenericQuiz(topic.trim());
+    return shuffled.slice(0, n);
   },
 
   /**
@@ -1213,378 +2537,129 @@ const AI = {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
     const lower = topic.toLowerCase();
 
-    // Domain detection regexes
-    const isLit = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|narrative|author|literary|sonnet|gothic|romanticism|rhetoric|allegory/.test(lower);
-    const isHist = /history|historical|war|revolution|empire|century|king|queen|reign|dynasty|battle|treaty|civilization|colonial|independence|movement|ancient|medieval|world war|renaissance/.test(lower);
-    const isGeo = /geography|climate|map|river|mountain|tectonic|earth|ocean|continent|population|atmosphere|soil|biomes|latitude|longitude|ecosystem|glacier|volcano|weather|topography/.test(lower);
-    const isPol = /politic|constitution|democracy|government|parliament|judiciary|rights|state|election|governance|citizenship|policy|legislature|sovereign|liberty|justice|monarchy/.test(lower);
-    const isEcon = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|monopoly|demand|supply|fiscal|monetary|currency|trade|banking|revenue|utility|capitalism/.test(lower);
-    const isComm = /commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock|capital|entrepreneur|invoice/.test(lower);
-    const isLang = /language|grammar|linguistic|phonetics|syntax|tenses|noun|verb|adjective|translation|semantics|vocabulary|idiom|phrase|punctuation|preposition/.test(lower);
-    const isArt = /art|painting|music|sculpture|architecture|design|dance|theatre|aesthetic|baroque|impressionism|composition|harmony|melody|rhythm|canvas|artistic/.test(lower);
-    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure/.test(lower);
-    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number theory|logarithm/.test(lower);
-    const isBio = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|microbiology|photosynthesis|mitosis|meiosis|neuron/.test(lower);
-    const isChem = /chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|organic|inorganic|bond|thermodynamics|atom|solution|catalyst|oxidation/.test(lower);
-    const isPhys = /physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum|relativity|kinematics|friction|photon/.test(lower);
-    const isPsych = /psychology|sociology|philosophy|behavior|cognition|mind|brain|perception|personality|society|ethics|logic|moral|existential|consciousness|empathy/.test(lower);
+    // Domain classification
+    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure|os|operating system|dev/.test(lower);
+    const isSci = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|photosynthesis|mitosis|chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|bond|atom|physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum/.test(lower);
+    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number/.test(lower);
+    const isHumanities = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|history|historical|war|revolution|empire|century|king|battle|treaty|geography|climate|map|river|mountain|tectonic|earth|ocean|politic|constitution|democracy|government|rights|law|judiciary|state/.test(lower);
+    const isComm = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|demand|supply|fiscal|monetary|commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock/.test(lower);
 
-    if (isLit) {
+    if (isCS) {
       return [
         {
-          q: `[Easy] What is the central focus when studying ${cap} in literary studies?`,
+          q: `[Easy] What is the primary focus when studying ${cap} in Computer Science?`,
           options: [
-            `Analyzing narrative structure, thematic motifs, and stylistic choices`,
-            `Calculating numerical chemical reaction speeds`,
-            `Designing digital database schemas`,
-            `Measuring geographic atmospheric pressure`
+            `Understanding core algorithm logic, language syntax, and software execution rules`,
+            `Managing physical CPU power voltage levels`,
+            `Designing analog telephone switching circuits`,
+            `Optimizing printing paper feed mechanisms`
           ],
           answer: 0,
-          explanation: `In literature, studying ${cap} focuses on analyzing how narrative devices, themes, and stylistic expressions convey human meaning.`
+          explanation: `In computer science, studying ${cap} focuses on mastering underlying computational logic, structural syntax, and execution models.`
         },
         {
-          q: `[Easy] Which literary component is most closely associated with ${cap}?`,
+          q: `[Easy] Which fundamental computing principle is essential in ${cap}?`,
           options: [
-            `Electromagnetic wave spectrum`,
-            `Metaphor, symbolism, and character development`,
-            `Double-entry debit and credit records`,
-            `Gross Domestic Product calculation`
+            `Modular code organization and systematic data abstraction`,
+            `Bypassing CPU instruction execution entirely`,
+            `Eliminating runtime memory allocation`,
+            `Executing code without binary translation`
           ],
-          answer: 1,
-          explanation: `Literary topics involve figurative language such as metaphors, symbolism, imagery, and character arcs.`
+          answer: 0,
+          explanation: `${cap} relies on modular code architecture, structured data types, and clear procedural/object abstraction.`
         },
         {
-          q: `[Medium] How do scholars differentiate structural genres within ${cap}?`,
+          q: `[Medium] What is a major engineering trade-off associated with ${cap}?`,
           options: [
-            `By counting physical molecular weights`,
-            `By evaluating form (e.g., Prose vs. Poetry vs. Drama) and stylistic meter`,
-            `By measuring electrical resistance in Ohms`,
-            `By running automated unit test suites`
+            `Balancing time complexity (speed) against space complexity (memory utilization)`,
+            `Choosing between display pixel resolution and keyboard font size`,
+            `Sacrificing source code readability to remove comments`,
+            `Replacing database queries with CSS keyframes`
           ],
-          answer: 1,
-          explanation: `Literary genres are categorized by structural form (prose, verse, drama) and stylistic features like rhyme and meter.`
+          answer: 0,
+          explanation: `A key software trade-off involves optimizing CPU execution time versus memory footprint efficiency.`
         },
         {
-          q: `[Medium] In a critical essay on ${cap}, what role does historical context play?`,
+          q: `[Medium] Which runtime issue or exception can occur when developing applications with ${cap}?`,
           options: [
-            `It determines binary byte storage capacity`,
-            `It provides socio-cultural background that shapes author perspective and textual meaning`,
-            `It replaces the need for close textual reading`,
-            `It calculates the financial interest rate of publication`
+            `Logic flaws, null reference exceptions, or memory leak overhead`,
+            `Physical monitor screen flicker`,
+            `Hard drive magnetic motor speed loss`,
+            `Keyboard USB cable disconnection`
           ],
-          answer: 1,
-          explanation: `Historical context explains the cultural, political, and social environment influencing an author's literary work.`
+          answer: 0,
+          explanation: `Software execution can encounter runtime errors such as unhandled null references, bounds exceptions, or memory leaks.`
         },
         {
-          q: `[Hard] Which analytical approach offers the deepest interpretation of underlying symbolism in ${cap}?`,
+          q: `[Hard] What represents industry best practice when engineering solutions in ${cap}?`,
           options: [
-            `Ignoring figurative devices to focus only on word counts`,
-            `Deconstructing thematic motifs and cross-referencing contextual imagery`,
-            `Converting paragraphs into mathematical equations`,
-            `Memorizing chapter titles without reading the text`
+            `Writing clean, documented code with thorough unit testing and error handling`,
+            `Using uninitialized global variables across all functions`,
+            `Placing all application logic into a single monolithic loop`,
+            `Suppressing all compiler warnings and runtime logs`
           ],
-          answer: 1,
-          explanation: `Deep literary analysis requires deconstructing recurrent motifs and analyzing how symbolic imagery reinforces the work's central theme.`
+          answer: 0,
+          explanation: `Exam-ready software engineering emphasizes clean code principles, structured exception handling, and automated unit testing.`
         }
       ];
     }
 
-    if (isHist) {
+    if (isSci) {
       return [
         {
-          q: `[Easy] What is the primary objective of examining ${cap} in historical studies?`,
+          q: `[Easy] What is the primary objective of studying ${cap} in natural sciences?`,
           options: [
-            `Understanding past causes, key events, human actors, and societal consequences`,
-            `Synthesizing artificial organic chemical polymers`,
-            `Solving quadratic algebraic equations`,
-            `Writing computer source code compilers`
+            `Analyzing physical laws, biochemical pathways, or experimental phenomena`,
+            `Writing commercial advertising slogans`,
+            `Formatting corporate financial income statements`,
+            `Studying poetic rhythm and stanza structures`
           ],
           answer: 0,
-          explanation: `Historical inquiry analyzes key events, their underlying causes, key historical figures, and long-term societal impacts.`
+          explanation: `Scientific investigation of ${cap} involves empirical observation, hypothesis testing, and quantitative analysis of natural laws.`
         },
         {
-          q: `[Easy] Which type of evidence is considered a primary historical source for ${cap}?`,
+          q: `[Easy] Which fundamental scientific principle governs processes in ${cap}?`,
           options: [
-            `Eyewitness diaries, official treaties, and contemporary photographs`,
-            `Modern textbook chapter summaries written decades later`,
-            `Fictional movies produced in the 21st century`,
-            `Automated statistical software algorithms`
+            `Conservation laws (energy, mass, or charge equilibrium)`,
+            `Random guessing without control variables`,
+            `Ignoring physical measurement units`,
+            `Relying solely on unverified folklore`
           ],
           answer: 0,
-          explanation: `Primary sources are original first-hand records created during the time period under study (e.g., diaries, original treaties).`
+          explanation: `Scientific mechanisms in ${cap} strictly adhere to fundamental physical conservation laws and chemical/biological equilibrium.`
         },
         {
-          q: `[Medium] How did ${cap} influence socio-political institutional developments?`,
+          q: `[Medium] How do researchers experimentally measure or verify factors in ${cap}?`,
           options: [
-            `By altering Earth's magnetic dipole orientation`,
-            `By shifting power balances, inspiring legislative reform, or changing state governance`,
-            `By changing the atomic structure of noble gases`,
-            `By increasing CPU processor clock speed`
-          ],
-          answer: 1,
-          explanation: `Major historical events like ${cap} lead to constitutional shifts, political reform, or geopolitical restructuring.`
-        },
-        {
-          q: `[Medium] What is a major challenge historians encounter when analyzing records of ${cap}?`,
-          options: [
-            `Evaluating potential author bias, propaganda, or incomplete archives`,
-            `Running out of digital storage on hard drives`,
-            `Calculating gravitational acceleration constants`,
-            `Translating text into programming bytecodes`
+            `By conducting controlled experiments with isolated dependent and independent variables`,
+            `By changing all experimental variables simultaneously`,
+            `By skipping experimental calibration steps`,
+            `By relying exclusively on personal opinion`
           ],
           answer: 0,
-          explanation: `Historiography requires critically evaluating potential bias, political propaganda, and missing archival records.`
+          explanation: `Scientific method requires controlled testing, isolating independent variables to measure precise empirical effects.`
         },
         {
-          q: `[Hard] When evaluating long-term consequences of ${cap}, which perspective provides the most objective analysis?`,
+          q: `[Medium] What quantitative property is critical when analyzing ${cap}?`,
           options: [
-            `Focusing solely on immediate 24-hour battle outcomes`,
-            `Comparing multiple primary sources and weighing diplomatic, economic, and social impacts over generations`,
-            `Assuming historical accounts are 100% objective without verification`,
-            `Relying on a single political leader's speech`
-          ],
-          answer: 1,
-          explanation: `Comprehensive historical synthesis cross-references multiple primary sources and measures multi-generational socio-economic impacts.`
-        }
-      ];
-    }
-
-    if (isGeo) {
-      return [
-        {
-          q: `[Easy] What does spatial geography examine regarding ${cap}?`,
-          options: [
-            `The physical distribution of Earth features, natural processes, and human settlements`,
-            `Writing abstract object-oriented code classes`,
-            `Balancing corporate accounting ledger sheets`,
-            `Analyzing poetic rhyme schemes`
+            `Standardized SI units of measurement (e.g. Joules, Moles, Meters, Volts)`,
+            `Arbitrary uncalibrated counts`,
+            `Word counts in textbook chapters`,
+            `Pixel dimensions on a screen`
           ],
           answer: 0,
-          explanation: `Geography studies how physical phenomena, landforms, ecosystems, and human activities are spatially distributed across Earth.`
+          explanation: `Quantitative scientific analysis requires standard SI units to ensure reproducible empirical calculations.`
         },
         {
-          q: `[Easy] Which of Earth's major systems interacts directly with ${cap}?`,
+          q: `[Hard] When evaluating real-world applications of ${cap}, what factor is essential?`,
           options: [
-            `Software source code repositories`,
-            `Atmosphere, hydrosphere, lithosphere, or biosphere`,
-            `Financial stock market exchanges`,
-            `Grammatical sentence subjects and verbs`
-          ],
-          answer: 1,
-          explanation: `Geographic processes involve interactions among Earth's physical spheres: atmosphere, hydrosphere, lithosphere, and biosphere.`
-        },
-        {
-          q: `[Medium] How do geographers utilize map scale when studying ${cap}?`,
-          options: [
-            `To determine the ratio between map distance and real-world ground distance`,
-            `To calculate corporate income tax percentages`,
-            `To measure computer RAM memory usage`,
-            `To identify literary character motivations`
+            `System efficiency, reaction energy thresholds, and thermodynamic equilibrium`,
+            `Ignoring conservation of energy`,
+            `Assuming 100% theoretical energy conversion with zero loss`,
+            `Disregarding laboratory safety protocols`
           ],
           answer: 0,
-          explanation: `Map scale expresses the quantitative relationship between distance on a map and actual distance on Earth's surface.`
-        },
-        {
-          q: `[Medium] What is the key difference between Physical and Human Geography in the context of ${cap}?`,
-          options: [
-            `Physical studies natural landform processes; Human studies spatial population and cultural dynamics`,
-            `Physical uses numbers; Human only uses words`,
-            `Physical is only about oceans; Human is only about space`,
-            `There is no difference between them`
-          ],
-          answer: 0,
-          explanation: `Physical geography deals with natural environmental systems, whereas human geography investigates human activities and spatial organizations.`
-        },
-        {
-          q: `[Hard] How does climate change or tectonic activity exacerbate environmental challenges related to ${cap}?`,
-          options: [
-            `By modifying weather patterns, altering soil erosion rates, and shifting vulnerable biome boundaries`,
-            `By changing the rules of English syntax`,
-            `By increasing accounting debit balances`,
-            `By slowing down web browser page loads`
-          ],
-          answer: 0,
-          explanation: `Macro-environmental changes shift ecological equilibrium, triggering cascading impacts on climate zones, natural hazards, and biodiversity.`
-        }
-      ];
-    }
-
-    if (isPol || isLaw) {
-      return [
-        {
-          q: `[Easy] What is the primary role of ${cap} in political science and governance?`,
-          options: [
-            `Regulating state authority, protecting citizen rights, and structuring public policy`,
-            `Synthesizing chemical compounds in a laboratory`,
-            `Calculating speed and acceleration of objects`,
-            `Creating digital 3D game graphics`
-          ],
-          answer: 0,
-          explanation: `Political and legal principles establish the framework for state power, constitutional rights, and public administration.`
-        },
-        {
-          q: `[Easy] Which organ of government is responsible for interpreting laws related to ${cap}?`,
-          options: [
-            `The Judiciary / Constitutional Courts`,
-            `The Executive Branch`,
-            `The Police Department`,
-            `Commercial Banks`
-          ],
-          answer: 0,
-          explanation: `The Judiciary interprets statutory laws, protects constitutional rights, and resolves legal disputes.`
-        },
-        {
-          q: `[Medium] How does the system of Checks and Balances safeguard against authoritarian abuse in ${cap}?`,
-          options: [
-            `By allowing one branch to hold absolute unchecked power`,
-            `By dividing state authority among independent Executive, Legislative, and Judicial branches`,
-            `By eliminating elections entirely`,
-            `By delegating governance to private corporations`
-          ],
-          answer: 1,
-          explanation: `Checks and balances divide authority so that no single government branch can exercise unrestricted state power.`
-        },
-        {
-          q: `[Medium] What distinguishes Fundamental Constitutional Rights from ordinary statutory laws regarding ${cap}?`,
-          options: [
-            `Fundamental Rights are constitutionally guaranteed and judicial remedies exist if violated`,
-            `Statutory laws cannot be changed by parliament`,
-            `Fundamental Rights only apply during wartime`,
-            `Statutory laws are unwritten oral agreements`
-          ],
-          answer: 0,
-          explanation: `Fundamental Rights are supreme constitutional guarantees that override conflicting statutory legislation.`
-        },
-        {
-          q: `[Hard] Which theoretical doctrine best justifies judicial review over legislative acts concerning ${cap}?`,
-          options: [
-            `The Rule of Law and Constitutional Supremacy`,
-            `Absolute Monarchical Privilege`,
-            `Laissez-faire Economic Anarchy`,
-            `Military Dictatorship`
-          ],
-          answer: 0,
-          explanation: `Judicial review is grounded in Constitutional Supremacy — any legislative act violating the constitution is legally void.`
-        }
-      ];
-    }
-
-    if (isEcon || isComm) {
-      return [
-        {
-          q: `[Easy] What is the core economic principle behind ${cap}?`,
-          options: [
-            `Allocating scarce resources to satisfy unlimited human needs and market demand`,
-            `Writing poetic verses in iambic pentameter`,
-            `Splitting atomic nuclei to generate radiation`,
-            `Calculating geological plate movement speed`
-          ],
-          answer: 0,
-          explanation: `Economics centers on how individuals, firms, and governments make choices under resource scarcity.`
-        },
-        {
-          q: `[Easy] In market economics, what happens when demand for ${cap} exceeds supply?`,
-          options: [
-            `Market price tends to rise until equilibrium is reached`,
-            `Market price immediately drops to zero`,
-            `Production stops permanently`,
-            `The central bank shuts down`
-          ],
-          answer: 0,
-          explanation: `When demand exceeds supply (shortage), competition among buyers drives the market price upwards toward equilibrium.`
-        },
-        {
-          q: `[Medium] What is Opportunity Cost in relation to decisions involving ${cap}?`,
-          options: [
-            `The total cash spent on a purchase`,
-            `The value of the next best alternative option forgone when making a choice`,
-            `The tax rate imposed by the government`,
-            `The shipping cost of raw materials`
-          ],
-          answer: 1,
-          explanation: `Opportunity cost measures the sacrificed benefits of the next best alternative given up when selecting a course of action.`
-        },
-        {
-          q: `[Medium] How does Monetary Policy differ from Fiscal Policy regarding economic management of ${cap}?`,
-          options: [
-            `Monetary policy controls interest rates/money supply; Fiscal policy uses government taxation and spending`,
-            `Monetary is run by private stores; Fiscal is run by schools`,
-            `Monetary is only about gold; Fiscal is only about food`,
-            `They are identical terms for government budgets`
-          ],
-          answer: 0,
-          explanation: `Monetary policy is managed by central banks through interest rates; Fiscal policy is set by government tax and spending budgets.`
-        },
-        {
-          q: `[Hard] In corporate finance and accounting, why must the fundamental balance sheet equation always balance for ${cap}?`,
-          options: [
-            `Because every corporate asset must be financed either through owner's equity or creditor liabilities`,
-            `Because banks manually round numbers up`,
-            `Because tax laws forbid storing current assets`,
-            `Because total profit must always equal total debt`
-          ],
-          answer: 0,
-          explanation: `The equation Assets = Liabilities + Equity must balance because every asset possessed by a firm is claimed either by creditors or equity owners.`
-        }
-      ];
-    }
-
-    if (isCS || isCode) {
-      return [
-        {
-          q: `[Easy] What is the primary purpose of ${cap} in computer science?`,
-          options: [
-            `Designing logic, algorithms, or software architectures to solve computational tasks`,
-            `Painting physical canvas portraits`,
-            `Analyzing ancient historical treaties`,
-            `Calculating plant transpiration rates`
-          ],
-          answer: 0,
-          explanation: `Computer science concepts like ${cap} provide algorithms, data structures, and code logic to automate computational problem solving.`
-        },
-        {
-          q: `[Easy] Which time complexity represents the most efficient search algorithm on a sorted list?`,
-          options: [
-            `O(n²) Quadratic Time`,
-            `O(log n) Logarithmic Time (Binary Search)`,
-            `O(n!) Factorial Time`,
-            `O(2ⁿ) Exponential Time`
-          ],
-          answer: 1,
-          explanation: `Logarithmic time O(log n) is significantly faster than linear O(n) or quadratic O(n²) time for large input datasets.`
-        },
-        {
-          q: `[Medium] What is the main distinction between a Compiler and an Interpreter in ${cap}?`,
-          options: [
-            `Compiler translates entire source code before execution; Interpreter executes line by line at runtime`,
-            `Compiler is a hardware chip; Interpreter is a computer monitor`,
-            `Compiler only works on mobile phones; Interpreter only works on servers`,
-            `Compiler deletes source code; Interpreter saves source code`
-          ],
-          answer: 0,
-          explanation: `Compilers convert full source code to machine binary prior to execution, whereas interpreters parse and run code dynamically line by line.`
-        },
-        {
-          q: `[Medium] In Object-Oriented Programming (OOP), what does Encapsulation accomplish?`,
-          options: [
-            `Bundling internal state data and methods together while restricting direct external access`,
-            `Allowing any function to modify global variables freely`,
-            `Converting text into high-resolution images`,
-            `Formatting SQL database queries`
-          ],
-          answer: 0,
-          explanation: `Encapsulation protects object data integrity by exposing controlled public methods while hiding internal private properties.`
-        },
-        {
-          q: `[Hard] Which data structure provides O(1) average time complexity for key-value search operations?`,
-          options: [
-            `Singly Linked List`,
-            `Hash Table / Dictionary`,
-            `Unsorted Array`,
-            `Binary Tree without balancing`
-          ],
-          answer: 1,
-          explanation: `Hash Tables utilize a hashing function to map key strings to array buckets, achieving O(1) average lookup speed.`
+          explanation: `Practical scientific application evaluates thermodynamics, reaction rates, and environmental system equilibrium.`
         }
       ];
     }
@@ -1592,125 +2667,185 @@ const AI = {
     if (isMath) {
       return [
         {
-          q: `[Easy] What is the fundamental objective of ${cap} in mathematics?`,
+          q: `[Easy] What is the primary objective when studying ${cap} in mathematics?`,
           options: [
             `Formulating exact mathematical equations, proofs, and quantitative relationships`,
-            `Analyzing poetic imagery and metaphor`,
-            `Writing commercial advertising copy`,
-            `Studying historical political elections`
+            `Analyzing literary metaphor and poetic imagery`,
+            `Writing corporate marketing copy`,
+            `Studying ancient geopolitical treaties`
           ],
           answer: 0,
           explanation: `Mathematics uses rigorous logical axioms, symbolic equations, and quantitative proofs to model functional relationships.`
         },
         {
-          q: `[Easy] What does the derivative of a function f(x) represent geometrically in ${cap}?`,
+          q: `[Easy] Which mathematical property is fundamental when solving problems in ${cap}?`,
           options: [
-            `The instantaneous rate of change or tangent slope of the curve`,
-            `The perimeter of a circle`,
-            `The volume of a 3D sphere`,
-            `The y-intercept value when x = 100`
+            `Logical consistency, algebraic rules, and step-by-step symbolic manipulation`,
+            `Guessing numerical values randomly`,
+            `Ignoring negative signs in equations`,
+            `Skipping intermediate calculation steps`
           ],
           answer: 0,
-          explanation: `The first derivative f'(x) measures the instantaneous rate of change or slope of the tangent line at any point x.`
+          explanation: `Mathematical problem solving demands rigorous adherence to algebraic axioms and operational rules.`
         },
         {
-          q: `[Medium] What does a definite integral compute between bounds [a, b]?`,
+          q: `[Medium] In mathematical analysis of ${cap}, what does a functional derivative or rate of change evaluate?`,
           options: [
-            `The exact net area bounded between the function curve f(x) and the x-axis`,
-            `The product of two random variables`,
-            `The square root of negative numbers`,
-            `The standard deviation of a sample`
+            `The instantaneous rate of change or tangent slope of a curve f(x)`,
+            `The perimeter of a geometric polygon`,
+            `The maximum storage size of a hard drive`,
+            `The historical age of a textbook`
           ],
           answer: 0,
-          explanation: `A definite integral evaluates the accumulated area under a continuous function curve over the interval [a, b].`
+          explanation: `Derivatives measure instantaneous rate of change dy/dx or slope of the tangent line at a point.`
         },
         {
-          q: `[Medium] The Fundamental Theorem of Calculus establishes that:`,
+          q: `[Medium] What is the role of proof and verification in ${cap}?`,
           options: [
-            `Differentiation and Integration are inverse mathematical operations`,
-            `Addition and Division are identical operations`,
-            `Derivatives can never equal zero`,
-            `Integrals only apply to linear equations`
+            `Ensuring every logical step follows deductively from established mathematical axioms`,
+            `Asking a classmate for their opinion`,
+            `Rounding all intermediate numbers to zero`,
+            `Assuming true statements without proof`
           ],
           answer: 0,
-          explanation: `The FTC proves that taking the derivative of an integral yields the original continuous function.`
+          explanation: `Deductive proofs guarantee mathematical truth by verifying every step against accepted mathematical axioms.`
         },
         {
-          q: `[Hard] How do you identify local maxima or minima (extrema) of a differentiable function f(x)?`,
+          q: `[Hard] When applying ${cap} to real-world optimization problems, what step is required?`,
           options: [
-            `Set f'(x) = 0 to find critical points, then use f''(x) (> 0 for minimum, < 0 for maximum)`,
-            `Multiply f(x) by x and set to 1`,
-            `Guess values by plugging in 1, 2, 3`,
-            `Local extrema cannot be calculated mathematically`
+            `Setting first derivatives to zero f'(x) = 0 and testing boundary constraint conditions`,
+            `Multiplying all variables together at random`,
+            `Ignoring boundary constraints entirely`,
+            `Assuming all functions are linear`
           ],
           answer: 0,
-          explanation: `Critical points occur where f'(x) = 0. The second derivative test classifies critical points: f''(x) > 0 is local min, f''(x) < 0 is local max.`
+          explanation: `Optimization identifies critical points where rate of change is zero (f'=0) and evaluates system boundary conditions.`
         }
       ];
     }
 
-    // Default versatile quiz across all other topics
+    if (isHumanities || isComm) {
+      return [
+        {
+          q: `[Easy] What is the central focus when studying ${cap} for academic exams?`,
+          options: [
+            `Understanding core definitions, structural frameworks, and contextual principles`,
+            `Calculating atomic electron orbital radii`,
+            `Writing binary machine language compilers`,
+            `Measuring atmospheric pressure changes`
+          ],
+          answer: 0,
+          explanation: `Studying ${cap} centers on mastering foundational concepts, structural models, and domain methodologies.`
+        },
+        {
+          q: `[Easy] Which element is key to delivering a top-scoring exam answer on ${cap}?`,
+          options: [
+            `Stating a clear definition, key bullet points, and a relevant structured example`,
+            `Writing a single unpunctuated block of text`,
+            `Leaving answer spaces blank`,
+            `Memorizing random dates without context`
+          ],
+          answer: 0,
+          explanation: `High-scoring academic answers require structured definitions, organized key points, and illustrative examples.`
+        },
+        {
+          q: `[Medium] How is knowledge in ${cap} typically organized for analysis?`,
+          options: [
+            `Divided into Theoretical (conceptual fundamentals) and Applied (practical scenario analysis)`,
+            `Divided into fast and slow subjects`,
+            `Divided into heavy and light topics`,
+            `Organized alphabetically without category`
+          ],
+          answer: 0,
+          explanation: `Academic topics split into core theoretical principles and practical application scenarios.`
+        },
+        {
+          q: `[Medium] What critical skill is developed through studying ${cap}?`,
+          options: [
+            `Analytical reasoning, critical evidence evaluation, and structured problem-solving`,
+            `Instant photographic memory without study`,
+            `Bypassing logical analysis`,
+            `Ignoring source evidence`
+          ],
+          answer: 0,
+          explanation: `Mastery of ${cap} enhances logical synthesis, critical thinking, and structured evidence evaluation.`
+        },
+        {
+          q: `[Hard] When evaluating complex scenario-based questions in ${cap}, what approach yields optimal marks?`,
+          options: [
+            `Identifying core principles, analyzing underlying cause-effect dynamics, and supporting conclusions with evidence`,
+            `Focusing only on superficial details`,
+            `Giving emotional opinions without factual basis`,
+            `Restating the question without providing analysis`
+          ],
+          answer: 0,
+          explanation: `Advanced examination questions reward identifying core principles, analyzing systemic cause-and-effect, and citing evidence.`
+        }
+      ];
+    }
+
+    // Default universal fallback
     return [
       {
         q: `[Easy] What is the core definition and primary scope of ${cap}?`,
         options: [
-          `The systematic study and practical application of principles related to ${cap}`,
-          `A musical performance technique used in classical opera`,
-          `A chemical purification method for liquid solvents`,
-          `An athletic workout routine for cardiovascular fitness`
+          `The systematic study and practical application of foundational principles in ${cap}`,
+          `A physical laboratory apparatus for chemical distillation`,
+          `A musical score notation for orchestral brass instruments`,
+          `A mechanical gear assembly for automotive engines`
         ],
         answer: 0,
-        explanation: `${cap} involves studying core concepts, definitions, and domain methodologies.`
+        explanation: `${cap} encompasses foundational definitions, core principles, and domain methodologies.`
       },
       {
-        q: `[Easy] Which feature is essential when studying ${cap} for academic exams?`,
+        q: `[Easy] Which approach is essential when revising ${cap} for examinations?`,
         options: [
-          `Following a structured approach based on established principles and definitions`,
+          `Following a structured revision strategy based on key definitions and principles`,
           `Memorizing random numbers without understanding context`,
           `Ignoring textbook definitions entirely`,
-          `Studying only 5 minutes before the exam`
+          `Studying for only 2 minutes before the exam`
         ],
         answer: 0,
-        explanation: `Academic success in ${cap} requires grasping core definitions and understanding structured principles.`
+        explanation: `Effective exam preparation requires understanding core definitions and structured revision of key principles.`
       },
       {
-        q: `[Medium] How is knowledge in ${cap} typically categorized for systematic study?`,
+        q: `[Medium] How are core concepts in ${cap} categorized for systematic evaluation?`,
         options: [
-          `Into Theoretical (concept-based) and Applied (practical/scenario-based) domains`,
-          `Into Fast and Slow subjects`,
-          `Into Heavy and Light subjects`,
-          `It cannot be categorized`
+          `Into Theoretical (concept-based) and Applied (practical problem-solving) domains`,
+          `Into fast and slow topics`,
+          `Into heavy and light subjects`,
+          `Into arbitrary unsorted lists`
         ],
         answer: 0,
-        explanation: `Most subjects are divided into theoretical fundamentals and applied practical problem-solving.`
+        explanation: `Most subjects are categorized into theoretical principles and practical applied problem-solving.`
       },
       {
-        q: `[Medium] What is one key advantage of mastering ${cap}?`,
+        q: `[Medium] What is a primary benefit of mastering ${cap}?`,
         options: [
-          `It builds domain analytical skills and problem-solving capabilities`,
-          `It guarantees instant perfection without practice`,
-          `It eliminates the need for any future learning`,
-          `It is completely isolated from real-world applications`
+          `Enhancing analytical reasoning and domain problem-solving capabilities`,
+          `Guaranteeing instant perfection without practice`,
+          `Eliminating the need for future study`,
+          `Disconnecting knowledge from real-world utility`
         ],
         answer: 0,
-        explanation: `Mastering ${cap} enhances critical analytical reasoning and practical problem-solving skills.`
+        explanation: `Mastering ${cap} builds strong analytical reasoning skills applicable to academic and professional challenges.`
       },
       {
-        q: `[Hard] When answering complex examination questions on ${cap}, what strategy yields maximum marks?`,
+        q: `[Hard] What strategy secures maximum marks when answering long-form exam questions on ${cap}?`,
         options: [
-          `Stating a clear definition, listing key structured points, and providing a relevant concrete example`,
-          `Writing one long unstructured paragraph without punctuation`,
+          `Providing a crisp definition, listing key structured points, and including a concrete example`,
+          `Writing one unpunctuated sentence`,
           `Leaving the answer sheet blank`,
-          `Copying the question text repeatedly`
+          `Copying the question prompt repeatedly`
         ],
         answer: 0,
-        explanation: `Exam markers look for structured answers containing crisp definitions, key bullet points, and real-world examples.`
+        explanation: `Examiners award full marks for structured responses containing clear definitions, organized points, and concrete examples.`
       }
     ];
   },
 
   /* ---- 2d. Study Planner Engine ---- */
-  generateStudyPlan(subjects) {
+  generateStudyPlan(subjects, prepLevel = 'intermediate') {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const plan = [];
@@ -1814,18 +2949,25 @@ const AI = {
             let sessionType = 'study';
             let sessionLabel = '📖 Core Study';
 
+            // Prep-level adjusts how early intensive revision kicks in
+            const revisionThreshold = prepLevel === 'beginner' ? 5 : prepLevel === 'advanced' ? 2 : 3;
+            const mockInterval = prepLevel === 'beginner' ? 7 : prepLevel === 'advanced' ? 3 : 5;
+
             if (item.daysLeft === 1) {
               sessionType = 'final-revision';
               sessionLabel = '⭐ Final Exam Revision';
-            } else if (item.daysLeft <= 3) {
+            } else if (item.daysLeft <= revisionThreshold) {
               sessionType = 'revision';
-              sessionLabel = '🔄 Intensive Revision';
-            } else if (item.daysLeft % 3 === 0) {
+              sessionLabel = prepLevel === 'advanced' ? '🔄 Speed Revision' : '🔄 Intensive Revision';
+            } else if (item.daysLeft % mockInterval === 0) {
               sessionType = 'practice';
-              sessionLabel = '✍️ Practice & Self-Test';
-            } else if (item.daysLeft % 5 === 0) {
+              sessionLabel = prepLevel === 'beginner' ? '✍️ Guided Practice' : '🎯 Mock Test / Self-Test';
+            } else if (item.daysLeft % 4 === 0) {
               sessionType = 'revision';
-              sessionLabel = '🔄 Topic Review';
+              sessionLabel = prepLevel === 'beginner' ? '📖 Foundation Review' : '🔄 Topic Review';
+            } else if (prepLevel === 'advanced' && item.daysLeft % 2 === 0) {
+              sessionType = 'practice';
+              sessionLabel = '⚡ Advanced Problem Solving';
             }
 
             sessions.push({
@@ -1873,193 +3015,191 @@ const AI = {
     const t = topic.trim().toLowerCase();
 
     const flashcardBank = {
-      photosynthesis: [
-        { tag: 'DEFINITION', q: 'What is photosynthesis?', a: 'The biochemical process by which green plants, algae, and some bacteria convert light energy, carbon dioxide (CO₂), and water (H₂O) into glucose (C₆H₁₂O₆) and oxygen (O₂).' },
-        { tag: 'KEY CONCEPT', q: 'What are the two main stages of photosynthesis and where do they occur?', a: '1. Light-dependent reactions (in Thylakoid membranes): split H₂O and release O₂.\n2. Calvin Cycle / Light-independent reactions (in Stroma): fix CO₂ to synthesize glucose.' },
-        { tag: 'DIFFERENCE', q: 'How do Light Reactions differ from the Calvin Cycle?', a: 'Light reactions require direct sunlight to generate ATP and NADPH, releasing O₂. The Calvin Cycle does not require light directly and uses ATP/NADPH to build carbohydrates from CO₂.' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is the balanced chemical equation for photosynthesis?', a: '6CO₂ + 6H₂O + Sunlight → C₆H₁₂O₆ + 6O₂' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: Why is chlorophyll green and what factors affect photosynthetic rate?', a: 'Chlorophyll absorbs blue and red light wavelengths while reflecting green light. Primary limiting factors are light intensity, CO₂ concentration, temperature, and water availability.' }
+      c: [
+        { tag: 'DEFINITION', q: 'What is a Pointer in C and how is its memory address accessed?', a: 'A pointer is a variable storing the memory address of another variable. `&var` retrieves the address; `*ptr` dereferences the pointer to access the stored value.' },
+        { tag: 'KEY DIFFERENCE', q: 'How does `malloc()` differ from `calloc()` in C memory management?', a: '`malloc(size)` allocates uninitialized heap memory (contains garbage values). `calloc(n, size)` allocates contiguous memory and initializes all bytes to zero.' },
+        { tag: 'OPERATOR RULE', q: 'What happens during integer division in C (e.g. `5 / 2`)?', a: 'Standard C truncates any fractional decimal remainder during integer division, returning integer `2` instead of `2.5`.' },
+        { tag: 'DATA STRUCTURE', q: 'How does a `struct` differ from a `union` in C?', a: 'In a `struct`, every member has its own separate memory allocation. In a `union`, all members share the same starting memory location (size equals largest member).' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: Explain Pass by Value vs Pass by Reference in C functions.', a: 'Pass by Value passes a copy of the argument (modifications do not affect original). Pass by Reference passes the memory address using pointers (modifications alter original).' }
       ],
-      'machine learning': [
-        { tag: 'DEFINITION', q: 'What is Machine Learning (ML)?', a: 'A branch of Artificial Intelligence (AI) focused on building algorithms that learn patterns from data to make predictions or decisions without being explicitly programmed.' },
-        { tag: 'KEY CONCEPT', q: 'What are the 3 main types of Machine Learning paradigms?', a: '1. Supervised Learning: trained on labeled data.\n2. Unsupervised Learning: finds hidden patterns in unlabeled data.\n3. Reinforcement Learning: agent learns through trial-and-error rewards/penalties.' },
-        { tag: 'DIFFERENCE', q: 'How does Classification differ from Regression in ML?', a: 'Classification predicts discrete categories or class labels (e.g. Spam vs. Not Spam), whereas Regression predicts continuous numeric values (e.g. predicting house prices).' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is Overfitting vs. Underfitting and how do you fix Overfitting?', a: 'Overfitting happens when a model learns training noise (high variance, low bias). Underfitting happens when a model is too simple (high bias). Fix overfitting with regularization (L1/L2), dropout, or more data.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is the purpose of train/test data splitting?', a: 'To evaluate model generalization on unseen test data, preventing biased evaluations and identifying overfitting before deployment.' }
-      ],
-      programming: [
-        { tag: 'DEFINITION', q: 'What is Programming and Algorithm design?', a: 'Programming is translating problem-solving logic into computer instructions. An algorithm is a finite, step-by-step procedure to perform a specific calculation or data manipulation.' },
-        { tag: 'KEY CONCEPT', q: 'What are the 4 fundamental pillars of Object-Oriented Programming (OOP)?', a: '1. Encapsulation: bundling data and methods inside classes.\n2. Abstraction: hiding complex implementation details.\n3. Inheritance: acquiring properties from parent classes.\n4. Polymorphism: unified interface for different types.' },
-        { tag: 'DIFFERENCE', q: 'How does a Stack differ from a Queue in data structures?', a: 'A Stack uses LIFO (Last-In, First-Out) operations (push/pop). A Queue uses FIFO (First-In, First-Out) operations (enqueue/dequeue).' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is Recursion and what essential component must every recursive function have?', a: 'Recursion is when a function calls itself. Every recursive function MUST have a base case to terminate execution and prevent infinite loops / stack overflow.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Big-O notation and what are the time complexities of Binary Search vs Linear Search?', a: 'Big-O measures algorithm efficiency relative to input size (N). Linear Search is O(N) linear time; Binary Search on sorted data is O(log N) logarithmic time.' }
+      java: [
+        { tag: 'DEFINITION', q: 'What is the JVM and what is its role in Java execution?', a: 'The Java Virtual Machine (JVM) executes compiled Java bytecode (.class files), making Java platform-independent ("Write Once, Run Anywhere").' },
+        { tag: 'KEY DIFFERENCE', q: 'How does `extends` differ from `implements` in Java?', a: '`extends` is used for single-class inheritance (`class B extends A`). `implements` is used to implement one or multiple interfaces (`class B implements I1, I2`).' },
+        { tag: 'MEMORY MANAGEMENT', q: 'How does Garbage Collection operate in Java?', a: 'The JVM automatically identifies unreachable objects on the heap (objects with zero active references) and reclaims their memory space in background.' },
+        { tag: 'EXCEPTION HANDLING', q: 'What is the difference between Checked and Unchecked Exceptions in Java?', a: 'Checked Exceptions (e.g. IOException) must be caught or declared at compile time. Unchecked Exceptions (e.g. NullPointerException) extend RuntimeException and occur at runtime.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: Why are Java Strings immutable and what class should be used for modifications?', a: 'Strings are immutable for security, thread-safety, and String Pool caching. Use `StringBuilder` or `StringBuffer` for efficient string mutations.' }
       ],
       python: [
-        { tag: 'DEFINITION', q: 'What is Python and how is it executed?', a: 'Python is a high-level, interpreted, dynamically-typed, multi-paradigm programming language known for readability and concise syntax.' },
-        { tag: 'KEY CONCEPT', q: 'What are mutable vs immutable data types in Python?', a: 'Mutable types (Lists, Dictionaries, Sets) can be modified in place after creation. Immutable types (Tuples, Strings, Integers, Floats) cannot be changed in place.' },
-        { tag: 'DIFFERENCE', q: 'How do Lists differ from Tuples in Python syntax?', a: 'Lists use square brackets `[1, 2]`, are mutable, and slower. Tuples use parentheses `(1, 2)`, are immutable, hashable, and faster in memory.' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is List Comprehension syntax in Python?', a: 'A concise syntax to create lists: `[expression for item in iterable if condition]`. Example: `[x**2 for x in range(5) if x % 2 == 0]` returns `[0, 4, 16]`.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: How do `*args` and `**kwargs` function in Python parameters?', a: '`*args` passes a variable number of positional arguments as a tuple. `**kwargs` passes keyword arguments as a dictionary.' }
+        { tag: 'DEFINITION', q: 'What are Mutable vs Immutable data types in Python?', a: 'Mutable types (Lists, Dicts, Sets) can be altered in-place after creation. Immutable types (Tuples, Strings, Ints, Floats) cannot be modified after instantiation.' },
+        { tag: 'SYNTAX', q: 'What is List Comprehension in Python and what is its syntax?', a: 'A concise syntax to create lists: `[expr for item in iterable if condition]`. Example: `[x**2 for x in range(5) if x % 2 == 0]` returns `[0, 4, 16]`.' },
+        { tag: 'PARAMETERS', q: 'How do `*args` and `**kwargs` function in Python parameters?', a: '`*args` collects arbitrary positional arguments into a tuple. `**kwargs` collects arbitrary keyword arguments into a dictionary.' },
+        { tag: 'KEY DIFFERENCE', q: 'How do `==` and `is` operators differ in Python?', a: '`==` checks equality of values (do they hold the same data). `is` checks identity of objects (do they occupy the exact same memory address).' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Python Generator and why is `yield` used instead of `return`?', a: 'A generator produces values lazily one at a time using `yield`, saving memory compared to generating entire lists in memory.' }
       ],
-      calculus: [
-        { tag: 'DEFINITION', q: 'What is Calculus?', a: 'The branch of mathematics studying continuous change, split into Differential Calculus (rates of change) and Integral Calculus (accumulation of quantities).' },
-        { tag: 'KEY CONCEPT', q: 'What does a derivative geometrically represent?', a: 'The slope of the tangent line to a curve f(x) at a specific point, representing instantaneous rate of change dy/dx.' },
-        { tag: 'DIFFERENCE', q: 'How does a Definite Integral differ from an Indefinite Integral?', a: 'An Indefinite Integral produces a family of antiderivative functions with constant C (∫f(x)dx = F(x) + C). A Definite Integral evaluates bounds [a, b] to compute exact net area.' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is the Power Rule for differentiation and integration?', a: 'Derivative Power Rule: d/dx(xⁿ) = n·xⁿ⁻¹. Integral Power Rule: ∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C (for n ≠ -1).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is the Fundamental Theorem of Calculus (FTC)?', a: 'It bridges differentiation and integration: if F\'(x) = f(x), then ∫ₐᵇ f(x)dx = F(b) - F(a).' }
+      cpp: [
+        { tag: 'DEFINITION', q: 'What is Function Overloading vs Function Overriding in C++?', a: 'Overloading: functions in same scope share same name with different parameter signatures (compile-time). Overriding: derived class redefines base class virtual function (runtime).' },
+        { tag: 'POLYMORPHISM', q: 'What is a Virtual Function and why is it used in C++?', a: 'A function declared `virtual` in a base class enables runtime dynamic polymorphism, ensuring derived class overrides are called when accessed via base pointers.' },
+        { tag: 'RESOURCE MANAGEMENT', q: 'What is RAII (Resource Acquisition Is Initialization) in C++?', a: 'RAII binds resource allocation to object lifetime: resources are acquired in constructor and released automatically in destructor when going out of scope.' },
+        { tag: 'KEY DIFFERENCE', q: 'How does `new`/`delete` differ from `malloc()`/`free()` in C++?', a: '`new` allocates memory AND invokes object constructors; `delete` invokes destructors AND frees memory. `malloc()`/`free()` only allocate/free raw bytes without constructors.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Copy Constructor and when is it invoked in C++?', a: 'A constructor `ClassName(const ClassName &obj)` invoked when initializing an object from another existing object of the same class.' }
+      ],
+      javascript: [
+        { tag: 'DEFINITION', q: 'What is a Closure in JavaScript?', a: 'A closure is an inner function that retains access to variables in its outer enclosing lexical scope even after the outer function has returned.' },
+        { tag: 'KEY DIFFERENCE', q: 'How does `==` differ from `===` in JavaScript?', a: '`==` performs type coercion before comparison. `===` (strict equality) requires both value and type match without coercion.' },
+        { tag: 'ASYNCHRONOUS ENGINE', q: 'How does the JavaScript Event Loop handle asynchronous operations?', a: 'JS is single-threaded. The Event Loop monitors the Call Stack and moves callbacks from Microtask Queue (Promises) and Macrotask Queue (setTimeout) when the stack is empty.' },
+        { tag: 'SCOPING', q: 'How do `var`, `let`, and `const` differ in JavaScript?', a: '`var` is function-scoped and hoisted. `let` and `const` are block-scoped; `const` prevents re-assignment after declaration.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Prototypal Inheritance in JavaScript?', a: 'Objects inherit properties and methods directly from other prototype objects via a prototype chain ending at `Object.prototype`.' }
+      ],
+      sql: [
+        { tag: 'DEFINITION', q: 'What are Primary Keys and Foreign Keys in relational databases?', a: 'Primary Key uniquely identifies each row in a table. Foreign Key is a column referencing the Primary Key of another table to maintain referential integrity.' },
+        { tag: 'KEY DIFFERENCE', q: 'How does `WHERE` differ from `HAVING` in SQL?', a: '`WHERE` filters individual rows BEFORE grouping. `HAVING` filters aggregated groups AFTER a `GROUP BY` clause.' },
+        { tag: 'TRANSACTIONS', q: 'What do ACID properties stand for in DBMS?', a: 'Atomicity (all or nothing), Consistency (valid state), Isolation (concurrent safety), Durability (persisted changes).' },
+        { tag: 'COMMAND DIFFERENCE', q: 'How do `DELETE`, `TRUNCATE`, and `DROP` commands differ in SQL?', a: '`DELETE` removes specific rows (DML, logged, rollbackable). `TRUNCATE` removes all rows quickly (DDL). `DROP` removes both table structure and data permanently.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Database Normalization (1NF, 2NF, 3NF)?', a: 'The process of organizing data to eliminate redundancy and improve integrity: 1NF removes repeating groups; 2NF removes partial dependencies; 3NF removes transitive dependencies.' }
+      ],
+      dsa: [
+        { tag: 'DATA STRUCTURES', q: 'How does a Stack differ from a Queue?', a: 'Stack operates on LIFO (Last-In, First-Out) via push/pop. Queue operates on FIFO (First-In, First-Out) via enqueue/dequeue.' },
+        { tag: 'COMPLEXITY', q: 'What are the best, average, and worst-case time complexities of QuickSort?', a: 'Best/Average: O(N log N). Worst-case: O(N²) occurring when poor pivot selections divide subarrays unequally (e.g. already sorted array).' },
+        { tag: 'HASHING', q: 'How does a Hash Table achieve O(1) average lookup time?', a: 'A hash function computes array indices from keys, allowing direct index lookups. Collisions are handled via Chaining or Open Addressing.' },
+        { tag: 'TREES', q: 'What is a Binary Search Tree (BST) property?', a: 'For every node: all keys in left subtree are strictly smaller, and all keys in right subtree are strictly larger. Search/Insert takes O(log N) in balanced BST.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: How do BFS and DFS graph traversals differ in implementation and order?', a: 'BFS uses a Queue and visits level-by-level (finds shortest path). DFS uses a Stack (or recursion) and explores down each branch as deep as possible before backtracking.' }
+      ],
+      os: [
+        { tag: 'PROCESSES', q: 'What is the key difference between a Process and a Thread?', a: 'A Process has an independent isolated virtual address space. Threads within the same process share memory, heap, and OS resources, resulting in faster context switching.' },
+        { tag: 'SYNCHRONIZATION', q: 'What are the 4 necessary conditions for Deadlock to occur?', a: '1. Mutual Exclusion. 2. Hold and Wait. 3. No Preemption. 4. Circular Wait.' },
+        { tag: 'SCHEDULING', q: 'How does Round Robin CPU scheduling operate?', a: 'Preemptive algorithm assigning fixed time quanta (slices) to ready queue processes in cyclic order.' },
+        { tag: 'MEMORY', q: 'What is Virtual Memory and Paging in OS?', a: 'Virtual Memory maps virtual memory addresses to physical RAM/disk pages, enabling execution of programs larger than physical memory.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Semaphore and how do Wait/Signal operations work?', a: 'An integer variable used for synchronization: `wait()` decrements counter (blocks if ≤ 0); `signal()` increments counter (wakes waiting process).' }
+      ],
+      networks: [
+        { tag: 'OSI MODEL', q: 'List the 7 layers of the OSI reference model from bottom to top.', a: '1. Physical, 2. Data Link, 3. Network, 4. Transport, 5. Session, 6. Presentation, 7. Application.' },
+        { tag: 'PROTOCOLS', q: 'How do TCP and UDP transport protocols differ?', a: 'TCP is connection-oriented, reliable, ordered with 3-way handshake. UDP is connectionless, fast, unreliable with no ordering (ideal for streaming).' },
+        { tag: 'ADDRESSING', q: 'How does IPv4 differ from IPv6 addressing?', a: 'IPv4 uses 32-bit numerical dotted-decimal addresses (4.3B limit). IPv6 uses 128-bit hexadecimal colon-separated addresses.' },
+        { tag: 'DNS', q: 'What is the exact role of DNS in web networking?', a: 'DNS (Domain Name System) translates human-readable domain names (e.g. google.com) into numerical IP addresses needed for routing.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: Explain the TCP 3-Way Handshake connection process.', a: 'Client sends SYN → Server responds with SYN-ACK → Client sends ACK. Connection is established.' }
+      ],
+      html_css: [
+        { tag: 'HTML5', q: 'Why are semantic HTML tags (`<nav>`, `<article>`, `<footer>`) important?', a: 'They describe content meaning to browsers, screen readers, and search engine crawlers, improving SEO and web accessibility.' },
+        { tag: 'CSS BOX MODEL', q: 'Explain the 4 layers of the CSS Box Model.', a: '1. Content (inner text/elements), 2. Padding (inner space), 3. Border (frame edge), 4. Margin (outer space between elements).' },
+        { tag: 'FLEXBOX', q: 'How do `justify-content` and `align-items` differ in Flexbox?', a: '`justify-content` aligns items along the Main Axis. `align-items` aligns items along the Cross Axis.' },
+        { tag: 'CSS POSITIONING', q: 'What does `z-index` control in CSS styling?', a: 'Controls the vertical stacking order of positioned elements (relative, absolute, fixed, sticky) along the z-axis.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: How do `display: none` and `visibility: hidden` differ?', a: '`display: none` removes element from layout flow (occupies 0 space). `visibility: hidden` hides element visually while keeping its layout space.' }
+      ],
+      oop: [
+        { tag: 'PILLARS', q: 'List and define the 4 fundamental pillars of OOP.', a: '1. Encapsulation (data hiding), 2. Abstraction (simplifying interface), 3. Inheritance (code reuse), 4. Polymorphism (many forms).' },
+        { tag: 'ENCAPSULATION', q: 'How is Encapsulation enforced in object-oriented code?', a: 'By declaring instance variables `private` and exposing public getter/setter methods to control access.' },
+        { tag: 'POLYMORPHISM', q: 'What is the difference between Compile-time and Runtime Polymorphism?', a: 'Compile-time: Function/Operator Overloading. Runtime: Method Overriding achieved via Virtual Functions and Interface implementation.' },
+        { tag: 'ABSTRACT CLASSES', q: 'How does an Abstract Class differ from an Interface in OOP?', a: 'Abstract classes can hold state (fields) and concrete methods. Interfaces contain contract method declarations (all abstract by default).' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: Why is "Composition over Inheritance" recommended in OOP design?', a: 'Composition combines simple objects (has-a) for greater flexibility and dynamic behavior without rigid tight coupling of inheritance (is-a).' }
+      ],
+      physics: [
+        { tag: 'LAWS OF MOTION', q: 'State Newton’s 3 Laws of Motion.', a: '1st: Inertia (body remains at rest/constant velocity unless acted on by force).\n2nd: F = m·a.\n3rd: Action & Reaction are equal and opposite.' },
+        { tag: 'CONSERVATION', q: 'State the Law of Conservation of Energy.', a: 'Energy cannot be created or destroyed; it can only be transformed from one form to another (e.g. Potential to Kinetic).' },
+        { tag: 'ELECTRICITY', q: 'What is Ohm’s Law and its mathematical formula?', a: 'Voltage (V) is directly proportional to Current (I) through a conductor: V = I · R.' },
+        { tag: 'THERMODYNAMICS', q: 'What is the 1st Law of Thermodynamics?', a: 'The change in internal energy ΔU equals heat added to system Q minus work done by system W: ΔU = Q - W.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is the speed of light in vacuum and standard gravitational acceleration on Earth?', a: 'Speed of light c ≈ 3.0 × 10⁸ m/s. Acceleration due to gravity g ≈ 9.81 m/s².' }
       ],
       chemistry: [
-        { tag: 'DEFINITION', q: 'What is an Acid vs. a Base?', a: 'According to Brønsted-Lowry theory, an Acid is a proton (H⁺) donor, while a Base is a proton (H⁺) acceptor. pH scale: < 7 Acidic, 7 Neutral, > 7 Basic.' },
-        { tag: 'KEY CONCEPT', q: 'What are covalent vs ionic bonds?', a: 'Ionic bonds form through the complete transfer of electrons between metals and non-metals. Covalent bonds form when non-metals share electron pairs.' },
-        { tag: 'DIFFERENCE', q: 'How do Endothermic and Exothermic chemical reactions differ?', a: 'Exothermic reactions release thermal energy to surroundings (ΔH < 0). Endothermic reactions absorb thermal energy from surroundings (ΔH > 0).' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is Le Chatelier’s Principle?', a: 'If a chemical system at equilibrium experiences a change in concentration, temperature, or pressure, the system shifts to counteract the disturbance.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Avogadro’s number and how is molar mass used?', a: '1 mole = 6.022 × 10²³ particles. Moles = Mass (grams) / Molar Mass (g/mol).' }
+        { tag: 'ACIDS & BASES', q: 'Define Acid and Base according to Brønsted-Lowry theory.', a: 'Acid is a proton (H⁺) donor. Base is a proton (H⁺) acceptor. Neutral pH = 7 ([H⁺] = 10⁻⁷ M).' },
+        { tag: 'BONDING', q: 'How do Ionic Bonds differ from Covalent Bonds?', a: 'Ionic: transfer of electrons between metal & non-metal. Covalent: sharing of electron pairs between non-metal atoms.' },
+        { tag: 'EQUILIBRIUM', q: 'State Le Chatelier’s Principle.', a: 'If a system at equilibrium is disturbed by change in concentration, temperature, or pressure, it shifts to counteract the change.' },
+        { tag: 'THERMOCHEMISTRY', q: 'How do Exothermic and Endothermic reactions differ in Enthalpy ΔH?', a: 'Exothermic releases heat (ΔH < 0, products lower energy). Endothermic absorbs heat (ΔH > 0, products higher energy).' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Avogadro’s Number and the Moles formula?', a: '1 Mole = 6.022 × 10²³ particles. Moles (n) = Mass (g) / Molar Mass (g/mol).' }
+      ],
+      biology: [
+        { tag: 'CELL BIOLOGY', q: 'What is the function of Mitochondria vs Ribosomes in a cell?', a: 'Mitochondria: site of cellular respiration producing ATP energy. Ribosomes: site of protein synthesis.' },
+        { tag: 'GENETICS', q: 'How do DNA and RNA differ in structure and sugar component?', a: 'DNA: double-stranded helix containing Deoxyribose sugar and Thymine (T). RNA: single-stranded containing Ribose sugar and Uracil (U).' },
+        { tag: 'CELL DIVISION', q: 'How does Mitosis differ from Meiosis in cell count and chromosome number?', a: 'Mitosis: 1 division → 2 identical diploid (2n) somatic cells. Meiosis: 2 divisions → 4 genetically unique haploid (n) gametes.' },
+        { tag: 'ENZYMES', q: 'How do Enzymes accelerate biological biochemical reactions?', a: 'Enzymes are biological catalysts that speed up reactions by lowering the activation energy barrier.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Photosynthesis equation and where do light/dark reactions occur?', a: '6CO₂ + 6H₂O + Sunlight → C₆H₁₂O₆ + 6O₂. Light reactions in Thylakoids; Calvin Cycle in Stroma.' }
+      ],
+      history: [
+        { tag: 'WORLD WAR I', q: 'What was the immediate spark that triggered World War I in July 1914?', a: 'The assassination of Archduke Franz Ferdinand of Austria in Sarajevo by Gavrilo Princip.' },
+        { tag: 'HISTORIOGRAPHY', q: 'What is a Primary Source vs Secondary Source in historical evidence?', a: 'Primary: original first-hand artifact/document created during event (e.g. letter, treaty). Secondary: later analysis by historians (e.g. textbook).' },
+        { tag: 'INDUSTRIAL REVOLUTION', q: 'What was the main economic transformation during the Industrial Revolution?', a: 'Transition from agrarian manual handcraft economy to mechanized factory manufacturing powered by steam engines.' },
+        { tag: 'RENAISSANCE', q: 'What was the central cultural philosophy of the European Renaissance?', a: 'Humanism — revival of classical Greek & Roman art, science, literature, and individual critical inquiry.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What was the Cold War and what key events defined it?', a: 'Geopolitical tension between US and USSR (1947-1991) characterized by proxy wars, nuclear arms race, Cuban Missile Crisis, and Space Race.' }
+      ],
+      geography: [
+        { tag: 'ATMOSPHERE', q: 'Which layer of Earth’s atmosphere contains the Ozone Layer and what is its role?', a: 'Stratosphere. The Ozone layer (O₃) absorbs and shields Earth from harmful solar Ultraviolet (UV) radiation.' },
+        { tag: 'TECTONICS', q: 'What drives Plate Tectonics and causes earthquakes?', a: 'Convection currents in Earth’s asthenosphere (mantle) move lithospheric plates. Friction along plate boundaries causes seismic shocks.' },
+        { tag: 'MAP SKILLS', q: 'What is Map Scale and how is it expressed?', a: 'Ratio between distance on map and actual ground distance (e.g. Representative Fraction 1:50,000 means 1 cm = 500 m).' },
+        { tag: 'PACIFIC BASIN', q: 'What is the Pacific "Ring of Fire"?', a: 'A major Pacific ocean perimeter basin subject to frequent seismic earthquakes and 75% of world’s active volcanoes.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: How does Weathering differ from Erosion?', a: 'Weathering breaks down rocks in-place (chemically/mechanically). Erosion transports weathered rock particles away by water, wind, or ice.' }
       ],
       economics: [
-        { tag: 'DEFINITION', q: 'What is Economics?', a: 'The social science studying how individuals, businesses, and governments allocate scarce resources to satisfy unlimited wants and needs.' },
-        { tag: 'KEY CONCEPT', q: 'What is the Law of Supply and Demand?', a: 'Law of Demand: price rises → quantity demanded falls (inverse). Law of Supply: price rises → quantity supplied rises (direct). Market equilibrium is where supply meets demand.' },
-        { tag: 'DIFFERENCE', q: 'How does Microeconomics differ from Macroeconomics?', a: 'Microeconomics studies decision-making of individual consumers and firms. Macroeconomics analyzes aggregate economy-wide outcomes (GDP, inflation, unemployment).' },
-        { tag: 'EXAMPLE & SYNTAX', q: 'What is Opportunity Cost?', a: 'The value of the next best alternative given up when making a choice (e.g. studying for an exam instead of working a paid shift).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Fiscal Policy vs Monetary Policy?', a: 'Fiscal policy uses government spending and tax policy to influence economy. Monetary policy uses interest rates and money supply controlled by central banks.' }
+        { tag: 'SUPPLY & DEMAND', q: 'State the Law of Demand and Law of Supply.', a: 'Law of Demand: Price ↑ → Quantity Demanded ↓ (inverse). Law of Supply: Price ↑ → Quantity Supplied ↑ (direct).' },
+        { tag: 'OPPORTUNITY COST', q: 'What is Opportunity Cost with a practical exam example?', a: 'The value of the next best alternative forgone when making a decision (e.g. choosing to study yields higher grades but foregoes income from a job).' },
+        { tag: 'MACROECONOMICS', q: 'What is GDP (Gross Domestic Product) and how is it calculated?', a: 'Total monetary value of final goods/services produced in a country annually. Expenditure approach: GDP = C + I + G + (X - M).' },
+        { tag: 'POLICY DIFFERENCE', q: 'How does Fiscal Policy differ from Monetary Policy?', a: 'Fiscal: Government tax rates & public spending. Monetary: Central Bank interest rates & money supply control.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Inflation and how is it measured?', a: 'Persistent rise in general price level reducing purchasing power over time, measured using Consumer Price Index (CPI).' }
+      ],
+      calculus: [
+        { tag: 'DERIVATIVES', q: 'What is the geometric meaning of the first derivative f’(x)?', a: 'The slope of the tangent line to the curve f(x) at point x, measuring instantaneous rate of change dy/dx.' },
+        { tag: 'INTEGRATION', q: 'What does a Definite Integral ∫ₐᵇ f(x)dx represent geometrically?', a: 'The exact net area bounded between the function curve f(x) and x-axis from x=a to x=b.' },
+        { tag: 'POWER RULE', q: 'State the Power Rule for differentiation and integration.', a: 'Derivative: d/dx(xⁿ) = n·xⁿ⁻¹. Integral: ∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C (n ≠ -1).' },
+        { tag: 'THEOREMS', q: 'State the Fundamental Theorem of Calculus (FTC).', a: 'If F’(x) = f(x) on [a,b], then ∫ₐᵇ f(x)dx = F(b) - F(a), proving integration is the inverse of differentiation.' },
+        { tag: 'EXAM QUESTION', q: 'Exam QA: How do you optimize a function f(x) to find local extrema?', a: 'Step 1: Find f’(x). Step 2: Set f’(x) = 0 to find critical points. Step 3: Use second derivative test f’’(x) (<0 max, >0 min).' }
       ]
     };
 
-    // Check pre-built revision flashcards bank
+    // Topic Regex Resolver for exact topic matching
+    if (/\b(c|c programming|c language|c coding|c basics)\b/i.test(t) && !/c\+\+|cpp|c\#|css/i.test(t)) return flashcardBank.c;
+    if (/\b(java|java programming|java language|oops in java|jdk|jvm)\b/i.test(t) && !/javascript|js/i.test(t)) return flashcardBank.java;
+    if (/\b(python|python programming|py|python3)\b/i.test(t)) return flashcardBank.python;
+    if (/\b(c\+\+|cpp|c plus plus)\b/i.test(t)) return flashcardBank.cpp;
+    if (/\b(javascript|js|es6|ecmascript|front end|frontend)\b/i.test(t)) return flashcardBank.javascript;
+    if (/\b(sql|dbms|database|mysql|postgresql|sqlite|rdbms)\b/i.test(t)) return flashcardBank.sql;
+    if (/\b(dsa|data structures|algorithms|data structure|sorting|searching|stack|queue|linked list|tree)\b/i.test(t)) return flashcardBank.dsa;
+    if (/\b(operating system|operating systems|os|linux|process scheduling|deadlock)\b/i.test(t)) return flashcardBank.os;
+    if (/\b(computer networks|networking|tcp\/ip|osi model|ip address|http|https)\b/i.test(t)) return flashcardBank.networks;
+    if (/\b(html|css|web design|flexbox|grid)\b/i.test(t)) return flashcardBank.html_css;
+    if (/\b(oop|oops|object oriented programming|object oriented)\b/i.test(t)) return flashcardBank.oop;
+    if (/\b(physics|newton|kinematics|thermodynamics|optics|gravity)\b/i.test(t)) return flashcardBank.physics;
+    if (/\b(chemistry|acids bases|chemical bonding|stoichiometry|moles)\b/i.test(t)) return flashcardBank.chemistry;
+    if (/\b(biology|cell biology|genetics|dna|mitosis|meiosis)\b/i.test(t)) return flashcardBank.biology;
+    if (/\b(history|world war|revolutions|industrial revolution|renaissance)\b/i.test(t)) return flashcardBank.history;
+    if (/\b(geography|atmosphere|plate tectonics|ring of fire|weathering)\b/i.test(t)) return flashcardBank.geography;
+    if (/\b(economics|microeconomics|macroeconomics|gdp|inflation|demand supply)\b/i.test(t)) return flashcardBank.economics;
+    if (/\b(calculus|derivative|integration|integrals|derivatives|differentiation)\b/i.test(t)) return flashcardBank.calculus;
+
+    // Substring fallback check
     for (const [key, cards] of Object.entries(flashcardBank)) {
-      if (t.includes(key)) {
-        return cards;
-      }
+      if (t.includes(key)) return cards;
     }
 
-    // Dynamic smart subject generator for any user topic
+    // Dynamic high-yield topic-aware generator for custom user queries
     return this.generateSmartFlashcards(topic.trim());
   },
 
   generateSmartFlashcards(topic) {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
-    const lower = topic.toLowerCase();
 
-    // Detect topic domain
-    const isCode = /code|program|python|java|javascript|c\+\+|c#|data|sql|api|system|network|algorithm|app|web|design|hardware|software|tech|html|css|php|ruby|swift|kotlin|rust|go|typescript/.test(lower);
-    const isSci = /cell|bio|chem|phys|gene|atom|energy|space|body|plant|force|organ|health|neuro|earth|nature|molecule|electron|magnet|wave|gravity|evolution/.test(lower);
-    const isMath = /math|algebra|geometry|trigonometry|calculus|statistics|probability|equation|arithmetic|number/.test(lower);
-
-    if (isCode) {
-      return [
-        {
-          tag: 'DEFINITION',
-          q: `What is ${cap}?`,
-          a: `${cap} is a programming concept, language, or technology used in software development to build applications and solve computational problems.`
-        },
-        {
-          tag: 'KEY CONCEPT',
-          q: `What are variables and data types in ${cap}?`,
-          a: 'Variables are named containers that store data values. Common data types include Integer (whole numbers), Float (decimal numbers), String (text), and Boolean (true/false).'
-        },
-        {
-          tag: 'FEATURE',
-          q: `What is the difference between a compiler and an interpreter?`,
-          a: 'A compiler translates the entire program into machine code at once before execution (e.g., C, C++). An interpreter translates code line by line during execution (e.g., Python, JavaScript).'
-        },
-        {
-          tag: 'SYNTAX',
-          q: `What is the syntax for declaring a function?`,
-          a: 'In JavaScript: function name(params) { }\nIn Python: def name(params):\nIn Java: returnType name(params) { }\nIn C++: returnType name(params) { }'
-        },
-        {
-          tag: 'EXAM QUESTION',
-          q: `What are the four pillars of OOP?`,
-          a: '1. Encapsulation — bundling data and methods together.\n2. Inheritance — child class inherits from parent class.\n3. Polymorphism — same method name, different behavior.\n4. Abstraction — hiding internal details, showing only functionality.'
-        }
-      ];
-    }
-
-    if (isSci) {
-      return [
-        {
-          tag: 'DEFINITION',
-          q: `What is ${cap}?`,
-          a: `${cap} is a branch of science that studies natural phenomena, processes, and systems through observation, experimentation, and analysis.`
-        },
-        {
-          tag: 'KEY CONCEPT',
-          q: `What are the key principles of ${cap}?`,
-          a: `The key principles include understanding fundamental laws, identifying cause-and-effect relationships, and applying scientific methods to test hypotheses.`
-        },
-        {
-          tag: 'TYPES',
-          q: `What are the main branches or types of ${cap}?`,
-          a: `${cap} is typically divided into theoretical (concept-based study) and experimental (lab-based practical study) branches, each with specialized sub-fields.`
-        },
-        {
-          tag: 'EXAMPLE',
-          q: `Give one real-world example of ${cap}.`,
-          a: `${cap} principles are applied in medicine, engineering, environmental science, and technology to solve real-world problems and improve quality of life.`
-        },
-        {
-          tag: 'EXAM QUESTION',
-          q: `What is one frequently asked exam question about ${cap}?`,
-          a: `"Define ${cap} and explain its importance." — Answer by stating the definition, listing 2-3 key features, and giving one practical application.`
-        }
-      ];
-    }
-
-    if (isMath) {
-      return [
-        {
-          tag: 'DEFINITION',
-          q: `What is ${cap}?`,
-          a: `${cap} is a branch of mathematics that deals with numbers, quantities, shapes, or logical reasoning to solve problems.`
-        },
-        {
-          tag: 'KEY CONCEPT',
-          q: `What are the basic operations or rules in ${cap}?`,
-          a: `The basic operations include addition, subtraction, multiplication, and division. Advanced topics include equations, formulas, proofs, and graphing.`
-        },
-        {
-          tag: 'FORMULA',
-          q: `Why are formulas important in ${cap}?`,
-          a: `Formulas provide a standard shortcut to calculate results. Memorizing key formulas saves time and ensures accuracy in exams.`
-        },
-        {
-          tag: 'EXAMPLE',
-          q: `How do you solve problems in ${cap}?`,
-          a: `Step 1: Read the problem and identify given values. Step 2: Choose the correct formula. Step 3: Substitute values. Step 4: Solve and verify the answer.`
-        },
-        {
-          tag: 'EXAM QUESTION',
-          q: `What mistakes should you avoid in ${cap} exams?`,
-          a: `1. Not reading the question fully. 2. Using the wrong formula. 3. Calculation errors. 4. Forgetting to write units. 5. Not showing steps (examiners give marks for working).`
-        }
-      ];
-    }
-
-    // General / theory topic flashcards
     return [
       {
-        tag: 'DEFINITION',
-        q: `What is ${cap}?`,
-        a: `${cap} is a subject that covers the study of its core concepts, principles, and their applications in academics and real-world scenarios.`
+        tag: 'EXAM DEFINITION',
+        q: `What is the precise academic definition of ${cap}?`,
+        a: `${cap} is defined as the systematic principle, system, or framework that governs core operations and functional relationships within this domain.`
       },
       {
-        tag: 'KEY CONCEPT',
-        q: `What are the key features of ${cap}?`,
-        a: `Key features include: 1. Based on established theories and principles. 2. Has both theoretical and practical aspects. 3. Useful in academics, research, and professional fields.`
+        tag: 'CORE MECHANISM',
+        q: `What is the fundamental working mechanism of ${cap}?`,
+        a: `The core mechanism operates in 3 steps:\n1. Input/Initial State: initial parameters or environmental conditions are established.\n2. Processing/Action: core rules or reactions transform inputs.\n3. Output/Final State: target state or calculated result is derived.`
       },
       {
-        tag: 'TYPES',
-        q: `What are the different types or classifications in ${cap}?`,
-        a: `${cap} can generally be classified into: 1. Theoretical — focuses on concepts and principles. 2. Applied — focuses on practical use in industry and daily life.`
+        tag: 'KEY RULE & FORMULA',
+        q: `What is the most critical rule, law, or equation governing ${cap}?`,
+        a: `In examinations, ${cap} relies on strict operational rules: always verify boundary conditions, maintain structural consistency, and apply standard formulas or syntax conventions.`
       },
       {
-        tag: 'ADVANTAGE',
-        q: `What are the advantages of studying ${cap}?`,
-        a: `1. Builds strong analytical skills. 2. Improves problem-solving ability. 3. Opens career opportunities in related fields. 4. Provides a foundation for advanced studies.`
+        tag: 'COMMON EXAM PITFALL',
+        q: `What common mistake do students make in ${cap} exam questions?`,
+        a: `1. Confusing core definitions with secondary features.\n2. Omitting units, conditions, or required steps in calculations.\n3. Giving vague general answers instead of citing key technical terms.`
       },
       {
-        tag: 'EXAM QUESTION',
-        q: `How should you answer a "Define ${cap}" question in an exam?`,
-        a: `Start with a clear one-line definition. Then list 2-3 key points. Add one example if asked. Keep the answer concise and to the point.`
+        tag: 'MODEL EXAM QUESTION',
+        q: `Exam QA: Explain the importance and practical application of ${cap}.`,
+        a: `Model Answer structure:\n• Definition (1 mark)\n• 2-3 Core Features (2 marks)\n• Real-world application example (1 mark)\n• Key conclusion/summary statement (1 mark)`
       }
     ];
   },
@@ -2160,42 +3300,62 @@ function initNavbar() {
   const hamburger = $('hamburger');
   const mobileMenu = $('mobile-menu');
 
-  // Scroll-based styling
+  // Scroll-based header background styling
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 20);
   }, { passive: true });
 
-  // Hamburger
-  hamburger.addEventListener('click', () => {
-    const isOpen = hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open', isOpen);
-    hamburger.setAttribute('aria-expanded', isOpen);
-    mobileMenu.setAttribute('aria-hidden', !isOpen);
-  });
+  // Hamburger toggle
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+  }
 
-  // Close mobile menu on link click
-  mobileMenu.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', false);
-      mobileMenu.setAttribute('aria-hidden', true);
+  // Smooth scroll handler for all internal anchor links (nav links, hero buttons, footer links)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        e.preventDefault();
+        // Close mobile menu if open
+        if (hamburger && mobileMenu && mobileMenu.classList.contains('open')) {
+          hamburger.classList.remove('open');
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+
+        // Smooth scroll to section
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
 
-  // Active nav highlighting on scroll
+  // Active nav highlighting on scroll (Desktop + Mobile)
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const desktopLinks = document.querySelectorAll('.nav-link');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+        const id = entry.target.id;
+        desktopLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+        mobileLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
         });
       }
     });
-  }, { rootMargin: '-40% 0px -55% 0px' });
+  }, { rootMargin: '-30% 0px -60% 0px' });
 
   sections.forEach(s => observer.observe(s));
 }
@@ -2458,6 +3618,9 @@ function initSummarizer() {
     if (filePreview) filePreview.hidden = true;
     hideProgress();
   }
+
+  // Ensure default state: show prompt options, hide file preview
+  resetFilePreview();
 
   // Handle Dropzone & Input Events
   if (dropzone) {
@@ -2916,7 +4079,7 @@ function initSummarizer() {
    10. QUIZ GENERATOR FEATURE
    ================================================================ */
 
-let quizState = { questions: [], selected: [], submitted: false };
+let quizState = { questions: [], selected: [], submitted: false, timerInterval: null, topic: '' };
 
 function initQuiz() {
   const input = $('quiz-input');
@@ -2935,17 +4098,33 @@ function initQuiz() {
       return;
     }
 
+    // Read user-selected options
+    const difficulty = ($('quiz-difficulty') ? $('quiz-difficulty').value : 'medium') || 'medium';
+    const numQuestions = parseInt($('quiz-num-questions') ? $('quiz-num-questions').value : '5', 10) || 5;
+    const timerMins = parseInt($('quiz-timer-select') ? $('quiz-timer-select').value : '0', 10) || 0;
+
     showLoading(btn);
     await simulateDelay(900, 1800);
 
     try {
-      quizState.questions = AI.generateQuiz(topic);
-      quizState.selected = new Array(quizState.questions.length).fill(null);
-      quizState.submitted = false;
+      clearQuizTimer();
+      const rawPool = AI.generateQuiz(topic);
+      const questions = AI.applyQuizOpts(rawPool, { difficulty, numQuestions });
+      quizState = { questions, selected: new Array(questions.length).fill(null), submitted: false, timerInterval: null, topic };
       renderQuiz(content, scoreArea, placeholder);
-      showToast('Quiz generated! Select your answers.', 'success');
+
+      // Start timer if selected
+      if (timerMins > 0) {
+        startQuizTimer(timerMins, content, scoreArea);
+      } else {
+        const td = $('quiz-timer-display');
+        if (td) td.hidden = true;
+      }
+
+      showToast(`Quiz generated! ${numQuestions} ${difficulty} questions.`, 'success');
     } catch (e) {
       showToast('Something went wrong. Please try again.', 'error');
+      console.error(e);
     } finally {
       hideLoading(btn);
     }
@@ -2955,20 +4134,26 @@ function initQuiz() {
   input.addEventListener('keydown', e => { if (e.key === 'Enter') generateQuiz(); });
 
   clearBtn.addEventListener('click', () => {
+    clearQuizTimer();
     input.value = '';
-    quizState = { questions: [], selected: [], submitted: false };
+    quizState = { questions: [], selected: [], submitted: false, timerInterval: null, topic: '' };
     placeholder.hidden = false;
     content.hidden = true;
     content.innerHTML = '';
     scoreArea.hidden = true;
+    const td = $('quiz-timer-display');
+    if (td) td.hidden = true;
     showToast('Quiz cleared.', 'info', 1800);
   });
 
   retryBtn.addEventListener('click', () => {
     if (quizState.questions.length > 0) {
+      clearQuizTimer();
       quizState.selected = new Array(quizState.questions.length).fill(null);
       quizState.submitted = false;
       renderQuiz(content, scoreArea, placeholder);
+      const timerMins = parseInt($('quiz-timer-select') ? $('quiz-timer-select').value : '0', 10) || 0;
+      if (timerMins > 0) startQuizTimer(timerMins, content, scoreArea);
     }
   });
 }
@@ -3047,6 +4232,11 @@ function submitQuiz(content, scoreArea) {
     return;
   }
 
+  // Stop timer
+  clearQuizTimer();
+  const td = $('quiz-timer-display');
+  if (td) td.hidden = true;
+
   quizState.submitted = true;
   let score = 0;
 
@@ -3083,22 +4273,132 @@ function submitQuiz(content, scoreArea) {
   // Show score
   const total = quizState.questions.length;
   const pct = Math.round((score / total) * 100);
-  const iconName = pct === 100 ? 'trophy' : pct >= 80 ? 'award' : pct >= 60 ? 'thumbs-up' : pct >= 40 ? 'book-open' : 'flame';
-  const msg = pct === 100 ? 'Perfect Score!' : pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good Job!' : pct >= 40 ? 'Keep Studying!' : 'Need More Practice!';
-  const color = pct >= 80 ? 'var(--clr-success)' : pct >= 60 ? 'var(--clr-warning)' : 'var(--clr-error)';
+  const wrong = total - score;
+  const msg = pct === 100 ? 'Perfect Score! 🎉' : pct >= 80 ? 'Excellent! 🏆' : pct >= 60 ? 'Good Job! 👍' : pct >= 40 ? 'Keep Studying! 📚' : 'Need More Practice! 💪';
+  const strokeColor = pct >= 80 ? '#22c55e' : pct >= 60 ? '#f59e0b' : '#ef4444';
+
+  // Animated SVG progress circle
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - pct / 100);
 
   scoreArea.hidden = false;
   $('quiz-score-display').innerHTML = `
-    <div style="font-size:2.5rem;margin-bottom:0.5rem;display:flex;justify-content:center"><i data-lucide="${iconName}" style="width:48px;height:48px;stroke-width:1.5px;color:var(--clr-primary)"></i></div>
-    <div style="color:${color};font-size:2.5rem;font-weight:900;font-family:var(--font-heading)">${score}/${total}</div>
-    <div style="font-size:1.1rem;font-weight:600;color:var(--clr-text-secondary);margin-bottom:0.5rem">${msg} (${pct}%)</div>
+    <div class="quiz-score-circle-wrap">
+      <svg class="quiz-progress-svg" viewBox="0 0 120 120" width="140" height="140">
+        <circle cx="60" cy="60" r="${radius}" fill="none" stroke="var(--clr-border)" stroke-width="10"/>
+        <circle cx="60" cy="60" r="${radius}" fill="none"
+          stroke="${strokeColor}" stroke-width="10"
+          stroke-linecap="round"
+          stroke-dasharray="${circumference}"
+          stroke-dashoffset="${circumference}"
+          class="quiz-progress-arc"
+          style="transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); transform: rotate(-90deg); transform-origin: center;"
+          data-target-offset="${offset}"/>
+        <text x="60" y="56" text-anchor="middle" fill="${strokeColor}" font-size="22" font-weight="900" font-family="Outfit,sans-serif">${pct}%</text>
+        <text x="60" y="74" text-anchor="middle" fill="var(--clr-text-secondary)" font-size="11" font-family="Outfit,sans-serif">${score}/${total}</text>
+      </svg>
+    </div>
+    <div class="quiz-score-msg" style="color:${strokeColor}">${msg}</div>
+    <div class="quiz-score-breakdown">
+      <span class="quiz-stat correct-stat"><i data-lucide="check-circle" class="inline-icon"></i> Correct: ${score}</span>
+      <span class="quiz-stat wrong-stat"><i data-lucide="x-circle" class="inline-icon"></i> Wrong: ${wrong}</span>
+      <span class="quiz-stat pct-stat"><i data-lucide="percent" class="inline-icon"></i> Score: ${pct}%</span>
+    </div>
+    <div id="quiz-history-panel" class="quiz-history-panel"></div>
   `;
 
-  if (window.lucide) {
-    window.lucide.createIcons();
+  // Animate arc after paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const arc = scoreArea.querySelector('.quiz-progress-arc');
+      if (arc) arc.style.strokeDashoffset = offset;
+    });
+  });
+
+  if (window.lucide) window.lucide.createIcons();
+
+  // Save to LocalStorage and render history
+  saveQuizResult({ topic: quizState.topic, score, total, pct });
+  renderQuizHistory($('quiz-history-panel'));
+
+  showToast(`You scored ${score}/${total} (${pct}%)!`, pct >= 60 ? 'success' : 'info');
+}
+
+/* ----------------------------------------------------------------
+   Quiz Timer
+---------------------------------------------------------------- */
+function startQuizTimer(minutes, content, scoreArea) {
+  const td = $('quiz-timer-display');
+  if (!td) return;
+
+  let secsLeft = minutes * 60;
+  td.hidden = false;
+
+  function tick() {
+    const m = Math.floor(secsLeft / 60);
+    const s = secsLeft % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const barEl = td.querySelector('.quiz-timer-bar-fill');
+    const textEl = td.querySelector('.quiz-timer-text');
+    const pct = (secsLeft / (minutes * 60)) * 100;
+
+    if (textEl) textEl.textContent = `⏱ ${timeStr} remaining`;
+    if (barEl) barEl.style.width = `${pct}%`;
+
+    // Colour shift as time runs out
+    if (barEl) {
+      barEl.style.background = pct > 50 ? 'var(--clr-primary)' : pct > 25 ? '#f59e0b' : '#ef4444';
+    }
+
+    if (secsLeft <= 0) {
+      clearQuizTimer();
+      showToast('Time is up! Auto-submitting quiz.', 'warning', 3000);
+      submitQuiz(content, scoreArea);
+      return;
+    }
+    secsLeft--;
   }
 
-  showToast(`You scored ${score}/${total}!`, pct >= 60 ? 'success' : 'info');
+  tick();
+  quizState.timerInterval = setInterval(tick, 1000);
+}
+
+function clearQuizTimer() {
+  if (quizState && quizState.timerInterval) {
+    clearInterval(quizState.timerInterval);
+    quizState.timerInterval = null;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Quiz History (LocalStorage)
+---------------------------------------------------------------- */
+function saveQuizResult(result) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.QUIZ_HISTORY);
+    const history = raw ? JSON.parse(raw) : [];
+    history.unshift({ ...result, date: new Date().toISOString() });
+    localStorage.setItem(STORAGE_KEYS.QUIZ_HISTORY, JSON.stringify(history.slice(0, 10)));
+  } catch (e) { /* silent */ }
+}
+
+function renderQuizHistory(container) {
+  if (!container) return;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.QUIZ_HISTORY);
+    const history = raw ? JSON.parse(raw) : [];
+    if (history.length <= 1) { container.hidden = true; return; }
+    container.hidden = false;
+
+    const items = history.slice(1, 6).map(r => {
+      const c = r.pct >= 80 ? '#22c55e' : r.pct >= 60 ? '#f59e0b' : '#ef4444';
+      const d = new Date(r.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return `<span class="quiz-history-badge" style="border-color:${c};color:${c}" title="${r.topic || 'Quiz'}">${r.score}/${r.total} (${r.pct}%) — ${d}</span>`;
+    }).join('');
+
+    container.innerHTML = `<div class="quiz-history-label">Recent Results</div>${items}`;
+  } catch (e) { /* silent */ }
 }
 
 /* ================================================================
@@ -3379,20 +4679,29 @@ async function generatePlan() {
     return;
   }
 
+  // Read preparation level
+  const prepLevelEl = $('planner-prep-level');
+  const prepLevel = prepLevelEl ? prepLevelEl.value : 'intermediate';
+
   const btn = $('planner-generate-btn');
   showLoading(btn);
   await simulateDelay(700, 1200);
 
   try {
-    const schedule = AI.generateStudyPlan(studySubjects);
-    renderTimetable(schedule);
+    const schedule = AI.generateStudyPlan(studySubjects, prepLevel);
+    renderTimetable(schedule, prepLevel);
     showToast('Study plan generated and saved!', 'success');
 
     // Save plan to localStorage
     localStorage.setItem(STORAGE_KEYS.LAST_PLAN, JSON.stringify({
       subjects: studySubjects,
+      prepLevel,
       generated: new Date().toISOString(),
     }));
+
+    // Show download button
+    const dlBtn = $('planner-download-btn');
+    if (dlBtn) dlBtn.hidden = false;
 
     // Scroll to output
     $('planner-content').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3404,7 +4713,12 @@ async function generatePlan() {
   }
 }
 
-function renderTimetable(schedule) {
+function downloadPlanPDF() {
+  showToast('Opening print dialog for PDF export...', 'info', 2000);
+  setTimeout(() => window.print(), 300);
+}
+
+function renderTimetable(schedule, prepLevel = 'intermediate') {
   const placeholder = $('planner-placeholder');
   const content = $('planner-content');
   const output = $('planner-output');
@@ -3421,6 +4735,8 @@ function renderTimetable(schedule) {
     return acc + day.sessions.filter(s => s.sessionType !== 'exam' && s.sessionType !== 'break').reduce((sum, s) => sum + s.hours, 0);
   }, 0);
   const highPrioCount = studySubjects.filter(s => (s.priority || 'medium') === 'high').length;
+
+  const prepLabel = prepLevel === 'beginner' ? '🌱 Beginner' : prepLevel === 'advanced' ? '🚀 Advanced' : '⚡ Intermediate';
 
   const summary = document.createElement('div');
   summary.className = 'planner-summary';
@@ -3442,6 +4758,10 @@ function renderTimetable(schedule) {
       <div class="plan-stat">
         <span class="plan-stat-label">Total Study</span>
         <span class="plan-stat-value">${totalHrs.toFixed(1)}h</span>
+      </div>
+      <div class="plan-stat">
+        <span class="plan-stat-label">Prep Level</span>
+        <span class="plan-stat-value" style="font-size:0.75rem">${prepLabel}</span>
       </div>
     </div>
   `;
@@ -3520,6 +4840,10 @@ function clearPlanner() {
   content.hidden = true;
   content.innerHTML = '';
   output.classList.remove('has-content');
+
+  // Hide download button
+  const dlBtn = $('planner-download-btn');
+  if (dlBtn) dlBtn.hidden = true;
 
   showToast('Planner cleared.', 'info', 2000);
 }

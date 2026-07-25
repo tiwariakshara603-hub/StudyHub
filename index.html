@@ -107,23 +107,27 @@
         </div>
       </div>
     </div>
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-card floating-card card-1">
+    <div class="hero-visual">
+      <a href="#explainer" class="hero-card floating-card card-1" aria-label="Go to Topic Explainer">
         <span><i data-lucide="lightbulb"></i></span>
         <p>Explain any topic instantly</p>
-      </div>
-      <div class="hero-card floating-card card-2">
+      </a>
+      <a href="#summarizer" class="hero-card floating-card card-2" aria-label="Go to Notes Summarizer">
         <span><i data-lucide="file-text"></i></span>
         <p>Summarize long notes</p>
-      </div>
-      <div class="hero-card floating-card card-3">
+      </a>
+      <a href="#quiz" class="hero-card floating-card card-3" aria-label="Go to Quiz Generator">
         <span><i data-lucide="brain"></i></span>
         <p>Generate custom quizzes</p>
-      </div>
-      <div class="hero-card floating-card card-4">
+      </a>
+      <a href="#flashcards" class="hero-card floating-card card-4" aria-label="Go to Flashcards">
+        <span><i data-lucide="layers"></i></span>
+        <p>Interactive study flashcards</p>
+      </a>
+      <a href="#planner" class="hero-card floating-card card-5" aria-label="Go to Study Planner">
         <span><i data-lucide="calendar"></i></span>
         <p>Build your study plan</p>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -191,6 +195,7 @@
               placeholder="e.g. Photosynthesis, Newton's Laws, Machine Learning..." maxlength="200" autocomplete="off"
               aria-describedby="explainer-hint" />
           </div>
+          <div class="char-counter" id="explainer-counter" aria-live="polite">0 / 200 characters</div>
           <span class="input-hint" id="explainer-hint">Press Enter or click Explain to generate</span>
           <div class="tool-actions">
             <button class="btn btn-primary btn-tool" id="explainer-btn" aria-label="Explain this topic">
@@ -252,8 +257,8 @@
               <div class="file-info-chip">
                 <span class="file-icon" id="file-preview-icon"><i data-lucide="file-text"></i></span>
                 <div class="file-details">
-                  <span class="file-name" id="file-preview-name">notes.pdf</span>
-                  <span class="file-size" id="file-preview-size">0 KB</span>
+                  <span class="file-name" id="file-preview-name"></span>
+                  <span class="file-size" id="file-preview-size"></span>
                 </div>
                 <button type="button" class="file-remove-btn" id="file-remove-btn" title="Remove file"
                   aria-label="Remove file">
@@ -310,14 +315,51 @@
       </div>
       <div class="tool-card">
         <div class="tool-input-area">
-          <label for="quiz-input" class="input-label">Enter a topic for the quiz</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i data-lucide="target"></i></span>
-            <input type="text" id="quiz-input" class="tool-input"
-              placeholder="e.g. World War II, Human Anatomy, Python Programming..." maxlength="200" autocomplete="off"
-              aria-describedby="quiz-hint" />
+          <div class="planner-fields" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 1rem;">
+            <div class="field-group">
+              <label for="quiz-input" class="input-label">Topic</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="target"></i></span>
+                <input type="text" id="quiz-input" class="tool-input"
+                  placeholder="e.g. C, Java, Python, Photosynthesis..." maxlength="200" autocomplete="off" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="quiz-difficulty" class="input-label">Difficulty</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="bar-chart-2"></i></span>
+                <select id="quiz-difficulty" class="tool-input" style="padding-left: 2.75rem; background: var(--clr-surface-2); color: var(--clr-text-primary);">
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="quiz-num-questions" class="input-label">Questions</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="help-circle"></i></span>
+                <select id="quiz-num-questions" class="tool-input" style="padding-left: 2.75rem; background: var(--clr-surface-2); color: var(--clr-text-primary);">
+                  <option value="5" selected>5 Questions</option>
+                  <option value="10">10 Questions</option>
+                  <option value="15">15 Questions</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="quiz-timer-select" class="input-label">Timer</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="clock"></i></span>
+                <select id="quiz-timer-select" class="tool-input" style="padding-left: 2.75rem; background: var(--clr-surface-2); color: var(--clr-text-primary);">
+                  <option value="0" selected>Timer Off</option>
+                  <option value="2">2 Minutes</option>
+                  <option value="5">5 Minutes</option>
+                  <option value="10">10 Minutes</option>
+                  <option value="15">15 Minutes</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <span class="input-hint" id="quiz-hint">5 multiple-choice questions will be generated</span>
           <div class="tool-actions">
             <button class="btn btn-primary btn-tool" id="quiz-btn" aria-label="Generate quiz">
               <span class="btn-text"><i data-lucide="play" class="btn-icon"></i> Generate Quiz</span>
@@ -327,6 +369,13 @@
           </div>
         </div>
         <div class="quiz-output" id="quiz-output" role="region" aria-live="polite" aria-label="Quiz output">
+          <!-- Timer bar (shown only when timer is active) -->
+          <div id="quiz-timer-display" class="quiz-timer-display" hidden>
+            <span class="quiz-timer-text">⏱ --:-- remaining</span>
+            <div class="quiz-timer-bar">
+              <div class="quiz-timer-bar-fill" style="width:100%"></div>
+            </div>
+          </div>
           <div class="output-placeholder" id="quiz-placeholder">
             <span class="placeholder-emoji"><i data-lucide="brain"></i></span>
             <p>Your quiz questions will appear here</p>
@@ -459,6 +508,18 @@
                   step="0.5" aria-required="true" />
               </div>
             </div>
+            <div class="field-group">
+              <label for="planner-prep-level" class="input-label">Preparation Level</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="trending-up"></i></span>
+                <select id="planner-prep-level" class="tool-input" aria-required="true"
+                  style="padding-left: 2.75rem; background: var(--clr-surface-2); color: var(--clr-text-primary);">
+                  <option value="beginner">Beginner (Needs Foundation)</option>
+                  <option value="intermediate" selected>Intermediate (Practice & Review)</option>
+                  <option value="advanced">Advanced (Final Revisions & Mocks)</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="tool-actions">
             <button class="btn btn-primary btn-tool" id="planner-add-btn" aria-label="Add subject to planner">
@@ -469,6 +530,9 @@
             </button>
             <button class="btn btn-ghost" id="planner-clear-btn" aria-label="Clear all subjects">
               <i data-lucide="trash-2" class="btn-icon"></i> Clear All
+            </button>
+            <button class="btn btn-ghost" id="planner-download-btn" aria-label="Download study plan as PDF" onclick="downloadPlanPDF()" hidden>
+              <i data-lucide="download" class="btn-icon"></i> PDF
             </button>
           </div>
           <!-- Subject List -->
