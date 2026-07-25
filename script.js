@@ -1,5 +1,5 @@
 /* ================================================================
-   StudyMate AI – script.js
+   SmartPrep AI – script.js
    All application logic: AI engines, DOM management, Local Storage
    ================================================================ */
 
@@ -10,9 +10,9 @@
    ================================================================ */
 
 const STORAGE_KEYS = {
-  THEME: 'studymate_theme',
-  SUBJECTS: 'studymate_subjects',
-  LAST_PLAN: 'studymate_last_plan',
+  THEME: 'smartprep_theme',
+  SUBJECTS: 'smartprep_subjects',
+  LAST_PLAN: 'smartprep_last_plan',
 };
 
 // Subject colors cycling palette
@@ -186,112 +186,637 @@ const AI = {
   generateGenericExplanation(topic) {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
     const lower = topic.toLowerCase();
-    const isCode = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript/.test(lower);
 
-    if (isCode) {
+    // Comprehensive multi-domain detection
+    const isLit = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|narrative|author|literary|sonnet|gothic|romanticism|rhetoric|allegory/.test(lower);
+    const isHist = /history|historical|war|revolution|empire|century|king|queen|reign|dynasty|battle|treaty|civilization|colonial|independence|movement|ancient|medieval|world war|renaissance/.test(lower);
+    const isGeo = /geography|climate|map|river|mountain|tectonic|earth|ocean|continent|population|atmosphere|soil|biomes|latitude|longitude|ecosystem|glacier|volcano|weather|topography/.test(lower);
+    const isPol = /politic|constitution|democracy|government|parliament|judiciary|rights|state|election|governance|citizenship|policy|legislature|sovereign|liberty|justice|monarchy/.test(lower);
+    const isEcon = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|monopoly|demand|supply|fiscal|monetary|currency|trade|banking|revenue|utility|capitalism/.test(lower);
+    const isComm = /commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock|capital|entrepreneur|invoice/.test(lower);
+    const isLang = /language|grammar|linguistic|phonetics|syntax|tenses|noun|verb|adjective|translation|semantics|vocabulary|idiom|phrase|punctuation|preposition/.test(lower);
+    const isArt = /art|painting|music|sculpture|architecture|design|dance|theatre|aesthetic|baroque|impressionism|composition|harmony|melody|rhythm|canvas|artistic/.test(lower);
+    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure/.test(lower);
+    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number theory|logarithm/.test(lower);
+    const isBio = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|microbiology|photosynthesis|mitosis|meiosis|neuron/.test(lower);
+    const isChem = /chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|organic|inorganic|bond|thermodynamics|atom|solution|catalyst|oxidation/.test(lower);
+    const isPhys = /physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum|relativity|kinematics|friction|photon/.test(lower);
+    const isPsych = /psychology|sociology|philosophy|behavior|cognition|mind|brain|perception|personality|society|ethics|logic|moral|existential|consciousness|empathy/.test(lower);
+
+    if (isLit) {
       return {
-        definition: `${cap} is a technology or programming concept used in software development to build, structure, and execute programs or applications.`,
+        definition: `${cap} is a significant literary subject or concept that explores human expression, narrative structures, stylistic devices, and thematic depth across artistic works.`,
         keyConcepts: [
-          `Syntax: The set of rules that define how ${cap} code is written and structured.`,
-          `Variables and Data Types: How data is stored and manipulated in ${cap}.`,
-          `Control Flow: Using if-else conditions, loops, and switch statements to control program execution.`
+          `Thematic Analysis: Uncovering underlying message, motifs, and moral/social commentary.`,
+          `Literary Devices: Use of metaphors, symbolism, imagery, and narrative perspective.`,
+          `Contextual Significance: How socio-cultural and historical settings influence textual interpretation.`
         ],
         features: [
-          `Supports modular code organization through functions, classes, or modules.`,
-          `Provides built-in error handling and debugging mechanisms.`
+          `Employs figurative language and creative narrative techniques to convey meaning.`,
+          `Reflects human emotions, societal values, and philosophical reflections across eras.`
         ],
         functions: [
-          `Used to write instructions that a computer can execute to perform specific tasks.`,
-          `Enables data processing, user interaction, and system automation.`
+          `Enhances critical thinking, textual analysis, and empathetic understanding of diverse human experiences.`,
+          `Provides historical and aesthetic appreciation of language and oral/written traditions.`
         ],
         types: [
-          `Frontend: Code that runs in the browser and handles user interface (HTML, CSS, JavaScript).`,
-          `Backend: Server-side code that handles data, logic, and database operations.`,
-          `Full-Stack: Combination of both frontend and backend development.`
+          `Prose & Fiction: Novels, short stories, and narrative essays.`,
+          `Poetry & Verse: Lyric, epic, sonnets, and free verse.`,
+          `Drama & Theatre: Tragedy, comedy, and theatrical performative works.`
         ],
         advantages: [
-          `Automates repetitive tasks and reduces manual effort.`,
-          `Enables building scalable applications that can handle large amounts of data.`
+          `Develops advanced critical interpretation and persuasive writing abilities.`,
+          `Fosters cross-cultural empathy and deep comprehension of symbolism.`
         ],
         disadvantages: [
-          `Bugs and errors can be difficult to trace in large codebases.`,
-          `Requires continuous learning as languages and frameworks evolve frequently.`
+          `Interpretations can be subjective and open to multiple valid critical readings.`,
+          `Requires close reading skills and sensitivity to archaic or complex language.`
         ],
-        syntax: `// Basic ${cap} example\n// Variable declaration\nlet value = 10;\n\n// Function definition\nfunction process(input) {\n  return input * 2;\n}\n\n// Function call\nconsole.log(process(value)); // Output: 20`,
-        example: `Writing a function in ${cap} that takes user input, processes it, and returns a formatted result.`,
+        syntax: `Form / Structure: Stanza / Scene / Chapter\nRhyme Scheme / Meter: e.g., iambic pentameter (da-DUM da-DUM)`,
+        example: `Analyzing how the central motif of light vs. darkness represents hope and despair in classic literature.`,
         examQuestions: [
-          { q: `What is the difference between a compiler and an interpreter?`, a: `A compiler translates the entire source code into machine code before execution (e.g., C, C++). An interpreter translates and executes code line by line at runtime (e.g., Python, JavaScript).` },
-          { q: `What are the four pillars of Object-Oriented Programming?`, a: `Encapsulation (data hiding), Inheritance (reusing parent class properties), Polymorphism (same method behaving differently), and Abstraction (hiding complex implementation details).` }
+          { q: `What is the role of theme and symbolism in ${cap}?`, a: `Theme provides the core message or insight into life, while symbolism uses concrete objects or actions to represent abstract literary ideas.` },
+          { q: `How does narrative perspective affect reader interpretation?`, a: `First-person POV offers intimate internal thoughts but may be unreliable; third-person omniscient provides an objective, all-knowing view of all characters.` }
         ]
       };
     }
 
+    if (isHist) {
+      return {
+        definition: `${cap} is a major historical event, movement, era, or development that shaped political structures, socio-economic conditions, and human civilization.`,
+        keyConcepts: [
+          `Cause and Effect: Identifying immediate triggers and long-term socio-political causes.`,
+          `Primary vs. Secondary Sources: Evaluating eyewitness evidence against historical analysis.`,
+          `Historical Significance: Understanding how ${cap} transformed governance, society, or trade.`
+        ],
+        features: [
+          `Involves key historical figures, key timelines, treaties, or revolutionary shifts.`,
+          `Influences subsequent historical trajectories and modern institutional frameworks.`
+        ],
+        functions: [
+          `Explains how contemporary societies, borders, and political systems evolved over time.`,
+          `Teaches critical analysis of historical bias, historiography, and primary documentation.`
+        ],
+        types: [
+          `Political & Military History: Revolutions, treaties, dynastic rule, and conflicts.`,
+          `Social & Cultural History: Changes in daily life, popular movements, and rights.`,
+          `Economic History: Trade routes, industrialization, and financial systems.`
+        ],
+        advantages: [
+          `Provides essential context for understanding modern global politics and international relations.`,
+          `Prevents historical repetition by analyzing past strategic successes and policy failures.`
+        ],
+        disadvantages: [
+          `Historical records may contain ideological bias or incomplete source materials.`,
+          `Requires memorizing detailed chronologies, dates, key actors, and geopolitical contexts.`
+        ],
+        syntax: `Timeline Framework:\nCauses → Key Event / Crisis → Resolution / Treaty → Long-term Impact`,
+        example: `Examining how the industrial transformation during ${cap} altered urbanization and labor policies globally.`,
+        examQuestions: [
+          { q: `What were the primary causes and long-term consequences of ${cap}?`, a: `Immediate factors included social unrest and economic hardship, while long-term consequences led to modern democratic governance and institutional reform.` },
+          { q: `Why are primary sources essential when analyzing ${cap}?`, a: `Primary sources offer unmediated first-hand evidence from contemporary participants, reflecting original attitudes without modern retrospective bias.` }
+        ]
+      };
+    }
+
+    if (isGeo) {
+      return {
+        definition: `${cap} is a spatial geographic process, physical feature, or human-environmental system that shapes Earth's landscapes, ecosystems, and resources.`,
+        keyConcepts: [
+          `Physical Processes: Natural forces such as plate tectonics, erosion, weathering, and atmospheric circulation.`,
+          `Spatial Distribution: How features or phenomena are arranged across Earth's surface.`,
+          `Human-Environment Interaction: How human activity influences and adapts to physical geography.`
+        ],
+        features: [
+          `Interacts with Earth's spheres (lithosphere, atmosphere, hydrosphere, biosphere).`,
+          `Exhibits spatial variation across different latitudes, elevations, and climatic zones.`
+        ],
+        functions: [
+          `Helps predict weather patterns, natural hazards, landform evolution, and resource availability.`,
+          `Guides urban planning, environmental conservation, and sustainable development.`
+        ],
+        types: [
+          `Physical Geography: Geomorphology, climatology, hydrology, and biogeography.`,
+          `Human Geography: Population dynamics, economic geography, and urban settlements.`,
+          `GIS & Remote Sensing: Digital mapping and spatial satellite data analysis.`
+        ],
+        advantages: [
+          `Essential for managing natural resources, disaster mitigation, and climate policy.`,
+          `Combines physical science with social science to address global sustainability challenges.`
+        ],
+        disadvantages: [
+          `Complex multi-variable interaction makes exact long-term climate prediction challenging.`,
+          `Requires understanding both micro-level field observations and global macro-scale systems.`
+        ],
+        syntax: `Spatial Scale Formula:\nReal Distance = Map Distance × Scale Factor`,
+        example: `Analyzing how ocean currents and relief features create distinct local microclimates and vegetation zones.`,
+        examQuestions: [
+          { q: `How does ${cap} influence climate and ecosystem distribution?`, a: `By regulating heat distribution, moisture movement, and topographic barriers, creating specialized biomes and agricultural zones.` },
+          { q: `Differentiate between Physical and Human Geography in relation to ${cap}.`, a: `Physical Geography focuses on natural earth processes (landforms, weather), whereas Human Geography studies spatial human behaviors (settlements, trade).` }
+        ]
+      };
+    }
+
+    if (isPol) {
+      return {
+        definition: `${cap} is a foundational political science concept, constitutional mechanism, or governance structure that regulates state power, rights, and political behavior.`,
+        keyConcepts: [
+          `Sovereignty & Power: How political authority is established, exercised, and legitimized.`,
+          `Constitutional Rights: Legal protections, civil liberties, and duties of citizens.`,
+          `Institutional Checks: Division of powers among executive, legislative, and judicial branches.`
+        ],
+        features: [
+          `Codified through legal statutes, constitutional provisions, or international law.`,
+          `Provides mechanisms for public policy, lawmaking, conflict resolution, and representation.`
+        ],
+        functions: [
+          `Ensures social order, protects fundamental rights, and resolves conflicting political interests.`,
+          `Sustains democratic accountability and transparent administrative processes.`
+        ],
+        types: [
+          `Comparative Politics: Comparing democratic, parliamentary, and federal systems.`,
+          `International Relations: Global diplomacy, treaties, and international organizations.`,
+          `Political Theory: Liberalism, socialism, federalism, and constitutionalism.`
+        ],
+        advantages: [
+          `Prevents abuse of state power through rule of law and constitutional safeguards.`,
+          `Empowers citizens to participate effectively in civic life and electoral processes.`
+        ],
+        disadvantages: [
+          `Political consensus building can lead to legislative gridlock or slow policymaking.`,
+          `Implementation can be hindered by institutional corruption or bureaucratic delays.`
+        ],
+        syntax: `Constitutional Structure:\nPreamble → Fundamental Rights → State Directives → Judicial Review`,
+        example: `Examining how the separation of powers prevents autocratic consolidation by balancing statutory authorities.`,
+        examQuestions: [
+          { q: `What is the significance of ${cap} in a modern constitutional democracy?`, a: `It establishes the legal framework for citizen rights, prevents arbitrary state authority, and maintains institutional accountability.` },
+          { q: `How do Fundamental Rights differ from Directive Principles?`, a: `Fundamental Rights are legally enforceable in court (justiciable), while Directive Principles guide government policy but are non-justiciable.` }
+        ]
+      };
+    }
+
+    if (isEcon) {
+      return {
+        definition: `${cap} is a fundamental economic theory, market force, or policy tool used to analyze how scarce resources are allocated among competing human wants.`,
+        keyConcepts: [
+          `Scarcity & Opportunity Cost: Evaluating trade-offs when allocating limited resources.`,
+          `Market Equilibrium: Balance point where price equates quantity supplied with quantity demanded.`,
+          `Policy Instruments: Using monetary interest rates and fiscal taxation/spending to stabilize economic growth.`
+        ],
+        features: [
+          `Utilizes mathematical models, supply-demand curves, and empirical statistical indicators.`,
+          `Predicts producer and consumer behavioral choices under varying market incentives.`
+        ],
+        functions: [
+          `Guides government economic policy, corporate strategic pricing, and monetary management.`,
+          `Assesses national productivity, employment trends, trade balances, and inflation.`
+        ],
+        types: [
+          `Microeconomics: Individual consumer behavior, firm production costs, and market structures.`,
+          `Macroeconomics: Aggregate economy-wide output (GDP), inflation rates, and unemployment.`,
+          `International Economics: Global trade tariffs, exchange rates, and balance of payments.`
+        ],
+        advantages: [
+          `Provides quantitative framework for maximizing market efficiency and social welfare.`,
+          `Enables policymakers to mitigate economic recessions and control hyperinflation.`
+        ],
+        disadvantages: [
+          `Economic models often rely on simplifying assumptions (e.g., ceteris paribus, rational agents).`,
+          `Unforeseen external shocks (e.g., pandemics, geopolitical crises) can disrupt model accuracy.`
+        ],
+        syntax: `Equilibrium Formula: Qd = Qs\nElasticity = (% Δ Quantity) / (% Δ Price)`,
+        example: `Analyzing how raising central bank interest rates curbs inflationary pressure by reducing consumer borrowing.`,
+        examQuestions: [
+          { q: `Explain the core mechanism of ${cap} and its effect on market equilibrium.`, a: `When market conditions change, price adjusts dynamically until quantity demanded equals quantity supplied at a new equilibrium point.` },
+          { q: `How does Fiscal Policy differ from Monetary Policy?`, a: `Fiscal policy is controlled by government taxation and spending; Monetary policy is managed by the central bank via interest rates and money supply.` }
+        ]
+      };
+    }
+
+    if (isComm) {
+      return {
+        definition: `${cap} is an essential commerce, accounting, or business concept that deals with financial transactions, organizational governance, trade, or asset management.`,
+        keyConcepts: [
+          `Double-Entry Bookkeeping: Recording every transaction with equal debit and credit entries.`,
+          `Financial Auditing: Verifying accuracy, legal compliance, and transparency of financial statements.`,
+          `Working Capital Management: Balancing current assets and liabilities to ensure corporate liquidity.`
+        ],
+        features: [
+          `Adheres to Generally Accepted Accounting Principles (GAAP) or IFRS standards.`,
+          `Evaluates profitability, solvency, cash flows, and operational efficiency.`
+        ],
+        functions: [
+          `Facilitates commercial transactions, capital investment, and enterprise management.`,
+          `Provides investors and tax authorities with accurate financial reports.`
+        ],
+        types: [
+          `Financial Accounting: Balance sheets, income statements, and cash flow reports.`,
+          `Cost & Management Accounting: Budgeting, variance analysis, and internal decision-making.`,
+          `Corporate Finance: Risk management, capital structure, and stock market valuation.`
+        ],
+        advantages: [
+          `Ensures financial accountability, fraud prevention, and optimized capital allocation.`,
+          `Enables businesses to measure financial health and satisfy statutory compliance.`
+        ],
+        disadvantages: [
+          `Subject to regulatory changes, tax law revisions, and accounting complexities.`,
+          `Historical cost accounting may not reflect real-time market value fluctuations.`
+        ],
+        syntax: `Accounting Equation:\nAssets = Liabilities + Owner's Equity\nNet Income = Revenue - Expenses`,
+        example: `Preparing a trial balance for a corporation to ensure total debits match total credits before drafting financial statements.`,
+        examQuestions: [
+          { q: `What is the fundamental accounting equation and why must it always balance?`, a: `Assets = Liabilities + Equity. It balances because every financial asset is funded either by debt (liabilities) or capital (equity).` },
+          { q: `Differentiate between Capital Expenditure and Revenue Expenditure.`, a: `Capital expenditure provides long-term benefits beyond 1 year (e.g., buying machinery); Revenue expenditure covers day-to-day operational costs (e.g., rent, salaries).` }
+        ]
+      };
+    }
+
+    if (isLang) {
+      return {
+        definition: `${cap} is a structural linguistic rule, grammatical principle, or language mechanism that governs effective communication, word formation, and sentence syntax.`,
+        keyConcepts: [
+          `Syntax & Morphology: Structural arrangement of words and internal formation of vocabulary.`,
+          `Semantics & Pragmatics: Literal word meanings vs. contextual communicative intent.`,
+          `Grammatical Agreement: Ensuring subject-verb, gender, and tense consistency.`
+        ],
+        features: [
+          `Provides standardized rules for oral articulation, writing, and punctuation.`,
+          `Evolves through cultural usage, literature, and cross-linguistic borrowing.`
+        ],
+        functions: [
+          `Ensures clear, unambiguous communication across personal, academic, and professional contexts.`,
+          `Forms the basis for language learning, translation, and computational natural language processing.`
+        ],
+        types: [
+          `Prescriptive Grammar: Traditional normative rules of correct language usage.`,
+          `Descriptive Linguistics: Studying how native speakers actually use language in practice.`,
+          `Phonetics & Phonology: Study of speech sounds, intonation, and pronunciation.`
+        ],
+        advantages: [
+          `Improves reading comprehension, persuasive writing, and communication precision.`,
+          `Prevents grammatical ambiguity and misinterpretation in official documentation.`
+        ],
+        disadvantages: [
+          `Irregular grammatical exceptions and idioms require memorization rather than strict logic.`,
+          `Language evolution often creates tension between traditional rules and modern colloquial usage.`
+        ],
+        syntax: `Sentence Structure:\nSubject + Verb + Object (SVO)\nActive: [Actor] + [Action] + [Target]\nPassive: [Target] + [was/is Verb-ed] + by [Actor]`,
+        example: `Correcting subject-verb agreement in complex sentences containing compound subjects and modifying clauses.`,
+        examQuestions: [
+          { q: `Explain the rule governing ${cap} with a clear grammatical example.`, a: `The rule requires consistent agreement between grammatical elements; e.g., singular subjects demand singular verbs regardless of intervening prepositions.` },
+          { q: `What is the difference between Active and Passive Voice?`, a: `Active Voice emphasizes the subject performing the action; Passive Voice emphasizes the recipient or outcome of the action.` }
+        ]
+      };
+    }
+
+    if (isArt) {
+      return {
+        definition: `${cap} is a creative artistic discipline, aesthetic movement, or design principle that explores visual, auditory, or spatial expression of human imagination.`,
+        keyConcepts: [
+          `Elements of Design: Color theory, form, line, texture, value, and spatial perspective.`,
+          `Principles of Composition: Balance, contrast, emphasis, harmony, movement, and proportion.`,
+          `Aesthetic Criticism: Interpreting historical movement context and artistic intent.`
+        ],
+        features: [
+          `Uses physical or digital mediums (pigments, stone, acoustic sound, digital pixels).`,
+          `Communicates sensory experience, cultural identity, and emotional narratives.`
+        ],
+        functions: [
+          `Enriches cultural heritage, fosters creative innovation, and expresses societal commentary.`,
+          `Used in visual media, architectural design, performing arts, and therapeutic applications.`
+        ],
+        types: [
+          `Visual Arts: Painting, sculpture, printmaking, and photography.`,
+          `Performing Arts: Music composition, dance, theatre, and opera.`,
+          `Applied Arts & Architecture: Industrial design, fashion, and structural design.`
+        ],
+        advantages: [
+          `Stimulates creative problem-solving, visual literacy, and emotional intelligence.`,
+          `Preserves cultural traditions while inspiring contemporary design trends.`
+        ],
+        disadvantages: [
+          `Aesthetic evaluation is subjective and varies across different cultural paradigms.`,
+          `Mastery requires extensive physical practice, specialized tools, or creative incubation.`
+        ],
+        syntax: `Composition Rule:\nRule of Thirds / Golden Ratio (1 : 1.618) → Harmony of Focus Points`,
+        example: `Analyzing how complementary color schemes and directional lighting create emotional contrast in fine art.`,
+        examQuestions: [
+          { q: `How do the principles of design apply to ${cap}?`, a: `They guide the arrangement of visual elements (lines, colors) to create balance, focal emphasis, and visual rhythm in the artwork.` },
+          { q: `What distinguishes historical artistic movements from contemporary styles?`, a: `Historical movements followed strict academic canons, while contemporary art emphasizes conceptual freedom, mixed media, and personal narrative.` }
+        ]
+      };
+    }
+
+    if (isCS) {
+      return {
+        definition: `${cap} is a computer science concept, software engineering paradigm, or digital architecture used to build, process, and optimize computational systems.`,
+        keyConcepts: [
+          `Algorithms & Complexity: Designing efficient step-by-step procedures measured by Big-O notation.`,
+          `Data Abstraction & Structures: Organizing data in memory (arrays, trees, graphs, hash tables).`,
+          `System Architecture: Modular software components, database management, and network protocols.`
+        ],
+        features: [
+          `Provides high reliability, scalability, and automated logic execution.`,
+          `Supports cross-platform interoperability through standardized APIs and protocols.`
+        ],
+        functions: [
+          `Automates complex computations, powers web/mobile software, and protects digital data.`,
+          `Enables machine intelligence, cloud storage, and real-time global connectivity.`
+        ],
+        types: [
+          `Software Engineering: Systems development, web backends, and mobile applications.`,
+          `Data & AI: Machine learning, database management, and big data analytics.`,
+          `Cybersecurity & Networking: Cryptography, network routing, and system security.`
+        ],
+        advantages: [
+          `Automates manual workflows with lightning speed and zero human calculation errors.`,
+          `Scales compute power to handle millions of simultaneous user queries.`
+        ],
+        disadvantages: [
+          `Susceptible to software bugs, security vulnerabilities, and memory leaks.`,
+          `Requires continuous learning as tech stacks and security standards evolve.`
+        ],
+        syntax: `// Standard Algorithm Structure\nfunction execute(data) {\n  // Processing logic\n  return result;\n}`,
+        example: `Implementing a fast search index using a hash map to retrieve record values in O(1) average time.`,
+        examQuestions: [
+          { q: `What is the significance of time and space complexity in ${cap}?`, a: `Complexity dictates how runtime memory and CPU cycles scale as input size grows, determining software scalability.` },
+          { q: `Compare procedural programming with object-oriented programming.`, a: `Procedural focuses on sequential steps and standalone functions; OOP encapsulates state (data) and behavior (methods) into reusable objects.` }
+        ]
+      };
+    }
+
+    if (isMath) {
+      return {
+        definition: `${cap} is a mathematical branch, theorem, or operational method used to model quantities, geometric relationships, dynamic rates, or logical structures.`,
+        keyConcepts: [
+          `Axioms & Proofs: Establishing mathematical truth through rigorous deductive logic.`,
+          `Functional Relations: Mapping input values to unique output values via explicit equations.`,
+          `Optimization & Rate Evaluation: Solving for maximum/minimum bounds or continuous change.`
+        ],
+        features: [
+          `Provides exact, universal mathematical solutions independent of subjective interpretation.`,
+          `Expressible in standardized symbolic notation, equations, and graphical coordinate systems.`
+        ],
+        functions: [
+          `Essential for engineering calculations, physics modeling, financial forecasting, and computer algorithms.`,
+          `Provides tools for measuring physical space, statistical probability, and structural stability.`
+        ],
+        types: [
+          `Pure Mathematics: Algebra, geometry, number theory, and mathematical logic.`,
+          `Applied Mathematics: Calculus, statistics, differential equations, and numerical analysis.`,
+          `Discrete Mathematics: Graph theory, combinatorics, and boolean logic.`
+        ],
+        advantages: [
+          `Delivers precise, verifiable quantitative answers to complex physical problems.`,
+          `Develops logical reasoning skills applicable across science and technology.`
+        ],
+        disadvantages: [
+          `Abstract concepts can be challenging without strong foundational prerequisites.`,
+          `Symbolic calculations require high precision to avoid cascading calculation errors.`
+        ],
+        syntax: `Standard Formula / Notation:\nf(x) = ax² + bx + c  (Quadratic Form)\ny - y₁ = m(x - x₁)  (Line Equation)`,
+        example: `Evaluating the derivative of a cost function to determine the exact production volume that minimizes expenses.`,
+        examQuestions: [
+          { q: `State the fundamental theorem or formula associated with ${cap} and explain its variables.`, a: `The formula relates key variables through exact algebraic operations, where each parameter represents a physical or geometric dimension.` },
+          { q: `Why is step-by-step verification important in mathematical proofs?`, a: `Because each step must logically follow from previous axioms; an unverified assumption invalidates the entire mathematical proof.` }
+        ]
+      };
+    }
+
+    if (isBio) {
+      return {
+        definition: `${cap} is a biological concept, physiological process, or ecological system that governs living organisms, cellular mechanisms, or life cycles.`,
+        keyConcepts: [
+          `Cellular Mechanism: How organelles, membranes, and biochemical pathways sustain cellular life.`,
+          `Genetics & Inheritance: Transmission of hereditary information via nucleic acids (DNA/RNA).`,
+          `Homeostasis & Adaptation: Maintaining internal biological equilibrium in response to environment.`
+        ],
+        features: [
+          `Regulated by enzymatic reactions, feedback loops, and genetic code expression.`,
+          `Operates across hierarchical biological levels (molecules → cells → tissues → organs → ecosystems).`
+        ],
+        functions: [
+          `Sustains growth, reproduction, metabolic energy transformation, and species survival.`,
+          `Forms the basis of medical diagnostics, biotechnology, agriculture, and pharmacology.`
+        ],
+        types: [
+          `Molecular & Cell Biology: Genetics, cellular respiration, and enzyme kinetics.`,
+          `Organismal Biology: Human anatomy, plant physiology, and microbiology.`,
+          `Ecology & Evolution: Population dynamics, natural selection, and biodiversity.`
+        ],
+        advantages: [
+          `Enables medical breakthroughs, disease treatments, and sustainable agricultural yields.`,
+          `Fosters deep understanding of human health, ecology, and biological conservation.`
+        ],
+        disadvantages: [
+          `Biological systems involve thousands of interconnected metabolic pathways.`,
+          `Experimental studies require ethical considerations and controlled laboratory conditions.`
+        ],
+        syntax: `Biological Pathway:\nStimulus → Receptor → Signal Transduction → Cellular Response`,
+        example: `Tracing how hormone binding triggers downstream intracellular second messengers to regulate glucose levels.`,
+        examQuestions: [
+          { q: `Describe the biological mechanism of ${cap} and its role in homeostasis.`, a: `It acts through regulated biochemical pathways to keep physiological parameters within optimal living ranges.` },
+          { q: `Explain the structural difference between prokaryotic and eukaryotic organisms regarding ${cap}.`, a: `Eukaryotes possess membrane-bound organelles and a enclosed nucleus, whereas prokaryotes lack a nucleus and organelle compartmentalization.` }
+        ]
+      };
+    }
+
+    if (isChem) {
+      return {
+        definition: `${cap} is a chemical principle, reaction mechanism, or molecular property that governs matter composition, bonding, and energy transformation.`,
+        keyConcepts: [
+          `Atomic Structure & Bonding: Valence electron arrangements, ionic/covalent/metallic bonds.`,
+          `Chemical Reaction Dynamics: Reactants transforming into products following stoichiometry.`,
+          `Thermodynamics & Equilibrium: Energy changes (enthalpy ΔH, entropy ΔS) and reversible reaction balance.`
+        ],
+        features: [
+          `Governed by fundamental laws of conservation of mass and energy.`,
+          `Characterized by observable changes (color, gas release, precipitate, temperature shift).`
+        ],
+        functions: [
+          `Enables synthesis of new materials, pharmaceuticals, polymers, and clean energy fuels.`,
+          `Explains industrial chemical manufacturing, battery technology, and environmental chemistry.`
+        ],
+        types: [
+          `Physical Chemistry: Thermodynamics, reaction kinetics, and electrochemistry.`,
+          `Organic Chemistry: Carbon-based compounds, functional groups, and synthesis.`,
+          `Inorganic Chemistry: Metals, coordination complexes, and crystalline structures.`
+        ],
+        advantages: [
+          `Provides precise molecular control for manufacturing medicine, materials, and agrochemicals.`,
+          `Allows predicting reaction yields and energetic outcomes before laboratory mixing.`
+        ],
+        disadvantages: [
+          `Hazardous chemical reactions require strict laboratory safety and waste disposal protocols.`,
+          `Reaction kinetics can be sensitive to minute temperature or pressure variations.`
+        ],
+        syntax: `Balanced Equation:\naA + bB → cC + dD\nReaction Quotient: Keq = [C]^c [D]^d / ([A]^a [B]^b)`,
+        example: `Calculating the theoretical yield of a neutralization reaction using balanced stoichiometric ratios.`,
+        examQuestions: [
+          { q: `What is the significance of Le Chatelier’s Principle in relation to ${cap}?`, a: `If a chemical system at equilibrium is disturbed, the system shifts reaction direction to counteract the disturbance.` },
+          { q: `How do Exothermic and Endothermic reactions differ regarding enthalpy change (ΔH)?`, a: `Exothermic reactions release heat (negative ΔH); Endothermic reactions absorb heat from surroundings (positive ΔH).` }
+        ]
+      };
+    }
+
+    if (isPhys) {
+      return {
+        definition: `${cap} is a fundamental physical law, energy mechanism, or natural force that governs the behavior of matter, space, time, and radiation in the universe.`,
+        keyConcepts: [
+          `Conservation Laws: Conservation of energy, linear momentum, angular momentum, and electric charge.`,
+          `Field Theory & Forces: Gravitational, electromagnetic, strong nuclear, and weak nuclear interactions.`,
+          `Wave-Particle Dynamics: Oscillations, wave propagation, optics, and quantum energy quantization.`
+        ],
+        features: [
+          `Formulated through empirical experiment, vector mechanics, and mathematical equations.`,
+          `Applies universally across micro-atomic scales to macro-cosmological space.`
+        ],
+        functions: [
+          `Underpins mechanical engineering, electronics, aerospace technology, telecommunications, and energy generation.`,
+          `Explains planetary orbits, electrical circuits, optical lenses, and quantum devices.`
+        ],
+        types: [
+          `Classical Mechanics: Motion laws, kinematics, work, and energy dynamics.`,
+          `Electromagnetism & Optics: Electric fields, magnetic induction, light waves, and lasers.`,
+          `Modern Physics: Quantum mechanics, special/general relativity, and nuclear physics.`
+        ],
+        advantages: [
+          `Provides predictive mathematical laws for designing machine structures and electrical devices.`,
+          `Forms the core physical foundation of all technological engineering disciplines.`
+        ],
+        disadvantages: [
+          `Requires advanced calculus and vector mathematics for complete formal derivation.`,
+          `Idealized theoretical models (e.g., frictionless surfaces, point masses) require real-world correction.`
+        ],
+        syntax: `Fundamental Equations:\nF = m·a  (Newton's 2nd Law)\nE = m·c²  (Mass-Energy Equivalence)\nV = I·R  (Ohm's Law)`,
+        example: `Applying conservation of momentum to calculate rebound velocities after a two-body elastic collision.`,
+        examQuestions: [
+          { q: `State the primary physical law governing ${cap} and write its mathematical equation.`, a: `The law relates fundamental vector quantities (force, energy, field) showing direct proportionality between rate of change and applied force.` },
+          { q: `How does energy conservation apply during physical transformations in ${cap}?`, a: `Energy cannot be created or destroyed; it transforms between kinetic, potential, thermal, and radiative states while total energy remains constant.` }
+        ]
+      };
+    }
+
+    if (isPsych) {
+      return {
+        definition: `${cap} is a psychological or sociological concept, behavioral theory, or cognitive process that explains human mental function, social interactions, or societal structures.`,
+        keyConcepts: [
+          `Cognition & Perception: How the brain processes sensory inputs, forms memories, and makes decisions.`,
+          `Behavioral Conditioning: Learning mechanisms through reinforcement, classical conditioning, or observation.`,
+          `Social Dynamics: Group behavior, cultural norms, social stratification, and interpersonal relations.`
+        ],
+        features: [
+          `Evaluated through qualitative observations, psychological experiments, and statistical surveys.`,
+          `Examines interactions between biological neural processes and socio-cultural environments.`
+        ],
+        functions: [
+          `Improves mental healthcare, educational strategies, workplace productivity, and conflict resolution.`,
+          `Provides deep insight into human motivation, emotional regulation, and social harmony.`
+        ],
+        types: [
+          `Cognitive & Behavioral Psychology: Memory, learning theories, and behavioral therapy.`,
+          `Social & Organizational Psychology: Group dynamics, leadership, and social influence.`,
+          `Developmental Psychology: Human cognitive and emotional growth across life stages.`
+        ],
+        advantages: [
+          `Enhances self-awareness, emotional intelligence, and interpersonal communication skills.`,
+          `Helps design supportive social policies and evidence-based mental health interventions.`
+        ],
+        disadvantages: [
+          `Human behavior is complex and influenced by numerous uncontrolled psychological variables.`,
+          `Psychological experiments require strict ethical protocols regarding participant consent.`
+        ],
+        syntax: `Behavioral Framework:\nStimulus → Cognitive Processing → Emotional / Behavioral Response`,
+        example: `Studying how positive reinforcement increases desired habits by triggering brain reward pathways.`,
+        examQuestions: [
+          { q: `How does ${cap} influence human cognitive processing and behavior?`, a: `It shapes how individuals perceive sensory information, store memories, and select behavioral responses under social conditions.` },
+          { q: `Differentiate between Classical Conditioning and Operant Conditioning.`, a: `Classical conditioning associates involuntary responses with new stimuli; Operant conditioning shapes voluntary behavior through rewards or consequences.` }
+        ]
+      };
+    }
+
+    // Default versatile academic explanation
     return {
-      definition: `${cap} is a subject area that deals with the study, analysis, and understanding of its core principles, theories, and real-world applications.`,
+      definition: `${cap} is a fundamental academic topic that encompasses key principles, theoretical models, and practical applications within its field.`,
       keyConcepts: [
-        `Basic Terminology: Understanding the key terms and definitions used in ${cap}.`,
-        `Core Principles: The fundamental rules and laws that govern ${cap}.`,
-        `Applications: How ${cap} concepts are applied in practical and real-world scenarios.`
+        `Core Terminology: Understanding essential vocabulary, definitions, and foundational concepts of ${cap}.`,
+        `Governing Principles: The underlying rules, theories, and framework that define ${cap}.`,
+        `Practical Applications: How concepts of ${cap} are utilized in academic study and real-world scenarios.`
       ],
       features: [
-        `Covers both theoretical knowledge and practical applications.`,
-        `Follows a structured approach from basic concepts to advanced topics.`
+        `Combines theoretical foundation with practical problem-solving methodologies.`,
+        `Follows a structured learning progression from elementary concepts to advanced mastery.`
       ],
       functions: [
-        `Helps in understanding natural phenomena, processes, or systems related to ${cap}.`,
-        `Provides a foundation for advanced study and professional applications.`
+        `Provides essential analytical tools and background knowledge required for competitive exams.`,
+        `Helps students analyze complex problems and draw evidence-based conclusions.`
       ],
       types: [
-        `Theoretical: Focuses on concepts, laws, and mathematical models.`,
-        `Applied: Focuses on practical usage in industry, research, or daily life.`
+        `Theoretical Study: Focuses on core concepts, definitions, and conceptual understanding.`,
+        `Applied Practice: Focuses on practical problem solving, case studies, and real-world implementation.`
       ],
       advantages: [
-        `Builds strong analytical and problem-solving skills.`,
-        `Knowledge is applicable across multiple fields and career paths.`
+        `Develops critical thinking, structured reasoning, and comprehensive domain knowledge.`,
+        `Prepares students for academic excellence, examinations, and professional applications.`
       ],
       disadvantages: [
-        `Some topics can be abstract and require strong foundational knowledge.`,
-        `Practical application may require additional tools, equipment, or software.`
+        `Mastery requires consistent revision, practice questions, and active recall.`,
+        `Some sub-topics can be abstract and require clear foundational understanding.`
       ],
       syntax: null,
-      example: `A student studying ${cap} applies core concepts to solve textbook problems and answer exam questions accurately.`,
+      example: `A student studying ${cap} applies foundational rules to analyze textbook cases and answer examination questions accurately.`,
       examQuestions: [
-        { q: `Define ${cap} and state its importance.`, a: `${cap} is the systematic study of its core subject matter. It is important because it provides foundational knowledge required for advanced study, competitive exams, and real-world problem solving.` },
-        { q: `List any four key features of ${cap}.`, a: `1. Based on established principles and theories. 2. Has both theoretical and practical components. 3. Widely used in academics and industry. 4. Follows a logical and structured learning path.` }
+        { q: `Define ${cap} and outline its core significance in examinations.`, a: `${cap} is the systematic study of its core principles. It is essential because it forms the basis for structured exam questions and practical problem solving.` },
+        { q: `List three major features of ${cap} and explain one practical application.`, a: `Features: 1. Structured principles. 2. Wide applicability. 3. Logical framework. Application: Solves real-world problems using domain rules.` }
       ]
     };
   },
 
   /* ---- 2b. Notes Summarizer Engine ---- */
   summarizeNotes(text) {
-    const sentences = text
+    // 1. Clean and separate prose lines vs code lines
+    let cleanedText = text
       .replace(/\r\n/g, '\n')
-      .split(/(?<=[.!?])\s+|(?<=\n)\s*(?=[A-Z])/g)
-      .map(s => s.trim())
-      .filter(s => s.length > 15);
+      .replace(/([^\n])\s*(>>>|\bpython>|\bIn \[\d+\]:)\s*/g, '$1\n$2 ')
+      .replace(/(>>>|\bpython>|\bIn \[\d+\]:)\s*/g, '\n>>> ');
 
-    // Score sentences by importance signals
+    const rawLines = cleanedText.split('\n').map(l => l.trim()).filter(Boolean);
+    const codeLines = [];
+    const proseLines = [];
+
+    const isCodeLine = line => /^>>>|^\s*(def\s|class\s|import\s|from\s|if\s|for\s|while\s|return\s|print\(|\w+\.\w+\(|\w+\[.*\]|\bValueError:|\bTypeError:|\bIndexError:|\bSyntaxError:|\b\w+\s*=\s*\[|^\s*[\{\[\(])/i.test(line);
+
+    rawLines.forEach(line => {
+      if (isCodeLine(line)) {
+        codeLines.push(line);
+      } else {
+        proseLines.push(line);
+      }
+    });
+
+    // 2. Extract clean sentences from prose lines
+    const proseText = proseLines.join(' ');
+    const rawSentences = proseText
+      .split(/(?<=[.!?])\s+|(?<=\n)\s*/g)
+      .map(s => s.trim())
+      .filter(s => s.length > 15 && !isCodeLine(s));
+
+    // Deduplicate while preserving order
+    const sentences = Array.from(new Set(rawSentences));
+
+    // 3. Score sentences by importance
     const scored = sentences.map(sentence => {
       let score = 0;
       const lower = sentence.toLowerCase();
 
-      // Definition signals — highest priority for exam revision
       if (/define|definition|is called|known as|refers to|is defined as|means/.test(lower)) score += 6;
-      // Importance markers
       if (/important|key|main|essential|fundamental|critical|primary|significant|vital|major/.test(lower)) score += 5;
-      // Cause-effect and reasoning
       if (/therefore|thus|hence|as a result|consequently|because|due to|leads to|causes/.test(lower)) score += 3;
-      // Structural markers
       if (/first|second|third|finally|lastly|in conclusion|in summary|types of|kinds of|classified/.test(lower)) score += 3;
-      // Imperative / rule statements
       if (/always|never|must|should|required|necessary|rule|law|principle|formula/.test(lower)) score += 3;
-      // Examples and illustrations
       if (/example|for instance|such as|e\.g\.|like|including/.test(lower)) score += 2;
-      // Comparison / difference signals
       if (/difference|unlike|whereas|compared to|distinction|on the other hand/.test(lower)) score += 2;
-      // Prefer medium-length informative sentences
       if (sentence.length > 40 && sentence.length < 200) score += 1;
-      // Numeric data often important
       if (/\d+/.test(sentence)) score += 1;
 
       return { sentence, score };
@@ -301,15 +826,25 @@ const AI = {
     const topCount = Math.min(6, Math.max(3, Math.ceil(sentences.length * 0.35)));
     const topSentences = sortedSentences.slice(0, topCount).map(s => s.sentence);
 
-    // 1. Short Summary — combine the two highest-scoring sentences
-    const shortSummary = topSentences.slice(0, 2).join(' ') || (sentences.slice(0, 2).join(' ') || text.slice(0, 150) + '...');
+    // Short Summary
+    let shortSummary = topSentences.slice(0, 2).join(' ');
+    if (!shortSummary || shortSummary.length < 30) {
+      shortSummary = sentences.slice(0, 2).join(' ') || (text.replace(/>>>/g, '').slice(0, 180) + '...');
+    }
 
-    // 2. Key Points
-    const keyPoints = topSentences.length > 0 ? topSentences : sentences.slice(0, 4);
+    // Quick Revision Points (distilled crisp 1-line takeaways)
+    const quickRevisionPoints = sortedSentences.slice(0, Math.min(4, sortedSentences.length)).map(item => {
+      let cleanStr = item.sentence.replace(/^[\d-•\s]+/, '');
+      if (cleanStr.length > 110) cleanStr = cleanStr.substring(0, 107) + '...';
+      return cleanStr;
+    });
 
-    // 3. Extract Keywords — filter out common stop words and filler words
+    // Key Points (detailed)
+    const keyPoints = topSentences.length > 0 ? topSentences : (sentences.length > 0 ? sentences.slice(0, 4) : [text.slice(0, 100)]);
+
+    // Clean Keywords
     const words = text.match(/\b[A-Z][a-z]{2,}\b|\b[a-z]{4,}\b/g) || [];
-    const stopWords = /which|where|there|their|these|those|should|always|before|after|between|through|during|about|would|could|being|other|every|under|above|below|along|since|while|still|using|used|also|from|with|into|that|this|have|been|were|will|they|them|each|some|than|then|when|what|more|most|only|very|such|just|like|make|made|does|done|much|many|well|back|even|give|over|both|come|take|good|long|know|help|tell|call|find|here|look|want|first|last|next|came|seem/;
+    const stopWords = /which|where|there|their|these|those|should|always|before|after|between|through|during|about|would|could|being|other|every|under|above|below|along|since|while|still|using|used|also|from|with|into|that|this|have|been|were|will|they|them|each|some|than|then|when|what|more|most|only|very|such|just|like|make|made|does|done|much|many|well|back|even|give|over|both|come|take|good|long|know|help|tell|call|find|here|look|want|first|last|next|came|seem|valueerror|typeerror|indexerror/;
     const freq = {};
     words.forEach(w => {
       const lower = w.toLowerCase();
@@ -317,55 +852,60 @@ const AI = {
         freq[lower] = (freq[lower] || 0) + 1;
       }
     });
-    // Sort by frequency and pick top keywords, preserving original casing
     const keywordEntries = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
     const keywords = keywordEntries.map(([w]) => w.charAt(0).toUpperCase() + w.slice(1));
 
-    // 4. Memory Tip / Mnemonic
-    let memoryTip = 'Read the key points aloud and try to explain them in your own words without looking at the notes.';
+    // "Remember This" callout content
+    const ruleOrDef = scored.find(s => /rule|law|principle|formula|must|always|never|definition|refers to/.test(s.sentence.toLowerCase()));
+    const rememberThis = ruleOrDef 
+      ? ruleOrDef.sentence 
+      : (sortedSentences[0] ? sortedSentences[0].sentence : 'Focus on foundational concepts and primary definitions during exam revision.');
+
+    // Memory Tip / Mnemonics
+    let memoryTip = 'Read key points aloud and test yourself using active recall.';
     if (keywords.length >= 3) {
       const mnemonicWords = keywords.slice(0, 5);
-      const letters = mnemonicWords.map(k => k.charAt(0).toUpperCase()).join('');
-      memoryTip = `Remember "${letters}" — ${mnemonicWords.join(', ')}. Create a sentence using these initials to recall the key concepts quickly.`;
+      const acronym = mnemonicWords.map(k => k.charAt(0).toUpperCase()).join('');
+      memoryTip = `Mnemonic Hook: "${acronym}" → ${mnemonicWords.join(' • ')}. Associate each letter with its core concept for rapid exam recall.`;
     }
 
-    // 5. Important Exam Point — pick the most important definition or rule
-    const definitionSentence = scored.find(s => /define|definition|is called|known as|refers to|is defined as/.test(s.sentence.toLowerCase()));
-    const examPoint = definitionSentence
-      ? definitionSentence.sentence
-      : (sortedSentences[0] ? sortedSentences[0].sentence : 'Focus on learning exact definitions and key differences between related concepts.');
+    // Exam Point
+    const defSentence = scored.find(s => /define|definition|is called|known as|refers to|is defined as/.test(s.sentence.toLowerCase()));
+    const examPoint = defSentence ? defSentence.sentence : (sortedSentences[0] ? sortedSentences[0].sentence : 'Focus on core definitions and standard syntax usage.');
 
-    // 6. Quick Revision Tips — contextual based on note content
+    // Code Snippets formatted
+    let formattedCodeBlock = null;
+    if (codeLines.length > 0) {
+      formattedCodeBlock = codeLines.map(l => l.replace(/^>>>\s*/, '')).join('\n');
+    }
+
+    // Revision Tips
     const lower = text.toLowerCase();
     const revisionTips = [];
     if (/definition|define|is called|known as/.test(lower)) {
-      revisionTips.push('Memorize all definitions word-by-word — they are commonly asked in exams.');
+      revisionTips.push('Memorize key definitions — examiners award direct marks for standard terminology.');
     }
     if (/difference|compare|unlike|whereas/.test(lower)) {
-      revisionTips.push('Make a comparison table for differences mentioned in the notes.');
+      revisionTips.push('Draw a structured comparison table for contrasting concepts.');
     }
-    if (/formula|equation|calculate|compute/.test(lower)) {
-      revisionTips.push('Write down all formulas separately and practice solving numerical problems.');
+    if (/formula|equation|calculate|compute|code|function|list|array/.test(lower)) {
+      revisionTips.push('Practice writing syntax and formulas on paper without looking at reference notes.');
     }
     if (/example|for instance|such as|e\.g/.test(lower)) {
-      revisionTips.push('Learn at least one example for each concept — examiners often ask for examples.');
+      revisionTips.push('Include at least one concrete example for every main concept in your answers.');
     }
-    if (/advantage|disadvantage|benefit|limitation|drawback/.test(lower)) {
-      revisionTips.push('List advantages and disadvantages in a two-column table for quick recall.');
-    }
-    // Always include these general tips
-    revisionTips.push('Cover the notes and try to write the key points from memory.');
-    revisionTips.push('Revise these points again 24 hours before the exam for best retention.');
-    if (revisionTips.length < 4) {
-      revisionTips.push('Practice writing short 2-line answers for each key point.');
-    }
+    revisionTips.push('Self-test by writing down these key points from memory.');
+    revisionTips.push('Revise these notes 24 hours before the exam for maximum long-term retention.');
 
     return {
       shortSummary,
+      quickRevisionPoints: quickRevisionPoints.length > 0 ? quickRevisionPoints : [shortSummary],
+      rememberThis,
       keyPoints,
-      keywords: keywords.length > 0 ? keywords : ['Definition', 'Concept', 'Feature', 'Application'],
+      keywords: keywords.length > 0 ? keywords : ['Concept', 'Definition', 'Syntax', 'Example'],
       memoryTip,
       examPoint,
+      formattedCodeBlock,
       revisionTips: revisionTips.slice(0, 5)
     };
   },
@@ -672,124 +1212,499 @@ const AI = {
   generateGenericQuiz(topic) {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
     const lower = topic.toLowerCase();
-    const isCode = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript/.test(lower);
 
-    if (isCode) {
+    // Domain detection regexes
+    const isLit = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|narrative|author|literary|sonnet|gothic|romanticism|rhetoric|allegory/.test(lower);
+    const isHist = /history|historical|war|revolution|empire|century|king|queen|reign|dynasty|battle|treaty|civilization|colonial|independence|movement|ancient|medieval|world war|renaissance/.test(lower);
+    const isGeo = /geography|climate|map|river|mountain|tectonic|earth|ocean|continent|population|atmosphere|soil|biomes|latitude|longitude|ecosystem|glacier|volcano|weather|topography/.test(lower);
+    const isPol = /politic|constitution|democracy|government|parliament|judiciary|rights|state|election|governance|citizenship|policy|legislature|sovereign|liberty|justice|monarchy/.test(lower);
+    const isEcon = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|monopoly|demand|supply|fiscal|monetary|currency|trade|banking|revenue|utility|capitalism/.test(lower);
+    const isComm = /commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock|capital|entrepreneur|invoice/.test(lower);
+    const isLang = /language|grammar|linguistic|phonetics|syntax|tenses|noun|verb|adjective|translation|semantics|vocabulary|idiom|phrase|punctuation|preposition/.test(lower);
+    const isArt = /art|painting|music|sculpture|architecture|design|dance|theatre|aesthetic|baroque|impressionism|composition|harmony|melody|rhythm|canvas|artistic/.test(lower);
+    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure/.test(lower);
+    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number theory|logarithm/.test(lower);
+    const isBio = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|microbiology|photosynthesis|mitosis|meiosis|neuron/.test(lower);
+    const isChem = /chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|organic|inorganic|bond|thermodynamics|atom|solution|catalyst|oxidation/.test(lower);
+    const isPhys = /physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum|relativity|kinematics|friction|photon/.test(lower);
+    const isPsych = /psychology|sociology|philosophy|behavior|cognition|mind|brain|perception|personality|society|ethics|logic|moral|existential|consciousness|empathy/.test(lower);
+
+    if (isLit) {
       return [
         {
-          q: `What is ${cap} primarily used for?`,
+          q: `[Easy] What is the central focus when studying ${cap} in literary studies?`,
           options: [
-            'Writing and executing computer programs',
-            'Designing hardware circuits',
-            'Managing accounting records',
-            'Creating physical prototypes'
+            `Analyzing narrative structure, thematic motifs, and stylistic choices`,
+            `Calculating numerical chemical reaction speeds`,
+            `Designing digital database schemas`,
+            `Measuring geographic atmospheric pressure`
           ],
           answer: 0,
-          explanation: `${cap} is a programming technology used for writing, testing, and executing software programs.`
+          explanation: `In literature, studying ${cap} focuses on analyzing how narrative devices, themes, and stylistic expressions convey human meaning.`
         },
         {
-          q: `Which of the following is a valid data type in most programming languages?`,
+          q: `[Easy] Which literary component is most closely associated with ${cap}?`,
           options: [
-            'Paragraph',
-            'Integer',
-            'Document',
-            'Slide'
+            `Electromagnetic wave spectrum`,
+            `Metaphor, symbolism, and character development`,
+            `Double-entry debit and credit records`,
+            `Gross Domestic Product calculation`
           ],
           answer: 1,
-          explanation: 'Integer (int) is a fundamental data type used to store whole numbers in most programming languages.'
+          explanation: `Literary topics involve figurative language such as metaphors, symbolism, imagery, and character arcs.`
         },
         {
-          q: `What is a function in programming?`,
+          q: `[Medium] How do scholars differentiate structural genres within ${cap}?`,
           options: [
-            'A reusable block of code that performs a specific task',
-            'A type of variable that stores text',
-            'A file format for saving programs',
-            'A hardware component of the computer'
-          ],
-          answer: 0,
-          explanation: 'A function is a named, reusable block of code designed to perform a particular task, improving code organization and reusability.'
-        },
-        {
-          q: `What does the term "debugging" mean?`,
-          options: [
-            'Adding new features to software',
-            'Finding and fixing errors in code',
-            'Deleting old programs',
-            'Installing software updates'
+            `By counting physical molecular weights`,
+            `By evaluating form (e.g., Prose vs. Poetry vs. Drama) and stylistic meter`,
+            `By measuring electrical resistance in Ohms`,
+            `By running automated unit test suites`
           ],
           answer: 1,
-          explanation: 'Debugging is the process of identifying, analyzing, and removing errors (bugs) from a program.'
+          explanation: `Literary genres are categorized by structural form (prose, verse, drama) and stylistic features like rhyme and meter.`
         },
         {
-          q: `Which symbol is commonly used for single-line comments in JavaScript, Java, and C++?`,
+          q: `[Medium] In a critical essay on ${cap}, what role does historical context play?`,
           options: [
-            '<!-- -->',
-            '//',
-            '##',
-            '**'
+            `It determines binary byte storage capacity`,
+            `It provides socio-cultural background that shapes author perspective and textual meaning`,
+            `It replaces the need for close textual reading`,
+            `It calculates the financial interest rate of publication`
           ],
           answer: 1,
-          explanation: 'The double forward slash (//) is used for single-line comments in JavaScript, Java, C, C++, and many other languages.'
+          explanation: `Historical context explains the cultural, political, and social environment influencing an author's literary work.`
+        },
+        {
+          q: `[Hard] Which analytical approach offers the deepest interpretation of underlying symbolism in ${cap}?`,
+          options: [
+            `Ignoring figurative devices to focus only on word counts`,
+            `Deconstructing thematic motifs and cross-referencing contextual imagery`,
+            `Converting paragraphs into mathematical equations`,
+            `Memorizing chapter titles without reading the text`
+          ],
+          answer: 1,
+          explanation: `Deep literary analysis requires deconstructing recurrent motifs and analyzing how symbolic imagery reinforces the work's central theme.`
         }
       ];
     }
 
-    // Theory / general topic quiz
+    if (isHist) {
+      return [
+        {
+          q: `[Easy] What is the primary objective of examining ${cap} in historical studies?`,
+          options: [
+            `Understanding past causes, key events, human actors, and societal consequences`,
+            `Synthesizing artificial organic chemical polymers`,
+            `Solving quadratic algebraic equations`,
+            `Writing computer source code compilers`
+          ],
+          answer: 0,
+          explanation: `Historical inquiry analyzes key events, their underlying causes, key historical figures, and long-term societal impacts.`
+        },
+        {
+          q: `[Easy] Which type of evidence is considered a primary historical source for ${cap}?`,
+          options: [
+            `Eyewitness diaries, official treaties, and contemporary photographs`,
+            `Modern textbook chapter summaries written decades later`,
+            `Fictional movies produced in the 21st century`,
+            `Automated statistical software algorithms`
+          ],
+          answer: 0,
+          explanation: `Primary sources are original first-hand records created during the time period under study (e.g., diaries, original treaties).`
+        },
+        {
+          q: `[Medium] How did ${cap} influence socio-political institutional developments?`,
+          options: [
+            `By altering Earth's magnetic dipole orientation`,
+            `By shifting power balances, inspiring legislative reform, or changing state governance`,
+            `By changing the atomic structure of noble gases`,
+            `By increasing CPU processor clock speed`
+          ],
+          answer: 1,
+          explanation: `Major historical events like ${cap} lead to constitutional shifts, political reform, or geopolitical restructuring.`
+        },
+        {
+          q: `[Medium] What is a major challenge historians encounter when analyzing records of ${cap}?`,
+          options: [
+            `Evaluating potential author bias, propaganda, or incomplete archives`,
+            `Running out of digital storage on hard drives`,
+            `Calculating gravitational acceleration constants`,
+            `Translating text into programming bytecodes`
+          ],
+          answer: 0,
+          explanation: `Historiography requires critically evaluating potential bias, political propaganda, and missing archival records.`
+        },
+        {
+          q: `[Hard] When evaluating long-term consequences of ${cap}, which perspective provides the most objective analysis?`,
+          options: [
+            `Focusing solely on immediate 24-hour battle outcomes`,
+            `Comparing multiple primary sources and weighing diplomatic, economic, and social impacts over generations`,
+            `Assuming historical accounts are 100% objective without verification`,
+            `Relying on a single political leader's speech`
+          ],
+          answer: 1,
+          explanation: `Comprehensive historical synthesis cross-references multiple primary sources and measures multi-generational socio-economic impacts.`
+        }
+      ];
+    }
+
+    if (isGeo) {
+      return [
+        {
+          q: `[Easy] What does spatial geography examine regarding ${cap}?`,
+          options: [
+            `The physical distribution of Earth features, natural processes, and human settlements`,
+            `Writing abstract object-oriented code classes`,
+            `Balancing corporate accounting ledger sheets`,
+            `Analyzing poetic rhyme schemes`
+          ],
+          answer: 0,
+          explanation: `Geography studies how physical phenomena, landforms, ecosystems, and human activities are spatially distributed across Earth.`
+        },
+        {
+          q: `[Easy] Which of Earth's major systems interacts directly with ${cap}?`,
+          options: [
+            `Software source code repositories`,
+            `Atmosphere, hydrosphere, lithosphere, or biosphere`,
+            `Financial stock market exchanges`,
+            `Grammatical sentence subjects and verbs`
+          ],
+          answer: 1,
+          explanation: `Geographic processes involve interactions among Earth's physical spheres: atmosphere, hydrosphere, lithosphere, and biosphere.`
+        },
+        {
+          q: `[Medium] How do geographers utilize map scale when studying ${cap}?`,
+          options: [
+            `To determine the ratio between map distance and real-world ground distance`,
+            `To calculate corporate income tax percentages`,
+            `To measure computer RAM memory usage`,
+            `To identify literary character motivations`
+          ],
+          answer: 0,
+          explanation: `Map scale expresses the quantitative relationship between distance on a map and actual distance on Earth's surface.`
+        },
+        {
+          q: `[Medium] What is the key difference between Physical and Human Geography in the context of ${cap}?`,
+          options: [
+            `Physical studies natural landform processes; Human studies spatial population and cultural dynamics`,
+            `Physical uses numbers; Human only uses words`,
+            `Physical is only about oceans; Human is only about space`,
+            `There is no difference between them`
+          ],
+          answer: 0,
+          explanation: `Physical geography deals with natural environmental systems, whereas human geography investigates human activities and spatial organizations.`
+        },
+        {
+          q: `[Hard] How does climate change or tectonic activity exacerbate environmental challenges related to ${cap}?`,
+          options: [
+            `By modifying weather patterns, altering soil erosion rates, and shifting vulnerable biome boundaries`,
+            `By changing the rules of English syntax`,
+            `By increasing accounting debit balances`,
+            `By slowing down web browser page loads`
+          ],
+          answer: 0,
+          explanation: `Macro-environmental changes shift ecological equilibrium, triggering cascading impacts on climate zones, natural hazards, and biodiversity.`
+        }
+      ];
+    }
+
+    if (isPol || isLaw) {
+      return [
+        {
+          q: `[Easy] What is the primary role of ${cap} in political science and governance?`,
+          options: [
+            `Regulating state authority, protecting citizen rights, and structuring public policy`,
+            `Synthesizing chemical compounds in a laboratory`,
+            `Calculating speed and acceleration of objects`,
+            `Creating digital 3D game graphics`
+          ],
+          answer: 0,
+          explanation: `Political and legal principles establish the framework for state power, constitutional rights, and public administration.`
+        },
+        {
+          q: `[Easy] Which organ of government is responsible for interpreting laws related to ${cap}?`,
+          options: [
+            `The Judiciary / Constitutional Courts`,
+            `The Executive Branch`,
+            `The Police Department`,
+            `Commercial Banks`
+          ],
+          answer: 0,
+          explanation: `The Judiciary interprets statutory laws, protects constitutional rights, and resolves legal disputes.`
+        },
+        {
+          q: `[Medium] How does the system of Checks and Balances safeguard against authoritarian abuse in ${cap}?`,
+          options: [
+            `By allowing one branch to hold absolute unchecked power`,
+            `By dividing state authority among independent Executive, Legislative, and Judicial branches`,
+            `By eliminating elections entirely`,
+            `By delegating governance to private corporations`
+          ],
+          answer: 1,
+          explanation: `Checks and balances divide authority so that no single government branch can exercise unrestricted state power.`
+        },
+        {
+          q: `[Medium] What distinguishes Fundamental Constitutional Rights from ordinary statutory laws regarding ${cap}?`,
+          options: [
+            `Fundamental Rights are constitutionally guaranteed and judicial remedies exist if violated`,
+            `Statutory laws cannot be changed by parliament`,
+            `Fundamental Rights only apply during wartime`,
+            `Statutory laws are unwritten oral agreements`
+          ],
+          answer: 0,
+          explanation: `Fundamental Rights are supreme constitutional guarantees that override conflicting statutory legislation.`
+        },
+        {
+          q: `[Hard] Which theoretical doctrine best justifies judicial review over legislative acts concerning ${cap}?`,
+          options: [
+            `The Rule of Law and Constitutional Supremacy`,
+            `Absolute Monarchical Privilege`,
+            `Laissez-faire Economic Anarchy`,
+            `Military Dictatorship`
+          ],
+          answer: 0,
+          explanation: `Judicial review is grounded in Constitutional Supremacy — any legislative act violating the constitution is legally void.`
+        }
+      ];
+    }
+
+    if (isEcon || isComm) {
+      return [
+        {
+          q: `[Easy] What is the core economic principle behind ${cap}?`,
+          options: [
+            `Allocating scarce resources to satisfy unlimited human needs and market demand`,
+            `Writing poetic verses in iambic pentameter`,
+            `Splitting atomic nuclei to generate radiation`,
+            `Calculating geological plate movement speed`
+          ],
+          answer: 0,
+          explanation: `Economics centers on how individuals, firms, and governments make choices under resource scarcity.`
+        },
+        {
+          q: `[Easy] In market economics, what happens when demand for ${cap} exceeds supply?`,
+          options: [
+            `Market price tends to rise until equilibrium is reached`,
+            `Market price immediately drops to zero`,
+            `Production stops permanently`,
+            `The central bank shuts down`
+          ],
+          answer: 0,
+          explanation: `When demand exceeds supply (shortage), competition among buyers drives the market price upwards toward equilibrium.`
+        },
+        {
+          q: `[Medium] What is Opportunity Cost in relation to decisions involving ${cap}?`,
+          options: [
+            `The total cash spent on a purchase`,
+            `The value of the next best alternative option forgone when making a choice`,
+            `The tax rate imposed by the government`,
+            `The shipping cost of raw materials`
+          ],
+          answer: 1,
+          explanation: `Opportunity cost measures the sacrificed benefits of the next best alternative given up when selecting a course of action.`
+        },
+        {
+          q: `[Medium] How does Monetary Policy differ from Fiscal Policy regarding economic management of ${cap}?`,
+          options: [
+            `Monetary policy controls interest rates/money supply; Fiscal policy uses government taxation and spending`,
+            `Monetary is run by private stores; Fiscal is run by schools`,
+            `Monetary is only about gold; Fiscal is only about food`,
+            `They are identical terms for government budgets`
+          ],
+          answer: 0,
+          explanation: `Monetary policy is managed by central banks through interest rates; Fiscal policy is set by government tax and spending budgets.`
+        },
+        {
+          q: `[Hard] In corporate finance and accounting, why must the fundamental balance sheet equation always balance for ${cap}?`,
+          options: [
+            `Because every corporate asset must be financed either through owner's equity or creditor liabilities`,
+            `Because banks manually round numbers up`,
+            `Because tax laws forbid storing current assets`,
+            `Because total profit must always equal total debt`
+          ],
+          answer: 0,
+          explanation: `The equation Assets = Liabilities + Equity must balance because every asset possessed by a firm is claimed either by creditors or equity owners.`
+        }
+      ];
+    }
+
+    if (isCS || isCode) {
+      return [
+        {
+          q: `[Easy] What is the primary purpose of ${cap} in computer science?`,
+          options: [
+            `Designing logic, algorithms, or software architectures to solve computational tasks`,
+            `Painting physical canvas portraits`,
+            `Analyzing ancient historical treaties`,
+            `Calculating plant transpiration rates`
+          ],
+          answer: 0,
+          explanation: `Computer science concepts like ${cap} provide algorithms, data structures, and code logic to automate computational problem solving.`
+        },
+        {
+          q: `[Easy] Which time complexity represents the most efficient search algorithm on a sorted list?`,
+          options: [
+            `O(n²) Quadratic Time`,
+            `O(log n) Logarithmic Time (Binary Search)`,
+            `O(n!) Factorial Time`,
+            `O(2ⁿ) Exponential Time`
+          ],
+          answer: 1,
+          explanation: `Logarithmic time O(log n) is significantly faster than linear O(n) or quadratic O(n²) time for large input datasets.`
+        },
+        {
+          q: `[Medium] What is the main distinction between a Compiler and an Interpreter in ${cap}?`,
+          options: [
+            `Compiler translates entire source code before execution; Interpreter executes line by line at runtime`,
+            `Compiler is a hardware chip; Interpreter is a computer monitor`,
+            `Compiler only works on mobile phones; Interpreter only works on servers`,
+            `Compiler deletes source code; Interpreter saves source code`
+          ],
+          answer: 0,
+          explanation: `Compilers convert full source code to machine binary prior to execution, whereas interpreters parse and run code dynamically line by line.`
+        },
+        {
+          q: `[Medium] In Object-Oriented Programming (OOP), what does Encapsulation accomplish?`,
+          options: [
+            `Bundling internal state data and methods together while restricting direct external access`,
+            `Allowing any function to modify global variables freely`,
+            `Converting text into high-resolution images`,
+            `Formatting SQL database queries`
+          ],
+          answer: 0,
+          explanation: `Encapsulation protects object data integrity by exposing controlled public methods while hiding internal private properties.`
+        },
+        {
+          q: `[Hard] Which data structure provides O(1) average time complexity for key-value search operations?`,
+          options: [
+            `Singly Linked List`,
+            `Hash Table / Dictionary`,
+            `Unsorted Array`,
+            `Binary Tree without balancing`
+          ],
+          answer: 1,
+          explanation: `Hash Tables utilize a hashing function to map key strings to array buckets, achieving O(1) average lookup speed.`
+        }
+      ];
+    }
+
+    if (isMath) {
+      return [
+        {
+          q: `[Easy] What is the fundamental objective of ${cap} in mathematics?`,
+          options: [
+            `Formulating exact mathematical equations, proofs, and quantitative relationships`,
+            `Analyzing poetic imagery and metaphor`,
+            `Writing commercial advertising copy`,
+            `Studying historical political elections`
+          ],
+          answer: 0,
+          explanation: `Mathematics uses rigorous logical axioms, symbolic equations, and quantitative proofs to model functional relationships.`
+        },
+        {
+          q: `[Easy] What does the derivative of a function f(x) represent geometrically in ${cap}?`,
+          options: [
+            `The instantaneous rate of change or tangent slope of the curve`,
+            `The perimeter of a circle`,
+            `The volume of a 3D sphere`,
+            `The y-intercept value when x = 100`
+          ],
+          answer: 0,
+          explanation: `The first derivative f'(x) measures the instantaneous rate of change or slope of the tangent line at any point x.`
+        },
+        {
+          q: `[Medium] What does a definite integral compute between bounds [a, b]?`,
+          options: [
+            `The exact net area bounded between the function curve f(x) and the x-axis`,
+            `The product of two random variables`,
+            `The square root of negative numbers`,
+            `The standard deviation of a sample`
+          ],
+          answer: 0,
+          explanation: `A definite integral evaluates the accumulated area under a continuous function curve over the interval [a, b].`
+        },
+        {
+          q: `[Medium] The Fundamental Theorem of Calculus establishes that:`,
+          options: [
+            `Differentiation and Integration are inverse mathematical operations`,
+            `Addition and Division are identical operations`,
+            `Derivatives can never equal zero`,
+            `Integrals only apply to linear equations`
+          ],
+          answer: 0,
+          explanation: `The FTC proves that taking the derivative of an integral yields the original continuous function.`
+        },
+        {
+          q: `[Hard] How do you identify local maxima or minima (extrema) of a differentiable function f(x)?`,
+          options: [
+            `Set f'(x) = 0 to find critical points, then use f''(x) (> 0 for minimum, < 0 for maximum)`,
+            `Multiply f(x) by x and set to 1`,
+            `Guess values by plugging in 1, 2, 3`,
+            `Local extrema cannot be calculated mathematically`
+          ],
+          answer: 0,
+          explanation: `Critical points occur where f'(x) = 0. The second derivative test classifies critical points: f''(x) > 0 is local min, f''(x) < 0 is local max.`
+        }
+      ];
+    }
+
+    // Default versatile quiz across all other topics
     return [
       {
-        q: `What is the correct definition of ${cap}?`,
+        q: `[Easy] What is the core definition and primary scope of ${cap}?`,
         options: [
-          `The study and application of core principles related to ${cap}`,
-          `A branch of fine arts and music composition`,
-          `A cooking technique used in food science`,
-          `A type of physical exercise routine`
+          `The systematic study and practical application of principles related to ${cap}`,
+          `A musical performance technique used in classical opera`,
+          `A chemical purification method for liquid solvents`,
+          `An athletic workout routine for cardiovascular fitness`
         ],
         answer: 0,
-        explanation: `${cap} involves the study of its fundamental principles, theories, and their applications.`
+        explanation: `${cap} involves studying core concepts, definitions, and domain methodologies.`
       },
       {
-        q: `Which of the following is a key feature of ${cap}?`,
+        q: `[Easy] Which feature is essential when studying ${cap} for academic exams?`,
         options: [
-          'It is only useful for entertainment purposes',
-          'It follows a systematic and structured approach',
-          'It has no practical applications',
-          'It cannot be studied in schools or colleges'
-        ],
-        answer: 1,
-        explanation: `${cap} follows a structured approach based on established principles and methodologies.`
-      },
-      {
-        q: `What is one major advantage of studying ${cap}?`,
-        options: [
-          'It helps develop analytical and problem-solving skills',
-          'It guarantees immediate financial rewards',
-          'It requires no effort or practice',
-          'It is unrelated to any career field'
+          `Following a structured approach based on established principles and definitions`,
+          `Memorizing random numbers without understanding context`,
+          `Ignoring textbook definitions entirely`,
+          `Studying only 5 minutes before the exam`
         ],
         answer: 0,
-        explanation: `Studying ${cap} builds analytical thinking, problem-solving abilities, and domain-specific knowledge.`
+        explanation: `Academic success in ${cap} requires grasping core definitions and understanding structured principles.`
       },
       {
-        q: `${cap} can be classified into which of the following categories?`,
+        q: `[Medium] How is knowledge in ${cap} typically categorized for systematic study?`,
         options: [
-          'Theoretical and Applied',
-          'Hot and Cold',
-          'Liquid and Solid',
-          'Indoor and Outdoor'
+          `Into Theoretical (concept-based) and Applied (practical/scenario-based) domains`,
+          `Into Fast and Slow subjects`,
+          `Into Heavy and Light subjects`,
+          `It cannot be categorized`
         ],
         answer: 0,
-        explanation: `Most academic subjects including ${cap} can be broadly classified into theoretical (concept-based) and applied (practical) categories.`
+        explanation: `Most subjects are divided into theoretical fundamentals and applied practical problem-solving.`
       },
       {
-        q: `Which of the following is the best way to prepare ${cap} for exams?`,
+        q: `[Medium] What is one key advantage of mastering ${cap}?`,
         options: [
-          'Memorize everything without understanding',
-          'Learn definitions, understand concepts, and practice questions',
-          'Only read the chapter headings',
-          'Skip the subject entirely'
+          `It builds domain analytical skills and problem-solving capabilities`,
+          `It guarantees instant perfection without practice`,
+          `It eliminates the need for any future learning`,
+          `It is completely isolated from real-world applications`
         ],
-        answer: 1,
-        explanation: 'Effective exam preparation involves understanding definitions, grasping core concepts, and practicing previous year questions.'
+        answer: 0,
+        explanation: `Mastering ${cap} enhances critical analytical reasoning and practical problem-solving skills.`
+      },
+      {
+        q: `[Hard] When answering complex examination questions on ${cap}, what strategy yields maximum marks?`,
+        options: [
+          `Stating a clear definition, listing key structured points, and providing a relevant concrete example`,
+          `Writing one long unstructured paragraph without punctuation`,
+          `Leaving the answer sheet blank`,
+          `Copying the question text repeatedly`
+        ],
+        answer: 0,
+        explanation: `Exam markers look for structured answers containing crisp definitions, key bullet points, and real-world examples.`
       }
     ];
   },
@@ -811,17 +1726,16 @@ const AI = {
       }
     });
 
-    // Loop day-by-day until all exams are over
     const currentDate = new Date(today);
     while (currentDate <= maxExamDate) {
-      // Find subjects whose exam is exactly on currentDate
+      // Find subjects whose exam is on currentDate
       const examSubjects = subjects.filter(s => {
         const d = new Date(s.examDate);
         d.setHours(0, 0, 0, 0);
         return d.getTime() === currentDate.getTime();
       });
 
-      // Find subjects whose exam is in the future relative to currentDate
+      // Find active subjects whose exam is in the future
       const activeSubjects = subjects.filter(s => {
         const d = new Date(s.examDate);
         d.setHours(0, 0, 0, 0);
@@ -830,44 +1744,54 @@ const AI = {
 
       const sessions = [];
 
-      // Add exam markers for today
+      // 1. Add exam markers for today
       examSubjects.forEach(s => {
         const colorClass = SUBJECT_COLORS[subjects.indexOf(s) % SUBJECT_COLORS.length];
         sessions.push({
           subject: s.name,
+          priority: s.priority || 'medium',
           hours: 0,
           colorClass,
           daysLeft: 0,
-          isExamDay: true
+          sessionType: 'exam',
+          sessionLabel: '🎯 Exam Day'
         });
       });
 
-      // Distribute total daily capacity among active subjects
+      // 2. Distribute total daily capacity among active subjects based on Priority Weight + Urgency
       if (activeSubjects.length > 0) {
         let totalWeight = 0;
         const weights = activeSubjects.map(s => {
           const examD = new Date(s.examDate);
           examD.setHours(0, 0, 0, 0);
           const daysLeft = Math.max(1, Math.ceil((examD - currentDate) / (1000 * 60 * 60 * 24)));
-          // Weight function: inverse square of days remaining multiplied by base preference hours
-          const weight = parseFloat(s.dailyHours) / Math.pow(daysLeft, 2);
+          
+          // Priority Multiplier: High = 2.0, Medium = 1.2, Low = 0.8
+          const priority = (s.priority || 'medium').toLowerCase();
+          const priorityMult = priority === 'high' ? 2.0 : (priority === 'low' ? 0.8 : 1.2);
+          
+          // Urgency Weight: Inverse distance to exam
+          const urgencyWeight = 1 / Math.pow(daysLeft, 1.4);
+          
+          // Combined Weight: Priority * Base Daily Hours * Urgency
+          const weight = priorityMult * parseFloat(s.dailyHours) * urgencyWeight;
           totalWeight += weight;
-          return { subject: s, weight, daysLeft };
+          return { subject: s, weight, daysLeft, priority };
         });
 
-        // Allocate hours based on weights
+        // Allocate hours proportionally
         const rawAllocations = weights.map(item => {
           const rawHours = totalCapacity * (item.weight / totalWeight);
-          // Round to nearest 0.5 hours
           const hours = Math.round(rawHours * 2) / 2;
           return {
             subject: item.subject,
+            priority: item.priority,
             hours,
             daysLeft: item.daysLeft
           };
         });
 
-        // If all subjects get rounded down to 0 but we have totalCapacity, allocate to the highest priority
+        // Ensure allocated hours if totalCapacity > 0
         const sumAllocated = rawAllocations.reduce((sum, item) => sum + item.hours, 0);
         if (sumAllocated === 0 && totalCapacity > 0) {
           let maxIdx = 0;
@@ -881,22 +1805,56 @@ const AI = {
           rawAllocations[maxIdx].hours = Math.round(totalCapacity * 2) / 2;
         }
 
-        // Add active subjects with hours > 0
+        // Assign intelligent session types
         rawAllocations.forEach(item => {
           if (item.hours > 0) {
             const colorClass = SUBJECT_COLORS[subjects.indexOf(item.subject) % SUBJECT_COLORS.length];
+            
+            // Session Type Logic
+            let sessionType = 'study';
+            let sessionLabel = '📖 Core Study';
+
+            if (item.daysLeft === 1) {
+              sessionType = 'final-revision';
+              sessionLabel = '⭐ Final Exam Revision';
+            } else if (item.daysLeft <= 3) {
+              sessionType = 'revision';
+              sessionLabel = '🔄 Intensive Revision';
+            } else if (item.daysLeft % 3 === 0) {
+              sessionType = 'practice';
+              sessionLabel = '✍️ Practice & Self-Test';
+            } else if (item.daysLeft % 5 === 0) {
+              sessionType = 'revision';
+              sessionLabel = '🔄 Topic Review';
+            }
+
             sessions.push({
               subject: item.subject.name,
+              priority: item.priority,
               hours: item.hours,
               colorClass,
               daysLeft: item.daysLeft,
-              isExamDay: false
+              sessionType,
+              sessionLabel
             });
           }
         });
+
+        // Insert Short Break indicator if study hours >= 3.0
+        const totalDailyStudyHrs = sessions.filter(s => s.sessionType !== 'exam').reduce((sum, s) => sum + s.hours, 0);
+        if (totalDailyStudyHrs >= 3.0) {
+          sessions.push({
+            subject: 'Rest & Recharge',
+            priority: 'low',
+            hours: 0.5,
+            colorClass: 'color-0',
+            daysLeft: 0,
+            sessionType: 'break',
+            sessionLabel: '☕ 15-30m Short Break'
+          });
+        }
       }
 
-      // Add to plan if we have any session
       if (sessions.length > 0) {
         plan.push({
           date: new Date(currentDate),
@@ -904,7 +1862,6 @@ const AI = {
         });
       }
 
-      // Increment day
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
@@ -1108,11 +2065,17 @@ const AI = {
   },
 };
 
-/* ================================================================
-   3. DOM UTILITIES
-   ================================================================ */
-
 function $(id) { return document.getElementById(id); }
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 function showLoading(btn) {
   btn.classList.add('loading');
@@ -1702,62 +2665,181 @@ function initSummarizer() {
 
     try {
       const data = AI.summarizeNotes(text);
+      const wordCount = text.split(/\s+/).length;
 
-      const keyPointsHtml = data.keyPoints
-        .map((p, i) => `<div class="summary-point" style="animation-delay:${i * 0.05}s"><span><i data-lucide="check" class="inline-icon" style="color:var(--clr-success)"></i></span><span>${p}</span></div>`)
-        .join('');
+      // 1. Output Header Actions Bar
+      let html = `
+        <div class="summary-output-header">
+          <div class="output-topic-title" style="margin-bottom:0;border:none;padding-bottom:0;">
+            <i data-lucide="file-text" class="inline-icon"></i> Notes Summary & Exam Digest
+            <span class="summary-word-badge">~${wordCount} words</span>
+          </div>
+          <div class="summary-actions-toolbar">
+            <button type="button" class="btn-summary-action" id="btn-copy-summary" title="Copy revision summary">
+              <i data-lucide="copy" class="inline-icon"></i> Copy Notes
+            </button>
+            <button type="button" class="btn-summary-action" id="btn-download-summary" title="Download revision sheet">
+              <i data-lucide="download" class="inline-icon"></i> Download
+            </button>
+          </div>
+        </div>
+        <div class="summary-header-divider"></div>
+      `;
 
+      // 2. Short Summary
+      html += `
+        <div class="summary-block">
+          <div class="summary-block-title">
+            <i data-lucide="align-left" class="inline-icon"></i> Short Summary
+          </div>
+          <div class="summary-card short-summary-card">
+            <p style="margin:0;line-height:1.7;">${escapeHtml(data.shortSummary)}</p>
+          </div>
+        </div>
+      `;
+
+      // 3. Quick Revision Points
+      if (data.quickRevisionPoints && data.quickRevisionPoints.length > 0) {
+        const qrpItems = data.quickRevisionPoints.map((pt, idx) => `
+          <div class="summary-point-card" style="animation-delay:${idx * 0.05}s">
+            <div class="point-bullet" style="background:var(--clr-primary);color:#fff;font-weight:700;font-size:0.75rem;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;">${idx + 1}</div>
+            <div class="point-body">
+              <span>${escapeHtml(pt)}</span>
+            </div>
+          </div>
+        `).join('');
+
+        html += `
+          <div class="summary-block">
+            <div class="summary-block-title">
+              <i data-lucide="zap" class="inline-icon"></i> Quick Revision Points
+            </div>
+            <div class="summary-points-grid">${qrpItems}</div>
+          </div>
+        `;
+      }
+
+      // 4. Remember This Callout Card
+      if (data.rememberThis) {
+        html += `
+          <div class="summary-block">
+            <div class="summary-card exam-point-card" style="border-left: 4px solid var(--clr-warning); background: rgba(245, 158, 11, 0.08);">
+              <div class="card-icon-header warning-header" style="color: var(--clr-warning); font-weight:700; display:flex; align-items:center; gap:0.4rem; margin-bottom:0.35rem;">
+                <i data-lucide="bookmark" class="inline-icon"></i> Remember This
+              </div>
+              <p style="margin:0;font-size:0.92rem;font-weight:600;line-height:1.6;color:var(--clr-text-primary);">${escapeHtml(data.rememberThis)}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // 5. Key Points & Core Concepts
+      const keyPointsHtml = data.keyPoints.map((p, i) => {
+        let title = '';
+        let body = p;
+        if (p.includes(':')) {
+          const parts = p.split(':');
+          title = parts[0].trim();
+          body = parts.slice(1).join(':').trim();
+        } else if (p.includes(' — ')) {
+          const parts = p.split(' — ');
+          title = parts[0].trim();
+          body = parts.slice(1).join(' — ').trim();
+        }
+
+        return `
+          <div class="summary-point-card" style="animation-delay:${i * 0.05}s">
+            <div class="point-bullet"><i data-lucide="check" class="inline-icon"></i></div>
+            <div class="point-body">
+              ${title ? `<strong class="point-title">${escapeHtml(title)}:</strong> ` : ''}
+              <span>${escapeHtml(body)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      html += `
+        <div class="summary-block">
+          <div class="summary-block-title">
+            <i data-lucide="list-checks" class="inline-icon"></i> Key Points & Core Concepts
+          </div>
+          <div class="summary-points-grid">${keyPointsHtml}</div>
+        </div>
+      `;
+
+      // 6. Formatted Code Snippets & Syntax Examples
+      if (data.formattedCodeBlock) {
+        html += `
+          <div class="summary-block">
+            <div class="summary-block-title">
+              <i data-lucide="code" class="inline-icon"></i> Code Snippets & Syntax Examples
+            </div>
+            <div class="code-container">
+              <div class="code-header">
+                <span class="code-lang-tag"><i data-lucide="terminal" class="inline-icon"></i> Code Examples</span>
+                <button type="button" class="btn-copy-code" id="btn-copy-code-block">
+                  <i data-lucide="copy" class="inline-icon"></i> Copy Code
+                </button>
+              </div>
+              <pre class="summary-code-block"><code>${escapeHtml(data.formattedCodeBlock)}</code></pre>
+            </div>
+          </div>
+        `;
+      }
+
+      // 7. Important Keywords
       const keywordsHtml = data.keywords
-        .map(kw => `<span style="font-size:0.75rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:var(--radius-full);background:rgba(56,189,248,0.12);color:var(--clr-primary);border:1px solid rgba(56,189,248,0.25);">${kw}</span>`)
+        .map(kw => `<span class="keyword-pill"><i data-lucide="tag" class="pill-icon"></i>${escapeHtml(kw)}</span>`)
         .join(' ');
 
-      const revisionTipsHtml = data.revisionTips
-        .map(tip => `<li>${tip}</li>`)
-        .join('');
-
-      const wordCount = text.split(/\s+/).length;
-      const html = `
-        <div class="output-topic-title"><i data-lucide="file-text" class="inline-icon"></i> Notes Summary & Exam Digest (~${wordCount} words analyzed)</div>
-
-        <!-- 1. Short Summary -->
-        <div style="margin-bottom:1.2rem;">
-          <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">Short Summary</div>
-          <p class="output-intro" style="line-height:1.6;margin-bottom:0;">${data.shortSummary}</p>
-        </div>
-
-        <!-- 2. Key Points -->
-        <div style="margin-bottom:1.2rem;">
-          <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Key Points</div>
-          <div class="output-summary-section">${keyPointsHtml}</div>
-        </div>
-
-        <!-- 3. Important Keywords -->
-        <div style="margin-bottom:1.2rem;">
-          <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Important Keywords</div>
-          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">${keywordsHtml}</div>
-        </div>
-
-        <!-- 4. Memory Tip / Mnemonic -->
-        ${data.memoryTip ? `
-        <div style="margin-bottom:1.2rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);padding:0.75rem 1rem;border-radius:var(--radius-md);">
-          <div style="font-weight:700;font-size:0.85rem;color:#f59e0b;margin-bottom:0.25rem;display:flex;align-items:center;gap:0.4rem;">
-            <i data-lucide="lightbulb" class="inline-icon"></i> Memory Tip / Mnemonic
+      html += `
+        <div class="summary-block">
+          <div class="summary-block-title">
+            <i data-lucide="hash" class="inline-icon"></i> Important Keywords
           </div>
-          <div style="font-size:0.9rem;color:var(--clr-text-primary);">${data.memoryTip}</div>
-        </div>` : ''}
-
-        <!-- 5. Important Exam Point -->
-        <div style="margin-bottom:1.2rem;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);padding:0.75rem 1rem;border-radius:var(--radius-md);">
-          <div style="font-weight:700;font-size:0.85rem;color:var(--clr-primary);margin-bottom:0.25rem;display:flex;align-items:center;gap:0.4rem;">
-            <i data-lucide="target" class="inline-icon"></i> Important Exam Point
-          </div>
-          <div style="font-size:0.9rem;color:var(--clr-text-primary);font-weight:500;">${data.examPoint}</div>
+          <div class="keywords-wrap">${keywordsHtml}</div>
         </div>
+      `;
 
-        <!-- 6. Quick Revision Tips -->
-        <div style="margin-bottom:0.5rem;">
-          <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Quick Revision Tips</div>
-          <ul class="output-key-points">${revisionTipsHtml}</ul>
+      // 8. Memory Tip / Mnemonic
+      if (data.memoryTip) {
+        html += `
+          <div class="summary-block">
+            <div class="summary-card memory-tip-card">
+              <div class="card-icon-header warning-header">
+                <i data-lucide="lightbulb" class="inline-icon"></i> Memory Tip / Mnemonic
+              </div>
+              <p style="margin:0;font-size:0.9rem;">${escapeHtml(data.memoryTip)}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // 9. Important Exam Point
+      if (data.examPoint) {
+        html += `
+          <div class="summary-block">
+            <div class="summary-card exam-point-card">
+              <div class="card-icon-header primary-header">
+                <i data-lucide="target" class="inline-icon"></i> Important Exam Point
+              </div>
+              <p style="margin:0;font-size:0.9rem;font-weight:500;">${escapeHtml(data.examPoint)}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // 10. Quick Revision Tips
+      const revisionTipsHtml = data.revisionTips.map(tip => `
+        <li><i data-lucide="check-circle-2" class="inline-icon tip-icon"></i> <span>${escapeHtml(tip)}</span></li>
+      `).join('');
+
+      html += `
+        <div class="summary-block" style="margin-bottom:0;">
+          <div class="summary-block-title">
+            <i data-lucide="sparkles" class="inline-icon"></i> Quick Revision Tips
+          </div>
+          <ul class="revision-tips-list">${revisionTipsHtml}</ul>
         </div>
       `;
 
@@ -1765,8 +2847,54 @@ function initSummarizer() {
       if (window.lucide) {
         window.lucide.createIcons();
       }
+
+      // Wire up Copy Notes, Copy Code, Download buttons
+      const btnCopySummary = $('btn-copy-summary');
+      if (btnCopySummary) {
+        btnCopySummary.addEventListener('click', () => {
+          const summaryContent = `SHORT SUMMARY:\n${data.shortSummary}\n\nKEY POINTS:\n${data.keyPoints.join('\n')}\n\nEXAM POINT:\n${data.examPoint}`;
+          navigator.clipboard.writeText(summaryContent).then(() => {
+            showToast('Summary copied to clipboard!', 'success');
+          }).catch(() => {
+            showToast('Failed to copy to clipboard', 'warning');
+          });
+        });
+      }
+
+      const btnCopyCode = $('btn-copy-code-block');
+      if (btnCopyCode && data.formattedCodeBlock) {
+        btnCopyCode.addEventListener('click', () => {
+          navigator.clipboard.writeText(data.formattedCodeBlock).then(() => {
+            showToast('Code copied to clipboard!', 'success');
+          }).catch(() => {
+            showToast('Failed to copy code', 'warning');
+          });
+        });
+      }
+
+      const btnDownloadSummary = $('btn-download-summary');
+      if (btnDownloadSummary) {
+        btnDownloadSummary.addEventListener('click', () => {
+          let fileContent = `====================================================\nSMARTPREP AI - REVISION NOTES SUMMARY\n====================================================\n\n[SHORT SUMMARY]\n${data.shortSummary}\n\n[KEY POINTS]\n${data.keyPoints.map((kp, i) => `${i + 1}. ${kp}`).join('\n')}\n\n`;
+          if (data.formattedCodeBlock) {
+            fileContent += `[CODE EXAMPLES & SYNTAX]\n${data.formattedCodeBlock}\n\n`;
+          }
+          fileContent += `[IMPORTANT KEYWORDS]\n${data.keywords.join(', ')}\n\n[IMPORTANT EXAM POINT]\n${data.examPoint}\n\n[MEMORY TIP]\n${data.memoryTip}\n`;
+
+          const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `SmartPrep_Summary_${Date.now()}.txt`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('Summary downloaded as text file!', 'success');
+        });
+      }
+
       showToast(`Summarized into ${data.keyPoints.length} key points!`, 'success');
     } catch (e) {
+      console.error('Summarizer error:', e);
       showToast('Something went wrong. Please try again.', 'error');
     } finally {
       hideLoading(btn);
@@ -2154,6 +3282,8 @@ function initPlanner() {
 
 function addSubject() {
   const name = $('planner-subject').value.trim();
+  const priorityEl = $('planner-priority');
+  const priority = priorityEl ? priorityEl.value : 'medium';
   const date = $('planner-date').value;
   const hours = $('planner-hours').value;
 
@@ -2173,7 +3303,7 @@ function addSubject() {
     return;
   }
 
-  studySubjects.push({ name, examDate: date, dailyHours: parseFloat(hours) });
+  studySubjects.push({ name, priority, examDate: date, dailyHours: parseFloat(hours) });
   saveSubjects();
   renderSubjectList();
 
@@ -2181,9 +3311,10 @@ function addSubject() {
   $('planner-subject').value = '';
   $('planner-date').value = '';
   $('planner-hours').value = '';
+  if (priorityEl) priorityEl.value = 'medium';
   $('planner-subject').focus();
 
-  showToast(`${name} added to your plan!`, 'success', 2000);
+  showToast(`${name} (${priority.toUpperCase()} Priority) added to plan!`, 'success', 2000);
 }
 
 function removeSubject(idx) {
@@ -2215,6 +3346,8 @@ function renderSubjectList() {
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
     const dateStr = examDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const priority = subj.priority || 'medium';
+    const prioIcon = priority === 'high' ? '🔥 High' : (priority === 'low' ? '🌱 Low' : '⚡ Med');
 
     const item = document.createElement('div');
     item.className = 'subject-item';
@@ -2222,6 +3355,7 @@ function renderSubjectList() {
       <div class="subject-item-info">
         <span class="subject-item-name">
           <span class="day-subject-badge ${colorClass}" style="margin-right:0.4rem">${subj.name}</span>
+          <span style="font-size:0.75rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:9999px;background:rgba(37,99,235,0.1);color:var(--clr-primary);">${prioIcon} Priority</span>
         </span>
         <span class="subject-item-meta">
           <i data-lucide="calendar" class="inline-icon"></i> Exam: ${dateStr} &nbsp;|&nbsp; 
@@ -2283,67 +3417,82 @@ function renderTimetable(schedule) {
 
   // Summary stats
   const totalDays = schedule.length;
-  // Calculate total study hours dynamically based on generated plan
   const totalHrs = schedule.reduce((acc, day) => {
-    return acc + day.sessions.filter(s => !s.isExamDay).reduce((sum, s) => sum + s.hours, 0);
+    return acc + day.sessions.filter(s => s.sessionType !== 'exam' && s.sessionType !== 'break').reduce((sum, s) => sum + s.hours, 0);
   }, 0);
+  const highPrioCount = studySubjects.filter(s => (s.priority || 'medium') === 'high').length;
 
   const summary = document.createElement('div');
   summary.className = 'planner-summary';
   summary.innerHTML = `
-    <h3><i data-lucide="trending-up" class="inline-icon"></i> Your Personalized Study Plan</h3>
+    <h3><i data-lucide="calendar" class="inline-icon"></i> Personalized Study Timetable</h3>
     <div class="planner-summary-stats">
       <div class="plan-stat">
         <span class="plan-stat-label">Subjects</span>
         <span class="plan-stat-value">${studySubjects.length}</span>
       </div>
       <div class="plan-stat">
+        <span class="plan-stat-label">High Prio</span>
+        <span class="plan-stat-value">${highPrioCount}</span>
+      </div>
+      <div class="plan-stat">
         <span class="plan-stat-label">Plan Days</span>
         <span class="plan-stat-value">${totalDays}</span>
       </div>
       <div class="plan-stat">
-        <span class="plan-stat-label">Total Hours</span>
+        <span class="plan-stat-label">Total Study</span>
         <span class="plan-stat-value">${totalHrs.toFixed(1)}h</span>
-      </div>
-      <div class="plan-stat">
-        <span class="plan-stat-label">Saved</span>
-        <span class="plan-stat-value" style="font-size:1rem;display:flex;align-items:center;gap:4px;"><i data-lucide="check-circle" class="inline-icon" style="color:var(--clr-success);margin-right:0;"></i> Yes</span>
       </div>
     </div>
   `;
   content.appendChild(summary);
 
-  // Timetable rows
+  // Timetable rows grouped by Week
   const today = new Date(); today.setHours(0, 0, 0, 0);
+  let currentWeek = 0;
 
   schedule.forEach((day, dayIdx) => {
+    const weekNum = Math.floor(dayIdx / 7) + 1;
+    if (weekNum !== currentWeek) {
+      currentWeek = weekNum;
+      const weekHeader = document.createElement('div');
+      weekHeader.style.cssText = 'font-weight:800;font-size:0.85rem;color:var(--clr-primary);text-transform:uppercase;letter-spacing:0.08em;margin:1.2rem 0 0.4rem;display:flex;align-items:center;gap:0.4rem;border-bottom:1px solid var(--clr-border);padding-bottom:0.25rem;';
+      weekHeader.innerHTML = `<i data-lucide="calendar-days" class="inline-icon"></i> Week ${weekNum}`;
+      content.appendChild(weekHeader);
+    }
+
     const isToday = day.date.toDateString() === today.toDateString();
     const isPast = day.date < today;
     const dateStr = day.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
     const row = document.createElement('div');
     row.className = 'schedule-day';
-    row.style.animationDelay = `${dayIdx * 0.05}s`;
+    row.style.animationDelay = `${dayIdx * 0.03}s`;
 
     if (isToday) row.style.borderColor = 'var(--clr-primary)';
     if (isPast) row.style.opacity = '0.5';
 
     const sessionsHtml = day.sessions.map((sess, sIdx) => {
-      if (sess.isExamDay) {
-        return `<span class="day-subject-badge ${sess.colorClass}" style="animation-delay:${sIdx * 0.05}s"><i data-lucide="target" class="inline-icon"></i> ${sess.subject} EXAM</span>`;
+      if (sess.sessionType === 'exam') {
+        return `<span class="day-subject-badge ${sess.colorClass}" style="animation-delay:${sIdx * 0.05}s; font-weight:800;"><i data-lucide="target" class="inline-icon"></i> ${sess.subject} (EXAM DAY)</span>`;
       }
-      return `<span class="day-subject-badge ${sess.colorClass}" style="animation-delay:${sIdx * 0.05}s">${sess.subject}</span>`;
+      if (sess.sessionType === 'break') {
+        return `<span class="day-subject-badge" style="background:rgba(245, 158, 11, 0.15);color:var(--clr-warning);border:1px solid rgba(245, 158, 11, 0.3);">${sess.sessionLabel}</span>`;
+      }
+      
+      const prioTag = sess.priority === 'high' ? '🔥' : '';
+      return `<span class="day-subject-badge ${sess.colorClass}" style="animation-delay:${sIdx * 0.05}s" title="${sess.sessionLabel}">${prioTag} ${sess.subject} <small>(${sess.sessionLabel})</small></span>`;
     }).join(' ');
 
     const hoursHtml = day.sessions
-      .filter(s => !s.isExamDay)
+      .filter(s => s.sessionType !== 'exam' && s.sessionType !== 'break')
       .map(s => `${s.subject}: ${s.hours}h`)
       .join(' | ');
 
     row.innerHTML = `
-      <span class="day-label">${isToday ? '<i data-lucide="map-pin" class="inline-icon"></i> Today' : dateStr}</span>
-      <span style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center">${sessionsHtml}</span>
-      ${hoursHtml ? `<span class="day-hours"><i data-lucide="clock" class="inline-icon"></i> ${hoursHtml}</span>` : ''}
+      <span class="day-label" style="min-width:110px;">${isToday ? '<i data-lucide="map-pin" class="inline-icon"></i> Today' : dateStr}</span>
+      <span style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;flex:1;">${sessionsHtml}</span>
+      ${hoursHtml ? `<span class="day-hours" style="font-size:0.8rem;"><i data-lucide="clock" class="inline-icon"></i> ${hoursHtml}</span>` : ''}
     `;
     content.appendChild(row);
   });
@@ -2453,6 +3602,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!d.min) d.min = today;
   });
 
-  console.log('%c🎓 StudyMate AI', 'color:#2563eb;font-size:1.5rem;font-weight:900;font-family:Outfit,sans-serif');
+  console.log('%c🎓 SmartPrep AI', 'color:#2563eb;font-size:1.5rem;font-weight:900;font-family:Outfit,sans-serif');
   console.log('%cBuilt with ❤️ | Press Alt+D to toggle dark mode', 'color:#38bdf8;font-size:0.9rem');
 });

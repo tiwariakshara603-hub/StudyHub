@@ -5,10 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="StudyMate AI – Your smart AI-powered study assistant. Explain topics, summarize notes, generate quizzes, and build personalized study plans." />
-  <meta name="keywords" content="study assistant, AI, quiz generator, notes summarizer, study planner, exam prep" />
-  <meta name="author" content="StudyMate AI" />
-  <title>StudyMate AI – Smart AI Study Assistant</title>
+    content="SmartPrep AI – Your intelligent AI-powered study companion. Instantly explain concepts, summarize notes, generate quizzes, and create personalized study plans." />
+  <meta name="keywords"
+    content="study assistant, AI, quiz generator, notes summarizer, study planner, exam prep, SmartPrep AI" />
+  <meta name="author" content="SmartPrep AI" />
+  <title>SmartPrep AI – Smart AI Study Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -24,9 +25,12 @@
   ============================================================ -->
   <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav-container">
-      <a href="#home" class="nav-logo" id="nav-logo-link" aria-label="StudyMate AI Home">
-        <span class="logo-icon"><i data-lucide="graduation-cap"></i></span>
-        <span class="logo-text">StudyMate <span class="logo-accent">AI</span></span>
+      <a href="#home" class="nav-logo" id="nav-logo-link" aria-label="SmartPrep AI Home">
+        <span class="logo-icon-badge"
+          style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--gradient-btn);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,0.3);position:relative;"><i
+            data-lucide="graduation-cap" style="width:22px;height:22px;"></i><i data-lucide="sparkles"
+            style="width:12px;height:12px;position:absolute;top:-3px;right:-3px;color:#fbbf24;"></i></span>
+        <span class="logo-text">SmartPrep <span class="logo-accent">AI</span></span>
       </a>
       <ul class="nav-links" id="nav-links" role="list">
         <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
@@ -71,11 +75,11 @@
       </div>
       <h1 class="hero-title">
         Study Smarter<br />
-        with <span class="gradient-text">StudyMate AI</span>
+        with <span class="gradient-text">SmartPrep AI</span>
       </h1>
       <p class="hero-subtitle">
-        Your intelligent study companion — explain any topic, summarize your notes,
-        generate custom quizzes, and build a personalized study plan. All in one place, completely free.
+        SmartPrep AI is your intelligent AI-powered study companion. Instantly explain concepts, summarize notes,
+        generate quizzes, and create personalized study plans—all in one place.
       </p>
       <div class="hero-cta">
         <a href="#explainer" class="btn btn-primary" id="hero-get-started">
@@ -225,9 +229,10 @@
         <div class="tool-input-area">
 
           <!-- Upload Dropzone Card -->
-          <div class="upload-dropzone" id="summarizer-dropzone" tabindex="0" role="button" aria-label="Upload photo or document">
+          <div class="upload-dropzone" id="summarizer-dropzone" tabindex="0" role="button"
+            aria-label="Upload photo or document">
             <input type="file" id="summarizer-file-input" accept="image/*,.pdf,.docx,.doc,.txt,.md,.csv,.json" hidden />
-            
+
             <div class="dropzone-content" id="dropzone-prompt">
               <div class="dropzone-icons">
                 <span class="dropzone-badge badge-photo"><i data-lucide="image"></i> Photo</span>
@@ -237,7 +242,8 @@
               </div>
               <div class="dropzone-text">
                 <strong>Upload Study Notes or Photo</strong>
-                <p>Drag & drop image (PNG, JPG), PDF, DOCX, or TXT file here, or <span class="upload-link">Browse Files</span></p>
+                <p>Drag & drop image (PNG, JPG), PDF, DOCX, or TXT file here, or <span class="upload-link">Browse
+                    Files</span></p>
               </div>
             </div>
 
@@ -249,7 +255,8 @@
                   <span class="file-name" id="file-preview-name">notes.pdf</span>
                   <span class="file-size" id="file-preview-size">0 KB</span>
                 </div>
-                <button type="button" class="file-remove-btn" id="file-remove-btn" title="Remove file" aria-label="Remove file">
+                <button type="button" class="file-remove-btn" id="file-remove-btn" title="Remove file"
+                  aria-label="Remove file">
                   <i data-lucide="x"></i>
                 </button>
               </div>
@@ -426,6 +433,18 @@
               </div>
             </div>
             <div class="field-group">
+              <label for="planner-priority" class="input-label">Subject Priority</label>
+              <div class="input-with-icon">
+                <span class="input-icon"><i data-lucide="star"></i></span>
+                <select id="planner-priority" class="tool-input" aria-required="true"
+                  style="padding-left: 2.75rem; background: var(--clr-surface-2); color: var(--clr-text-primary);">
+                  <option value="high">High Priority</option>
+                  <option value="medium" selected>Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
               <label for="planner-date" class="input-label">Exam Date</label>
               <div class="input-with-icon">
                 <span class="input-icon"><i data-lucide="calendar"></i></span>
@@ -478,8 +497,11 @@
   <footer class="footer" role="contentinfo">
     <div class="footer-container">
       <div class="footer-brand">
-        <span class="logo-icon"><i data-lucide="graduation-cap"></i></span>
-        <span class="logo-text">StudyMate <span class="logo-accent">AI</span></span>
+        <span class="logo-icon-badge"
+          style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--gradient-btn);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,0.3);position:relative;margin-right:0.5rem;"><i
+            data-lucide="graduation-cap" style="width:22px;height:22px;"></i><i data-lucide="sparkles"
+            style="width:12px;height:12px;position:absolute;top:-3px;right:-3px;color:#fbbf24;"></i></span>
+        <span class="logo-text">SmartPrep <span class="logo-accent">AI</span></span>
       </div>
       <p class="footer-tagline">Built for students. Powered by intelligence.</p>
       <div class="footer-links" role="list">
@@ -490,7 +512,7 @@
         <a href="#flashcards" class="footer-link" role="listitem">Flashcards</a>
         <a href="#planner" class="footer-link" role="listitem">Planner</a>
       </div>
-      <p class="footer-copy">© 2024 StudyMate AI. All rights reserved. Built with <i data-lucide="heart"
+      <p class="footer-copy">© 2024 SmartPrep AI. All rights reserved. Built with <i data-lucide="heart"
           class="inline-icon" style="color: #ef4444;"></i> for learners.</p>
     </div>
   </footer>

@@ -1,5 +1,5 @@
 /* ================================================================
-   StudyMate AI – style.css
+   SmartPrep AI – style.css
    Modern, responsive, animated styles with dark mode support
    ================================================================ */
 
@@ -1291,6 +1291,9 @@ section.hero::after {
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
   border-bottom: 2px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .output-intro {
@@ -1359,6 +1362,271 @@ section.hero::after {
   color: var(--clr-text-primary);
   line-height: 1.6;
   animation: slideInLeft 0.3s ease both;
+}
+
+/* ----------------------------------------------------------------
+   Enhanced Notes Summarizer Output & Code Formatting
+   ---------------------------------------------------------------- */
+.summary-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.summary-word-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--clr-accent-dark);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.summary-actions-toolbar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-summary-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-summary-action:hover {
+  background: var(--clr-primary);
+  color: #fff;
+  border-color: var(--clr-primary);
+  transform: translateY(-1px);
+}
+
+.summary-header-divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent), transparent);
+  margin-bottom: 1.25rem;
+  border-radius: var(--radius-full);
+}
+
+.summary-block {
+  margin-bottom: 1.25rem;
+}
+
+.summary-block-title {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--clr-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.summary-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.short-summary-card {
+  border-left: 3.5px solid var(--clr-primary);
+  background: var(--clr-surface-2);
+}
+
+.summary-points-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.summary-point-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-left: 3.5px solid var(--clr-accent);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--clr-text-primary);
+  line-height: 1.6;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.summary-point-card:hover {
+  transform: translateX(3px);
+  border-left-color: var(--clr-primary);
+}
+
+.point-bullet {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--clr-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.point-title {
+  color: var(--clr-primary);
+}
+
+/* Code Container & Monospace Block */
+.code-container {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e293b;
+  padding: 0.45rem 0.85rem;
+  border-bottom: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.code-lang-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #38bdf8;
+}
+
+.btn-copy-code {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-copy-code:hover {
+  background: var(--clr-primary);
+  color: #fff;
+}
+
+.summary-code-block {
+  padding: 0.85rem 1rem;
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.keywords-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.keyword-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-full);
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--clr-primary);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pill-icon {
+  width: 12px;
+  height: 12px;
+  opacity: 0.7;
+}
+
+.card-icon-header {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.warning-header {
+  color: #f59e0b;
+}
+
+.primary-header {
+  color: var(--clr-primary);
+}
+
+.memory-tip-card {
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.exam-point-card {
+  background: rgba(37, 99, 235, 0.06);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.revision-tips-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.revision-tips-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--clr-text-primary);
+}
+
+.tip-icon {
+  color: var(--clr-success);
+  margin-top: 3px;
+  flex-shrink: 0;
 }
 
 /* ----------------------------------------------------------------
