@@ -16,7 +16,7 @@ The application should have a clean, modern, responsive interface with smooth an
 Students can enter any study topic and receive a simple, beginner-friendly explanation with key points.
 
 ### 2. Notes Summarizer
-Students can paste long notes, and the application generates concise revision notes highlighting the important points.
+Students can paste long notes or upload photos/documents (PNG, JPG, PDF, DOCX, TXT), and the application automatically extracts text using AI OCR/parsers and generates concise revision notes highlighting the important points.
 
 ### 3. Quiz Generator
 Students enter any topic, and the application generates five multiple-choice questions (MCQs) along with the correct answers.
