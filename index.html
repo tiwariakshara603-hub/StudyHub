@@ -211,18 +211,64 @@
   <!-- ============================================================
        TOOL SECTION 2: NOTES SUMMARIZER
   ============================================================ -->
+  <!-- ============================================================
+       TOOL SECTION 2: NOTES SUMMARIZER
+  ============================================================ -->
   <section class="tool-section alt-section" id="summarizer" aria-label="Notes Summarizer">
     <div class="section-container">
       <div class="section-header">
         <span class="section-tag">Tool 2</span>
         <h2 class="section-title"><i data-lucide="file-text" class="section-title-icon"></i> Notes Summarizer</h2>
-        <p class="section-subtitle">Paste your notes and get a crisp, concise revision summary</p>
+        <p class="section-subtitle">Upload photos/documents or paste your notes to get a crisp revision summary</p>
       </div>
       <div class="tool-card">
         <div class="tool-input-area">
+
+          <!-- Upload Dropzone Card -->
+          <div class="upload-dropzone" id="summarizer-dropzone" tabindex="0" role="button" aria-label="Upload photo or document">
+            <input type="file" id="summarizer-file-input" accept="image/*,.pdf,.docx,.doc,.txt,.md,.csv,.json" hidden />
+            
+            <div class="dropzone-content" id="dropzone-prompt">
+              <div class="dropzone-icons">
+                <span class="dropzone-badge badge-photo"><i data-lucide="image"></i> Photo</span>
+                <span class="dropzone-badge badge-pdf"><i data-lucide="file-text"></i> PDF</span>
+                <span class="dropzone-badge badge-word"><i data-lucide="file"></i> DOCX</span>
+                <span class="dropzone-badge badge-txt"><i data-lucide="file-code"></i> TXT</span>
+              </div>
+              <div class="dropzone-text">
+                <strong>Upload Study Notes or Photo</strong>
+                <p>Drag & drop image (PNG, JPG), PDF, DOCX, or TXT file here, or <span class="upload-link">Browse Files</span></p>
+              </div>
+            </div>
+
+            <!-- Selected File Preview & OCR Status -->
+            <div class="dropzone-file-preview" id="dropzone-file-preview" hidden>
+              <div class="file-info-chip">
+                <span class="file-icon" id="file-preview-icon"><i data-lucide="file-text"></i></span>
+                <div class="file-details">
+                  <span class="file-name" id="file-preview-name">notes.pdf</span>
+                  <span class="file-size" id="file-preview-size">0 KB</span>
+                </div>
+                <button type="button" class="file-remove-btn" id="file-remove-btn" title="Remove file" aria-label="Remove file">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+              <div class="ocr-progress-container" id="ocr-progress-container" hidden>
+                <div class="ocr-progress-bar">
+                  <div class="ocr-progress-fill" id="ocr-progress-fill" style="width: 0%;"></div>
+                </div>
+                <span class="ocr-status-text" id="ocr-status-text">Processing file...</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-divider">
+            <span>OR PASTE TEXT DIRECTLY</span>
+          </div>
+
           <label for="summarizer-input" class="input-label">Paste your notes here</label>
           <textarea id="summarizer-input" class="tool-textarea"
-            placeholder="Paste your long study notes here... The more text you add, the better the summary will be."
+            placeholder="Paste your long study notes here or upload a photo/document above... The more text you add, the better the summary will be."
             rows="8" aria-describedby="summarizer-hint"></textarea>
           <div class="char-counter" id="summarizer-counter" aria-live="polite">0 characters</div>
           <span class="input-hint" id="summarizer-hint">Minimum 50 characters recommended for a good summary</span>
@@ -458,6 +504,10 @@
   </button>
 
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Document & OCR Parsing Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="script.js"></script>
 </body>
 

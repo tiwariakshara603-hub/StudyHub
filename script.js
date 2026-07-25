@@ -1457,6 +1457,232 @@ function initSummarizer() {
   const clearBtn = $('summarizer-clear');
   const output = $('summarizer-output');
 
+  // File Upload Elements
+  const dropzone = $('summarizer-dropzone');
+  const fileInput = $('summarizer-file-input');
+  const dropzonePrompt = $('dropzone-prompt');
+  const filePreview = $('dropzone-file-preview');
+  const previewName = $('file-preview-name');
+  const previewSize = $('file-preview-size');
+  const previewIcon = $('file-preview-icon');
+  const fileRemoveBtn = $('file-remove-btn');
+  const progressContainer = $('ocr-progress-container');
+  const progressFill = $('ocr-progress-fill');
+  const statusText = $('ocr-status-text');
+
+  function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  function updateProgress(percent, message) {
+    if (progressContainer) progressContainer.hidden = false;
+    if (progressFill) progressFill.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+    if (statusText && message) statusText.textContent = message;
+  }
+
+  function hideProgress() {
+    if (progressContainer) progressContainer.hidden = true;
+    if (progressFill) progressFill.style.width = '0%';
+  }
+
+  function resetFilePreview() {
+    if (fileInput) fileInput.value = '';
+    if (dropzonePrompt) dropzonePrompt.hidden = false;
+    if (filePreview) filePreview.hidden = true;
+    hideProgress();
+  }
+
+  // Handle Dropzone & Input Events
+  if (dropzone) {
+    dropzone.addEventListener('click', (e) => {
+      if (e.target.closest('#file-remove-btn')) return;
+      fileInput.click();
+    });
+
+    dropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('dropzone-hover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('dropzone-hover');
+      }, false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt ? dt.files : null;
+      if (files && files.length > 0) {
+        handleSelectedFile(files[0]);
+      }
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        handleSelectedFile(fileInput.files[0]);
+      }
+    });
+  }
+
+  if (fileRemoveBtn) {
+    fileRemoveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetFilePreview();
+      showToast('File removed', 'info');
+    });
+  }
+
+  // Router for parsing selected file
+  async function handleSelectedFile(file) {
+    if (!dropzonePrompt || !filePreview) return;
+
+    dropzonePrompt.hidden = true;
+    filePreview.hidden = false;
+    previewName.textContent = file.name;
+    previewSize.textContent = formatBytes(file.size);
+
+    const ext = file.name.split('.').pop().toLowerCase();
+    const isImage = file.type.startsWith('image/') || ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif'].includes(ext);
+    const isPdf = file.type === 'application/pdf' || ext === 'pdf';
+    const isDocx = ext === 'docx' || ext === 'doc';
+
+    if (isImage) {
+      previewIcon.innerHTML = '<i data-lucide="image"></i>';
+    } else if (isPdf) {
+      previewIcon.innerHTML = '<i data-lucide="file-text"></i>';
+    } else if (isDocx) {
+      previewIcon.innerHTML = '<i data-lucide="file"></i>';
+    } else {
+      previewIcon.innerHTML = '<i data-lucide="file-code"></i>';
+    }
+    if (window.lucide) window.lucide.createIcons();
+
+    updateProgress(10, 'Reading file...');
+
+    try {
+      let extractedText = '';
+
+      if (isImage) {
+        extractedText = await parseImageOCR(file);
+      } else if (isPdf) {
+        extractedText = await parsePdfText(file);
+      } else if (isDocx) {
+        extractedText = await parseDocxText(file);
+      } else {
+        extractedText = await parsePlainText(file);
+      }
+
+      if (extractedText && extractedText.trim().length > 0) {
+        textarea.value = extractedText.trim();
+        const len = textarea.value.length;
+        counter.textContent = `${len.toLocaleString()} character${len !== 1 ? 's' : ''}`;
+        counter.style.color = len < 50 ? 'var(--clr-warning)' : 'var(--clr-success)';
+
+        updateProgress(100, 'Extraction complete!');
+        showToast(`Successfully extracted text from ${file.name}!`, 'success');
+
+        setTimeout(() => {
+          hideProgress();
+          summarize();
+        }, 600);
+      } else {
+        hideProgress();
+        showToast('No readable text could be extracted from this file.', 'warning');
+      }
+    } catch (err) {
+      console.error('File parsing error:', err);
+      hideProgress();
+      showToast('Failed to parse file. Please try another file or paste text directly.', 'error');
+    }
+  }
+
+  // Parser 1: Plain Text (.txt, .md, .csv, .json)
+  function parsePlainText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = err => reject(err);
+      reader.readAsText(file);
+    });
+  }
+
+  // Parser 2: PDF Document (via PDF.js)
+  async function parsePdfText(file) {
+    if (typeof pdfjsLib === 'undefined') {
+      throw new Error('PDF library not loaded');
+    }
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    updateProgress(25, 'Loading PDF document...');
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    const numPages = pdf.numPages;
+
+    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+      const percent = Math.round(25 + (pageNum / numPages) * 70);
+      updateProgress(percent, `Extracting page ${pageNum} of ${numPages}...`);
+
+      const page = await pdf.getPage(pageNum);
+      const content = await page.getTextContent();
+      const pageStrings = content.items.map(item => item.str);
+      fullText += pageStrings.join(' ') + '\n\n';
+    }
+
+    return fullText;
+  }
+
+  // Parser 3: Word DOCX (via Mammoth.js)
+  async function parseDocxText(file) {
+    if (typeof mammoth === 'undefined') {
+      throw new Error('Mammoth library not loaded');
+    }
+    updateProgress(50, 'Parsing Word document...');
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+    return result.value;
+  }
+
+  // Parser 4: Photos & Images OCR (via Tesseract.js)
+  async function parseImageOCR(file) {
+    if (typeof Tesseract === 'undefined') {
+      throw new Error('OCR library not loaded');
+    }
+    updateProgress(15, 'Initializing AI OCR Engine...');
+
+    const result = await Tesseract.recognize(file, 'eng', {
+      logger: m => {
+        if (m.status === 'recognizing text') {
+          const pct = Math.round(15 + (m.progress || 0) * 80);
+          updateProgress(pct, `Scanning image text (${Math.round((m.progress || 0) * 100)}%)...`);
+        } else if (m.status) {
+          updateProgress(20, `${m.status.charAt(0).toUpperCase() + m.status.slice(1)}...`);
+        }
+      }
+    });
+
+    return result.data.text;
+  }
+
   textarea.addEventListener('input', () => {
     const len = textarea.value.length;
     counter.textContent = `${len.toLocaleString()} character${len !== 1 ? 's' : ''}`;
@@ -1466,7 +1692,7 @@ function initSummarizer() {
   async function summarize() {
     const text = textarea.value.trim();
     if (text.length < 20) {
-      showToast('Please paste at least 20 characters of notes.', 'warning');
+      showToast('Please paste or upload at least 20 characters of notes.', 'warning');
       textarea.focus();
       return;
     }
@@ -1552,6 +1778,7 @@ function initSummarizer() {
     textarea.value = '';
     counter.textContent = '0 characters';
     counter.style.color = '';
+    resetFilePreview();
     clearOutput('summarizer-placeholder', 'summarizer-content', output);
     textarea.focus();
   });
