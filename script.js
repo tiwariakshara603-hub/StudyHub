@@ -29,1363 +29,826 @@ const SUBJECT_COLORS = [
 
 const AI = {
 
+    /* ---- Universal Academic Subject Detector ---- */
+  detectSubject(topic) {
+    const lower = topic.toLowerCase().trim();
+
+    // Programming / Computer Science / OOP
+    const isCS = /\b(code|coding|program|programming|python|java|c\+\+|cpp|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|golang|go|typescript|database|dbms|operating system|os|algorithm|algorithms|data structure|data structures|network|networking|cyber|security|software|oop|oops|inheritance|polymorphism|encapsulation|abstraction|class|classes|pointer|pointers|array|arrays|function|functions|compiler|dev|machine learning|ai|artificial intelligence)\b/i.test(lower);
+    
+    // Mathematics
+    const isMath = /\b(math|mathematics|calculus|algebra|geometry|trigonometry|pythagoras|pythagorean|theorem|theorems|matrix|matrices|vector|vectors|derivative|derivatives|integral|integrals|probability|statistics|equation|equations|arithmetic|number|numbers|logarithm|permutation|combination|fraction|differential)\b/i.test(lower);
+    
+    // Physics
+    const isPhys = /\b(physics|force|forces|motion|energy|velocity|gravity|mass|momentum|wave|waves|optics|electric|electricity|magnetic|magnetism|thermodynamics|quantum|relativity|kinematics|friction|photon|photons|circuit|circuits|voltage|current|resistance|capacitance|nuclear|newton|newtons)\b/i.test(lower);
+    
+    // Chemistry
+    const isChem = /\b(chemistry|acid|acids|base|bases|reaction|reactions|element|elements|compound|compounds|molecule|molecules|periodic table|stoichiometry|organic|inorganic|bond|bonding|atom|atoms|solution|solutions|catalyst|oxidation|reduction|mole|moles|molar|polymer|titration|electrochemistry)\b/i.test(lower);
+    
+    // Biology & Biochemistry
+    const isBio = /\b(biology|biochemistry|cell|cells|genetics|dna|rna|organism|organisms|botany|zoology|anatomy|physiology|ecosystem|ecosystems|evolution|enzyme|enzymes|protein|proteins|photosynthesis|mitosis|meiosis|neuron|neurons|metabolism|amino acid|respiration|carbohydrate|lipid|lipids|gene|genes|chromosome|chromosomes)\b/i.test(lower);
+    
+    // History
+    const isHist = /\b(history|historical|war|wars|revolution|revolutions|french revolution|industrial revolution|empire|empires|century|king|queen|reign|dynasty|dynasties|battle|battles|treaty|civilization|colonial|independence|movement|ancient|medieval|world war|renaissance|archaeology)\b/i.test(lower);
+    
+    // Geography
+    const isGeo = /\b(geography|climate|map|maps|river|rivers|mountain|mountains|tectonic|plate tectonics|earth|ocean|oceans|continent|continents|population|atmosphere|soil|biomes|latitude|longitude|glacier|volcano|volcanoes|weather|topography|monsoon|landform|landforms)\b/i.test(lower);
+    
+    // Economics
+    const isEcon = /\b(economic|economics|microeconomic|microeconomics|macroeconomic|macroeconomics|market|markets|gdp|inflation|elasticity|monopoly|demand|supply|fiscal|monetary|currency|trade|banking|revenue|utility|capitalism|socialism|budget|poverty)\b/i.test(lower);
+    
+    // Political Science
+    const isPol = /\b(politic|politics|political|constitution|democracy|government|parliament|judiciary|rights|state|election|elections|governance|citizenship|policy|legislature|sovereign|liberty|justice|monarchy|executive|federalism)\b/i.test(lower);
+    
+    // Commerce & Accountancy
+    const isComm = /\b(commerce|account|accounting|accountancy|finance|business|audit|auditing|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|assets|liability|liabilities|stock|stocks|capital|entrepreneur|invoice|profit|loss|journal|depreciation)\b/i.test(lower);
+    
+    // Environmental Science
+    const isEnv = /\b(environment|environmental|pollution|sustainability|biodiversity|conservation|climate change|renewable|waste management|global warming|deforestation|ozone|ecology|greenhouse|carbon)\b/i.test(lower);
+    
+    // English & Literature
+    const isEng = /\b(english|literature|poem|poetry|novel|drama|play|shakespeare|shakespear|metaphor|character|prose|fiction|theme|narrative|author|literary|sonnet|rhetoric|grammar|syntax|verb|noun|adjective|tenses|idiom|vocabulary)\b/i.test(lower);
+    
+    // Hindi
+    const isHindi = /\b(hindi|vyakaran|sahitya|kabir|tulsi|surdas|kavita|nibandh|bhasha|upanyas|muhavare|sandhi|samash|ras|chhand|alankar)\b/i.test(lower);
+    
+    // General Knowledge
+    const isGK = /\b(general knowledge|gk|current affairs|world trivia|inventions|discoveries|first in world|headquarters|national park|awards|capitals|currencies|symbols)\b/i.test(lower);
+
+    const isProgramming = isCS || /^\s*(c|java|python|cpp|c\+\+|javascript|js|html|css|sql|oop|oops|inheritance)\s*$/i.test(lower);
+
+    let subjectName = 'General Academic Subject';
+    if (isCS) subjectName = 'Computer Science & Programming';
+    else if (isHist) subjectName = 'History';
+    else if (isBio) subjectName = 'Biology & Biochemistry';
+    else if (isMath) subjectName = 'Mathematics';
+    else if (isPhys) subjectName = 'Physics';
+    else if (isChem) subjectName = 'Chemistry';
+    else if (isGeo) subjectName = 'Geography';
+    else if (isEcon) subjectName = 'Economics';
+    else if (isPol) subjectName = 'Political Science';
+    else if (isComm) subjectName = 'Commerce & Accountancy';
+    else if (isEnv) subjectName = 'Environmental Science';
+    else if (isEng) subjectName = 'English & Literature';
+    else if (isHindi) subjectName = 'Hindi Language & Literature';
+    else if (isGK) subjectName = 'General Knowledge';
+
+    return { subjectName, isProgramming };
+  },
+
+
   /* ---- 2a. Topic Explainer Engine ---- */
   explainTopic(topic) {
     const t = topic.trim().toLowerCase();
+    const sub = this.detectSubject(topic);
 
-    // Comprehensive exam-oriented revision knowledge map
+    /* ──────────────────────────────────────────────────────────────────
+       CURATED KNOWLEDGE BASE — rich, specific entries for popular topics
+       across ALL academic subjects. Each entry contains real definitions,
+       real examples, and subject-accurate content.
+       ────────────────────────────────────────────────────────────────── */
     const knowledgeBase = {
+
+      /* ═══════ COMPUTER SCIENCE & PROGRAMMING ═══════ */
       c: {
-        definition: 'C is a foundational, general-purpose, compiled procedural programming language developed by Dennis Ritchie at Bell Labs (1972). It provides structured control flow, low-level memory access via pointers, and minimal runtime overhead.',
-        keyConcepts: [
-          'Pointers & Memory Addresses: Directly access and manipulate memory locations using `*` (dereference) and `&` (address-of) operators.',
-          'Manual Memory Management: Allocate dynamic heap memory using `malloc()`, `calloc()`, `realloc()` and free it using `free()`.',
-          'Structures & Unions: `struct` groups heterogeneous variables into a custom record; `union` shares a single memory location among members.'
-        ],
-        features: [
-          'Fast execution speed due to direct compilation to machine architecture binary.',
-          'High portability across hardware platforms using standard compilers (GCC, Clang).'
-        ],
-        functions: [
-          'Used for building operating system kernels (Linux, Windows kernel), embedded systems, device drivers, compilers, and database engines.'
-        ],
-        types: [
-          'Primitive Types: `int`, `char`, `float`, `double`, `void`.',
-          'Derived Types: Arrays, Pointers, Structures (`struct`), Unions (`union`), Enums (`enum`).'
-        ],
-        advantages: [
-          'Unmatched execution efficiency and fine-grained hardware memory control.',
-          'Forms the syntactic foundation for C++, Java, C#, and JavaScript.'
-        ],
-        disadvantages: [
-          'No automatic garbage collection — highly susceptible to memory leaks, dangling pointers, and buffer overflows.',
-          'Lacks modern object-oriented features (classes, inheritance, polymorphism).'
-        ],
-        syntax: '#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int num = 42;\n    int *ptr = &num;\n    printf("Value: %d, Address: %p\\n", *ptr, (void*)ptr);\n    return 0;\n}',
-        example: 'Allocating dynamic memory with `int *arr = (int*) malloc(10 * sizeof(int));` and freeing it with `free(arr);`.',
-        examQuestions: [
-          { q: 'What is a Dangling Pointer in C and how do you prevent it?', a: 'A dangling pointer points to a memory location that has been deallocated with `free()`. Prevent it by setting the pointer to `NULL` immediately after freeing memory.' },
-          { q: 'Differentiate between `malloc()` and `calloc()` in C.', a: '`malloc(size)` allocates uninitialized memory containing garbage values. `calloc(n, size)` allocates memory for `n` elements and initializes all bytes to zero.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'C is a general-purpose, procedural programming language developed by Dennis Ritchie at Bell Labs in 1972. It provides low-level memory access via pointers, minimal runtime overhead, and a small set of keywords, making it ideal for systems programming.',
+        easyExplanation: 'Think of C as talking directly to the computer\'s hardware. Unlike modern languages that hide memory details, C lets you allocate, access, and free memory manually using pointers — giving you complete control but also complete responsibility.',
+        syntax: `#include <stdio.h>\n\nint main() {\n    int num = 42;\n    printf("Value: %d\\n", num);\n    return 0;\n}`,
+        example: 'Dynamic memory allocation: int *arr = (int*) malloc(10 * sizeof(int)); — allocates space for 10 integers on the heap. Always free with free(arr); to prevent memory leaks.',
+        importantKeywords: ['Pointers & Addresses', 'malloc() / free()', 'Structures & Unions', 'Header Files (#include)', 'Compiled Language'],
+        memoryTips: 'Remember "C = Control": You Control memory (malloc/free), Control flow (if/for/while), and Control hardware (pointers). If you forget free(), you leak!',
+        quickSummary: ['Procedural compiled language created in 1972 by Dennis Ritchie.', 'Direct hardware access via pointers and manual memory management.', 'Foundation for C++, Java, and modern operating systems like Linux.'],
+        keyConcepts: ['Pointers: Variables that store memory addresses, accessed with * and & operators.', 'Manual Memory: malloc() allocates heap memory; free() releases it.', 'Structs: Group related variables of different types into one record.']
       },
 
+      'c++': {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'C++ is a general-purpose programming language created by Bjarne Stroustrup in 1979 as an extension of C. It adds object-oriented programming (classes, inheritance, polymorphism) while retaining C\'s low-level capabilities.',
+        easyExplanation: 'C++ is like C with superpowers. It keeps all of C\'s speed and hardware control but adds the ability to organize code into classes and objects — making large programs easier to manage.',
+        syntax: `#include <iostream>\nusing namespace std;\n\nclass Animal {\npublic:\n    string name;\n    void speak() { cout << name << " says hello!" << endl; }\n};\n\nint main() {\n    Animal a;\n    a.name = "Dog";\n    a.speak();\n    return 0;\n}`,
+        example: 'Inheritance in C++: class Dog : public Animal { } — Dog inherits all public members of Animal and can override virtual functions for polymorphism.',
+        importantKeywords: ['Classes & Objects', 'Inheritance & Polymorphism', 'STL (Standard Template Library)', 'Constructors & Destructors', 'Virtual Functions'],
+        memoryTips: 'C++ = C + Classes. Remember the four OOP pillars: "A PIE" = Abstraction, Polymorphism, Inheritance, Encapsulation.',
+        quickSummary: ['Extension of C with object-oriented programming features.', 'Supports both procedural and OOP paradigms.', 'Used in game engines, browsers, and system software.'],
+        keyConcepts: ['OOP: Organize code into classes with data and methods together.', 'STL: Ready-made containers (vector, map) and algorithms (sort, find).', 'Memory: Supports both manual (new/delete) and smart pointers.']
+      },
+
+      cpp: { get subjectName() { return knowledgeBase['c++'].subjectName; }, get isProgramming() { return knowledgeBase['c++'].isProgramming; }, get definition() { return knowledgeBase['c++'].definition; }, get easyExplanation() { return knowledgeBase['c++'].easyExplanation; }, get syntax() { return knowledgeBase['c++'].syntax; }, get example() { return knowledgeBase['c++'].example; }, get importantKeywords() { return knowledgeBase['c++'].importantKeywords; }, get memoryTips() { return knowledgeBase['c++'].memoryTips; }, get quickSummary() { return knowledgeBase['c++'].quickSummary; }, get keyConcepts() { return knowledgeBase['c++'].keyConcepts; } },
+
       java: {
-        definition: 'Java is a high-level, class-based, object-oriented, strongly-typed programming language designed to have minimal implementation dependencies ("Write Once, Run Anywhere").',
-        keyConcepts: [
-          'Bytecode & JVM: Source code compiles into `.class` bytecode which executes on the Java Virtual Machine across operating systems.',
-          'OOP Pillars: Encapsulation, Abstraction, Inheritance (`extends`), and Polymorphism (`@Override`).',
-          'Garbage Collection: Automatic background heap memory management reclaiming unreferenced objects.'
-        ],
-        features: [
-          'Platform independence through JVM execution environment.',
-          'Built-in multi-threading support and comprehensive Collections Framework (`List`, `Set`, `Map`).'
-        ],
-        functions: [
-          'Powers enterprise web backends (Spring Boot), Android application development, financial systems, and big data tools (Hadoop).'
-        ],
-        types: [
-          'JDK (Java Development Kit): Compiler (`javac`) + JRE + tools.',
-          'JRE (Java Runtime Environment): JVM + core Java class libraries.'
-        ],
-        advantages: [
-          'Strict type checking and automatic garbage collection prevent memory corruption.',
-          'Vast enterprise ecosystem, open-source frameworks, and active developer community.'
-        ],
-        disadvantages: [
-          'Higher RAM memory footprint and slower startup time compared to compiled C/C++.',
-          'Verbose syntax requiring boilerplate class declarations.'
-        ],
-        syntax: 'public class Main {\n    public static void main(String[] args) {\n        java.util.List<String> items = new java.util.ArrayList<>();\n        items.add("SmartPrep AI");\n        System.out.println(items.get(0));\n    }\n}',
-        example: 'Creating an `ArrayList<String>` to dynamically add records and sorting with `Collections.sort()`.',
-        examQuestions: [
-          { q: 'How does Method Overloading differ from Method Overriding in Java?', a: 'Method Overloading occurs in the same class (same name, different parameters, compile-time). Method Overriding occurs in subclasses (same signature, `@Override`, runtime polymorphism).' },
-          { q: 'Why is `String` immutable in Java?', a: 'Immutability guarantees security (network/database connections), thread safety without synchronization locks, and enables String Pool memory caching.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Java is a high-level, class-based, object-oriented programming language designed by James Gosling at Sun Microsystems (1995). Its "Write Once, Run Anywhere" principle means compiled bytecode runs on any platform with a JVM.',
+        easyExplanation: 'Java is like a universal translator for computers. You write code once, and the Java Virtual Machine (JVM) translates it for any operating system — Windows, Mac, or Linux — without rewriting a single line.',
+        syntax: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, SmartPrep AI!");\n    }\n}`,
+        example: 'Creating a dynamic list: ArrayList<String> names = new ArrayList<>(); names.add("Alice"); Collections.sort(names); — stores objects dynamically and sorts them.',
+        importantKeywords: ['JVM & Bytecode', 'OOP (Encapsulation, Inheritance, Polymorphism)', 'Garbage Collection', 'Platform Independence', 'Exception Handling'],
+        memoryTips: 'WORA = Write Once, Run Anywhere. Java compiles to bytecode (.class files) → JVM executes it on any platform. GC = Garbage Collector auto-frees unused memory.',
+        quickSummary: ['Object-oriented language running on JVM bytecode.', 'Automatic memory management via garbage collection.', 'Powers Android apps, enterprise backends, and big data systems.'],
+        keyConcepts: ['JVM: Executes platform-independent bytecode on any OS.', 'OOP Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism.', 'Exception Handling: try-catch-finally blocks manage runtime errors.']
       },
 
       python: {
-        definition: 'Python is an interpreted, high-level, dynamically-typed, multi-paradigm programming language known for clear readable syntax, automatic memory management, and extensive scientific packages.',
-        keyConcepts: [
-          'Dynamic Typing: Variables adopt types automatically at runtime without explicit declaration.',
-          'Indentation Syntax: Code blocks are demarcated by white space indentation instead of curly braces.',
-          'Garbage Collection: Automatic reference counting and generational memory reclamation.'
-        ],
-        features: [
-          'Rich ecosystem of third-party packages (PyPI, NumPy, Pandas, PyTorch, Scikit-learn).',
-          'Cross-platform compatibility running seamlessly on Windows, macOS, and Linux.'
-        ],
-        functions: [
-          'Dominates Data Science, Artificial Intelligence / Machine Learning engineering, Web Backends (Django, Flask), and Scripting Automation.'
-        ],
-        types: [
-          'Mutable Types: Lists `[]`, Dictionaries `{k:v}`, Sets `{}`.',
-          'Immutable Types: Tuples `()`, Strings `""`, Integers, Floats.'
-        ],
-        advantages: [
-          'Rapid prototyping with concise, pseudocode-like syntax.',
-          'Massive community support and comprehensive standard library.'
-        ],
-        disadvantages: [
-          'Slower execution speed compared to C/C++ due to GIL (Global Interpreter Lock) and dynamic typing.',
-          'Risk of runtime type errors if input data types are unverified.'
-        ],
-        syntax: '# List comprehension & dictionary usage\neven_squares = {x: x**2 for x in range(10) if x % 2 == 0}\nprint(even_squares)  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}',
-        example: 'Importing pandas to load a CSV dataset with `df = pd.read_csv("data.csv")` and analyzing statistics.',
-        examQuestions: [
-          { q: 'What is the Global Interpreter Lock (GIL) in Python?', a: 'A mutex mechanism in CPython preventing multiple native threads from executing Python bytecodes simultaneously, limiting multi-threaded CPU parallel execution.' },
-          { q: 'How does a Python List differ from a Tuple?', a: 'Lists are mutable (modifiable) defined with `[]`; Tuples are immutable (read-only) defined with `()`, rendering tuples faster and hashable.' }
-        ]
-      },
-
-      cpp: {
-        definition: 'C++ is a compiled, middle-level, general-purpose programming language created by Bjarne Stroustrup as an extension of C, adding Object-Oriented Programming (OOP), templates, and generic programming.',
-        keyConcepts: [
-          'OOP Integration: Classes, inheritance, virtual functions, destructors.',
-          'Standard Template Library (STL): Pre-built containers (`std::vector`, `std::map`) and algorithms.',
-          'Pointers & References: Direct memory manipulation combined with safe reference passing.'
-        ],
-        features: [
-          'Zero-cost abstractions: high-level OOP constructs compile to machine code without runtime performance penalty.',
-          'Direct hardware control and fine-grained CPU memory management.'
-        ],
-        functions: [
-          'Used for Game Engines (Unreal Engine), High-Frequency Trading systems, Web Browsers (V8/Chromium), Graphics Rendering, and Operating Systems.'
-        ],
-        types: [
-          'C++ Standards: C++98, C++11 (smart pointers, auto, lambdas), C++17, C++20 (concepts, coroutines).'
-        ],
-        advantages: [
-          'Blazing fast execution speed and low-level system memory control.',
-          'Comprehensive template metaprogramming and powerful STL library.'
-        ],
-        disadvantages: [
-          'Complex syntax with steep learning curve (undefined behavior, manual pointers).',
-          'Manual memory allocation (`new`/`delete`) requires strict RAII practices to avoid memory leaks.'
-        ],
-        syntax: '#include <iostream>\n#include <vector>\n\nint main() {\n    std::vector<int> nums = {10, 20, 30};\n    for (int n : nums) std::cout << n << " ";\n    return 0;\n}',
-        example: 'Using `std::unique_ptr<Widget>` to automatically manage dynamic object lifetime without manual `delete`.',
-        examQuestions: [
-          { q: 'What is RAII (Resource Acquisition Is Initialization) in C++?', a: 'A programming idiom where resource ownership (memory, file handles, locks) is tied to object lifetime, freeing resources automatically in the destructor when scope ends.' },
-          { q: 'What is a Virtual Function in C++?', a: 'A member function declared `virtual` in a base class that enables runtime dynamic polymorphism, ensuring the derived class override is invoked through base class pointers.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Python is an interpreted, high-level, dynamically-typed programming language created by Guido van Rossum in 1991. It emphasizes code readability with significant whitespace and supports multiple paradigms (procedural, OOP, functional).',
+        easyExplanation: 'Python reads almost like English. Instead of curly braces, it uses indentation. Variables don\'t need type declarations — Python figures out types automatically. Its huge library ecosystem makes it the go-to language for AI, data science, and web development.',
+        syntax: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("SmartPrep"))  # Output: Hello, SmartPrep!`,
+        example: 'List comprehension: squares = [x**2 for x in range(10) if x % 2 == 0] — creates [0, 4, 16, 36, 64] in a single readable line.',
+        importantKeywords: ['Dynamic Typing', 'Interpreted Language', 'List Comprehensions', 'pip & Libraries', 'Indentation-Based Syntax'],
+        memoryTips: 'Python = "Readability First". No semicolons, no curly braces — just clean indentation. Remember: def for functions, class for OOP, import for libraries.',
+        quickSummary: ['High-level interpreted language with clean, readable syntax.', 'Dynamic typing — no need to declare variable types.', 'Dominant in AI, Machine Learning, Data Science, and Web (Django/Flask).'],
+        keyConcepts: ['Interpreted: Code runs line-by-line via the Python interpreter.', 'Dynamic Typing: x = 5 (int), x = "hello" (str) — type changes automatically.', 'Rich Ecosystem: NumPy, Pandas, TensorFlow, Django, Flask, and 300k+ packages.']
       },
 
       javascript: {
-        definition: 'JavaScript is a high-level, interpreted/JIT-compiled, multi-paradigm, event-driven programming language that powers interactive web interfaces, single-page apps, and server backends (Node.js).',
-        keyConcepts: [
-          'Event Loop & Asynchrony: Non-blocking single-threaded I/O model using call stack, task queues, Promises, and `async/await`.',
-          'First-Class Functions & Closures: Functions can be assigned to variables, passed as arguments, and capture surrounding lexical scope.',
-          'Prototypes: Object inheritance based on prototype chain linking.'
-        ],
-        features: [
-          'Runs natively inside 100% of modern web browsers.',
-          'Full-stack application development using Node.js, Express, React, and Vue.'
-        ],
-        functions: [
-          'Building interactive frontend UIs, single-page web applications (SPAs), web APIs, mobile apps (React Native), and real-time backend servers.'
-        ],
-        types: [
-          'Primitive Types: `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint`.',
-          'Reference Types: `Object`, `Array`, `Function`, `Date`, `Map`, `Set`.'
-        ],
-        advantages: [
-          'Universal web browser compatibility.',
-          'Huge package ecosystem via npm and rapid event-driven asynchronous execution.'
-        ],
-        disadvantages: [
-          'Dynamic weak typing can lead to unexpected type coercion behavior.',
-          'Single-threaded event loop can freeze if CPU-bound heavy calculations block the call stack.'
-        ],
-        syntax: 'const fetchData = async () => {\n  try {\n    const res = await fetch("https://api.example.com/data");\n    const data = await res.json();\n    console.log(data);\n  } catch (err) { console.error(err); }\n};',
-        example: 'Attaching an event listener `button.addEventListener("click", handler)` to dynamically update DOM nodes.',
-        examQuestions: [
-          { q: 'Explain `==` vs `===` in JavaScript.', a: '`==` compares values with implicit type coercion. `===` (strict equality) compares both value and data type without type conversion.' },
-          { q: 'What is a Closure in JavaScript?', a: 'A function that retains access to variables from its parent lexical scope even after the parent function has finished executing.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'JavaScript is a high-level, interpreted programming language that is one of the core technologies of the World Wide Web. It enables interactive web pages and runs in browsers as well as servers (Node.js).',
+        easyExplanation: 'If HTML is the skeleton of a website and CSS is the skin, JavaScript is the brain — it makes websites interactive. Click a button, submit a form, animate an element? That\'s all JavaScript.',
+        syntax: `// Variables and functions\nconst greet = (name) => \`Hello, \${name}!\`;\nconsole.log(greet("SmartPrep")); // Hello, SmartPrep!`,
+        example: 'DOM manipulation: document.getElementById("btn").addEventListener("click", () => { alert("Clicked!"); }); — adds interactivity to HTML elements.',
+        importantKeywords: ['DOM Manipulation', 'Event Listeners', 'ES6+ (Arrow Functions, Promises)', 'Async/Await', 'Node.js'],
+        memoryTips: 'JS = "The Language of the Web". Frontend (React, Vue) + Backend (Node.js) + Mobile (React Native). Remember: var (old) → let/const (modern).',
+        quickSummary: ['Core web technology enabling interactive, dynamic websites.', 'Runs in browsers (client-side) and servers (Node.js).', 'ES6+ introduced let/const, arrow functions, promises, and modules.'],
+        keyConcepts: ['DOM: Document Object Model — JS reads and modifies HTML elements.', 'Events: User interactions (click, submit, keypress) trigger JavaScript functions.', 'Async: Promises and async/await handle non-blocking operations like API calls.']
       },
+
+      js: { get subjectName() { return knowledgeBase.javascript.subjectName; }, get isProgramming() { return knowledgeBase.javascript.isProgramming; }, get definition() { return knowledgeBase.javascript.definition; }, get easyExplanation() { return knowledgeBase.javascript.easyExplanation; }, get syntax() { return knowledgeBase.javascript.syntax; }, get example() { return knowledgeBase.javascript.example; }, get importantKeywords() { return knowledgeBase.javascript.importantKeywords; }, get memoryTips() { return knowledgeBase.javascript.memoryTips; }, get quickSummary() { return knowledgeBase.javascript.quickSummary; }, get keyConcepts() { return knowledgeBase.javascript.keyConcepts; } },
 
       sql: {
-        definition: 'SQL (Structured Query Language) is the domain-specific standard language used for defining, querying, manipulating, and managing data stored in relational database management systems (RDBMS).',
-        keyConcepts: [
-          'ACID Transactions: Atomicity, Consistency, Isolation, and Durability.',
-          'Relational Keys: Primary Key (unique row identifier) and Foreign Key (referential integrity link).',
-          'Relational Joins: `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN` combining records across tables.'
-        ],
-        features: [
-          'Declarative syntax — specifies WHAT data to retrieve rather than HOW to navigate storage.',
-          'High query execution efficiency using database indexes and query planners.'
-        ],
-        functions: [
-          'Querying, updating, inserting, and deleting relational data across enterprise databases (PostgreSQL, MySQL, Oracle, SQL Server, SQLite).'
-        ],
-        types: [
-          'DDL (Data Definition Language): `CREATE`, `ALTER`, `DROP`, `TRUNCATE`.',
-          'DML (Data Manipulation Language): `SELECT`, `INSERT`, `UPDATE`, `DELETE`.',
-          'DCL (Data Control Language): `GRANT`, `REVOKE`.'
-        ],
-        advantages: [
-          'Standardized, reliable data persistence with strong transactional integrity.',
-          'Powerful aggregation (`GROUP BY`, `SUM`, `AVG`) and multi-table join capabilities.'
-        ],
-        disadvantages: [
-          'Strict relational schema structure can be rigid for unstructured, fast-changing data.',
-          'Scaling across distributed server nodes requires complex sharding or database replication.'
-        ],
-        syntax: 'SELECT u.name, COUNT(o.id) AS total_orders\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE u.status = "active"\nGROUP BY u.id\nHAVING total_orders > 5\nORDER BY total_orders DESC;',
-        example: 'Creating a user table with `PRIMARY KEY (id)` and querying top customers using aggregated `GROUP BY`.',
-        examQuestions: [
-          { q: 'What is the difference between `WHERE` and `HAVING` clauses in SQL?', a: '`WHERE` filters individual rows before grouping takes place. `HAVING` filters aggregate groups produced by `GROUP BY`.' },
-          { q: 'Explain Database Normalization (1NF, 2NF, 3NF).', a: 'Normalization reorganizes database tables to eliminate duplicate data redundancies and prevent insertion, update, and deletion anomalies.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'SQL (Structured Query Language) is a domain-specific language used to manage and query relational databases. It allows creating, reading, updating, and deleting data stored in structured tables.',
+        easyExplanation: 'SQL is the language you use to talk to databases. Want to find all students who scored above 90? SQL lets you ask the database that question in a structured way using SELECT, WHERE, and other commands.',
+        syntax: `SELECT name, marks FROM students\nWHERE marks > 90\nORDER BY marks DESC;`,
+        example: 'JOIN example: SELECT s.name, c.course_name FROM students s INNER JOIN courses c ON s.course_id = c.id; — combines data from two related tables.',
+        importantKeywords: ['SELECT / FROM / WHERE', 'JOIN (INNER, LEFT, RIGHT)', 'GROUP BY & HAVING', 'PRIMARY KEY & FOREIGN KEY', 'CRUD Operations'],
+        memoryTips: 'SQL operations = CRUD: Create (INSERT), Read (SELECT), Update (UPDATE), Delete (DELETE). Remember JOINs connect tables like bridges!',
+        quickSummary: ['Standard language for managing relational databases.', 'Core commands: SELECT, INSERT, UPDATE, DELETE.', 'JOINs combine data from multiple related tables.'],
+        keyConcepts: ['Queries: SELECT retrieves data; WHERE filters rows; ORDER BY sorts results.', 'JOINs: Combine rows from two or more tables based on related columns.', 'Normalization: Organizing tables to reduce redundancy and improve integrity.']
       },
 
-      dsa: {
-        definition: 'Data Structures and Algorithms (DSA) is the foundational computer science study of organizing data efficiently in memory (structures) and designing step-by-step procedures to solve computational problems (algorithms).',
-        keyConcepts: [
-          'Asymptotic Complexity: Measuring runtime (Time Complexity) and memory growth (Space Complexity) using Big-O notation.',
-          'Linear vs Non-Linear Structures: Arrays, Linked Lists, Stacks, Queues vs Trees, Graphs, Hash Tables.',
-          'Algorithmic Paradigms: Divide & Conquer, Greedy Algorithms, Dynamic Programming, Backtracking.'
-        ],
-        features: [
-          'Provides mathematical proofs for software runtime efficiency and memory bounds.',
-          'Forms the fundamental technical foundation for software engineering system design.'
-        ],
-        functions: [
-          'Optimizes database indexes, search engines, network routing (Dijkstra), graphics rendering, and OS memory allocation.'
-        ],
-        types: [
-          'Data Structures: Array, Linked List, Stack (LIFO), Queue (FIFO), Hash Table, Binary Search Tree, Heap, Graph.',
-          'Algorithms: Sorting (QuickSort, MergeSort), Searching (Binary Search), Graph Traversal (DFS, BFS).'
-        ],
-        advantages: [
-          'Drastically accelerates software execution speed (e.g. O(log N) binary search vs O(N) linear search).',
-          'Minimizes system memory overhead and compute operational costs.'
-        ],
-        disadvantages: [
-          'Complex algorithms demand rigorous edge-case handling and memory safety.',
-          'Over-engineering complex structures for simple small datasets adds unnecessary code overhead.'
-        ],
-        syntax: '// Binary Search O(log N)\nfunction binarySearch(arr, target) {\n  let low = 0, high = arr.length - 1;\n  while (low <= high) {\n    let mid = Math.floor((low + high) / 2);\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) low = mid + 1;\n    else high = mid - 1;\n  }\n  return -1;\n}',
-        example: 'Using a Hash Map to reduce a 2-Sum lookup from O(N²) quadratic time to O(N) linear time.',
-        examQuestions: [
-          { q: 'Why is QuickSort preferred over MergeSort for arrays, and vice versa for linked lists?', a: 'QuickSort operates in-place (O(1) space) with high cache locality for contiguous arrays. MergeSort does not require random indexing, making it optimal for Linked Lists.' },
-          { q: 'Compare Stack (LIFO) vs Queue (FIFO) data structures.', a: 'Stack uses Last-In First-Out (push/pop) e.g., call stack, undo buffer. Queue uses First-In First-Out (enqueue/dequeue) e.g., print queue, web server requests.' }
-        ]
+      html: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'HTML (HyperText Markup Language) is the standard markup language for creating web pages. It defines the structure and content of a webpage using elements represented by tags like <div>, <p>, <h1>, etc.',
+        easyExplanation: 'HTML is the skeleton of every website. It tells the browser what content to display — headings, paragraphs, images, links, and forms. Without HTML, there would be no web pages.',
+        syntax: `<!DOCTYPE html>\n<html>\n<head><title>My Page</title></head>\n<body>\n  <h1>Hello World</h1>\n  <p>This is a paragraph.</p>\n</body>\n</html>`,
+        example: 'Creating a form: <form action="/submit"><input type="text" name="name"><button type="submit">Send</button></form> — collects user input.',
+        importantKeywords: ['Tags & Elements', 'Attributes (id, class, src)', 'Semantic HTML (header, nav, main)', 'Forms & Inputs', 'DOCTYPE Declaration'],
+        memoryTips: 'HTML = "HyperText Markup Language". Every tag opens <tag> and closes </tag>. Semantic tags tell the browser what content means, not just how it looks.',
+        quickSummary: ['Standard markup language for web page structure.', 'Uses tags (<h1>, <p>, <div>) to define content.', 'HTML5 added semantic elements: <header>, <nav>, <article>, <footer>.'],
+        keyConcepts: ['Elements: Building blocks like headings, paragraphs, images, and links.', 'Attributes: id, class, src, href — provide additional info to elements.', 'Semantic HTML: <header>, <main>, <footer> improve accessibility and SEO.']
       },
 
-      os: {
-        definition: 'An Operating System (OS) is essential system software that acts as an intermediary between physical hardware and user applications, managing process scheduling, RAM memory allocation, file systems, and hardware I/O.',
-        keyConcepts: [
-          'Process & Thread Management: Process isolation (PCB), context switching, CPU scheduling algorithms (Round Robin, SJF).',
-          'Memory Management: Virtual memory, paging, segmentation, page fault handling, and TLB cache.',
-          'Concurrency & Deadlocks: Semaphores, mutex locks, critical sections, and deadlock prevention.'
-        ],
-        features: [
-          'Provides hardware abstraction layer, file system security access control, and process isolation.',
-          'Enables multi-tasking and multi-user resource sharing.'
-        ],
-        functions: [
-          'Powers all computers, smartphones, enterprise servers, and embedded hardware (Linux, Windows, macOS, Android, iOS).'
-        ],
-        types: [
-          'Batch OS, Time-Sharing OS, Distributed OS, Real-Time OS (RTOS).'
-        ],
-        advantages: [
-          'Protects memory address spaces from unauthorized process corruption.',
-          'Optimizes hardware resource utilization across concurrent software programs.'
-        ],
-        disadvantages: [
-          'OS kernel overhead consumes system CPU cycles and RAM memory.',
-          'Kernel bugs or bad drivers can cause total system crashes (Kernel Panic / BSOD).'
-        ],
-        syntax: '// POSIX Fork Process Creation\n#include <unistd.h>\n#include <stdio.h>\n\nint main() {\n    pid_t pid = fork();\n    if (pid == 0) printf("Child Process\\n");\n    else printf("Parent Process\\n");\n    return 0;\n}',
-        example: 'OS managing Virtual Memory paging to swap inactive RAM pages to disk swap space when physical RAM is full.',
-        examQuestions: [
-          { q: 'What are the 4 necessary conditions for a Deadlock to occur?', a: '1. Mutual Exclusion, 2. Hold and Wait, 3. No Preemption, 4. Circular Wait.' },
-          { q: 'Explain the difference between a Process and a Thread.', a: 'A Process is an independent program with its own address space. A Thread is a lightweight execution unit within a process that shares process memory.' }
-        ]
+      css: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of HTML documents. It controls layout, colors, fonts, spacing, animations, and responsive design.',
+        easyExplanation: 'If HTML is the skeleton, CSS is the clothing and makeup. It makes websites beautiful by controlling colors, fonts, layouts, spacing, and animations. The "Cascading" means styles can inherit and override each other.',
+        syntax: `.card {\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  border-radius: 12px;\n  padding: 2rem;\n  box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n}`,
+        example: 'Flexbox layout: .container { display: flex; justify-content: center; align-items: center; } — centers child elements both horizontally and vertically.',
+        importantKeywords: ['Selectors (class, id, element)', 'Box Model (margin, border, padding)', 'Flexbox & Grid', 'Media Queries', 'Animations & Transitions'],
+        memoryTips: 'CSS Box Model = "MBPC" from outside in: Margin → Border → Padding → Content. Flexbox = 1D layout, Grid = 2D layout.',
+        quickSummary: ['Stylesheet language controlling visual presentation of web pages.', 'Box Model: margin → border → padding → content.', 'Flexbox (1D) and Grid (2D) are modern layout systems.'],
+        keyConcepts: ['Selectors: Target HTML elements by tag, class (.), or id (#).', 'Box Model: Every element is a box with margin, border, padding, and content.', 'Responsive Design: Media queries adapt layout to different screen sizes.']
       },
 
-      networks: {
-        definition: 'Computer Networking is the study of interconnecting autonomous computing devices to exchange data, resources, and communication using standardized network protocols and physical media.',
-        keyConcepts: [
-          'Layered Models: OSI 7-Layer Model (Physical to Application) and TCP/IP 4-Layer Model.',
-          'Protocols: IP (routing), TCP (reliable connection), UDP (unreliable fast datagram), HTTP/HTTPS, DNS, DHCP.',
-          'Addressing & Routing: MAC address (Data Link), IP address (Network), Port numbers (Transport).'
-        ],
-        features: [
-          'Enables global web browsing, email transmission, video streaming, and cloud services.',
-          'Secured using SSL/TLS encryption, firewalls, and VPN tunnels.'
-        ],
-        functions: [
-          'Facilitates client-server communication, packet switching, data routing across routers/switches, and domain name resolution.'
-        ],
-        types: [
-          'LAN (Local Area Network), WAN (Wide Area Network), MAN, WLAN (Wi-Fi), PAN (Bluetooth).'
-        ],
-        advantages: [
-          'Enables instant global communication and resource sharing.',
-          'Scales seamlessly using standardized Internet protocols.'
-        ],
-        disadvantages: [
-          'Vulnerable to cyber attacks (DDoS, MITM, packet sniffing).',
-          'Network congestion can introduce latency and packet loss.'
-        ],
-        syntax: 'HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 45\n\n{"status":"success","message":"Data received"}',
-        example: 'Typing `https://google.com` triggers DNS IP lookup, TCP 3-way handshake, TLS encryption, and HTTP GET request.',
-        examQuestions: [
-          { q: 'Explain TCP 3-Way Handshake.', a: '1. Client sends SYN packet to Server. 2. Server responds with SYN-ACK packet. 3. Client sends ACK packet back to establish reliable connection.' },
-          { q: 'Compare TCP vs UDP.', a: 'TCP is connection-oriented, reliable, ordered, error-checked, but slower (e.g. Web, Email). UDP is connectionless, fast, unreliable, unordered (e.g. Gaming, Video Streaming).' }
-        ]
+      inheritance: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Inheritance is a fundamental OOP mechanism where a child class (subclass) acquires the properties and methods of a parent class (superclass). It promotes code reusability and establishes an "is-a" relationship between classes.',
+        easyExplanation: 'Just like a child inherits traits from parents in real life, in programming a child class inherits code from a parent class. A Dog class can inherit from Animal class — getting all Animal\'s properties while adding its own unique behaviors like bark().',
+        syntax: `// Java Example\nclass Animal {\n    void eat() { System.out.println("Eating..."); }\n}\nclass Dog extends Animal {\n    void bark() { System.out.println("Woof!"); }\n}\n// Dog inherits eat() from Animal`,
+        example: 'Types: Single (A→B), Multilevel (A→B→C), Hierarchical (A→B, A→C). Java uses "extends" for classes and "implements" for interfaces. Python supports multiple inheritance.',
+        importantKeywords: ['extends / implements', 'super keyword', 'Method Overriding', 'Single / Multilevel / Hierarchical', 'IS-A Relationship'],
+        memoryTips: 'Inheritance = "IS-A" relationship. Dog IS-A Animal. Think of a family tree: parent passes traits to children. "extends" = class inheritance, "implements" = interface inheritance.',
+        quickSummary: ['Child class acquires properties/methods of parent class.', 'Types: Single, Multilevel, Hierarchical, Multiple (interfaces).', 'Promotes code reuse via the "is-a" relationship.'],
+        keyConcepts: ['Method Overriding: Child redefines parent\'s method for specialized behavior.', 'super keyword: Calls parent\'s constructor or method from the child class.', 'Abstract Classes: Cannot be instantiated; provide a template for subclasses.']
       },
 
-      html_css: {
-        definition: 'HTML (HyperText Markup Language) provides the structural skeleton of web pages, while CSS (Cascading Style Sheets) controls visual layout, presentation, typography, and responsive design.',
-        keyConcepts: [
-          'Semantic HTML5: `<article>`, `<section>`, `<nav>`, `<header>`, `<footer>` for accessibility and SEO.',
-          'CSS Box Model: Content, Padding, Border, and Margin dimensions.',
-          'Modern Layout Systems: CSS Flexbox (1D alignment) and CSS Grid (2D layout grid).'
-        ],
-        features: [
-          'Underpins all visual user interfaces across the World Wide Web.',
-          'Supports responsive media queries for desktop, tablet, and mobile displays.'
-        ],
-        functions: [
-          'Renders web application user interfaces, typography, color palettes, and interactive component layouts.'
-        ],
-        types: [
-          'HTML Elements: Block-level vs Inline elements.',
-          'CSS Selectors: Class (`.`), ID (`#`), Attribute, Pseudo-classes (`:hover`).'
-        ],
-        advantages: [
-          'Universal standard supported by 100% of web browsers.',
-          'Easy to learn, inspect via Browser DevTools, and customize.'
-        ],
-        disadvantages: [
-          'Cross-browser rendering inconsistencies across legacy browsers.',
-          'CSS specificity issues can make styling maintenance complex in large codebases.'
-        ],
-        syntax: '/* CSS Flexbox Layout */\n.card-container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 1rem;\n  border-radius: 8px;\n}',
-        example: 'Building a responsive 3-column feature grid using `display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));`.',
-        examQuestions: [
-          { q: 'Explain the CSS Box Model.', a: 'Every HTML element is a box containing: Content (text/images) → Padding (internal space) → Border (outline) → Margin (external spacing).' },
-          { q: 'Why are Semantic HTML5 tags important?', a: 'Semantic tags provide clear structural meaning to browsers, search engines (improving SEO), and screen readers (improving accessibility).' }
-        ]
+      polymorphism: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Polymorphism (meaning "many forms") is an OOP concept where a single interface or method name can take multiple forms. It allows objects of different classes to be treated through the same interface.',
+        easyExplanation: 'Think of the word "draw" — an artist draws a painting, a cowboy draws a gun, a programmer draws a shape on screen. Same word, different actions depending on context. That\'s polymorphism in programming — same method name, different behavior depending on the object.',
+        syntax: `// Java Method Overloading (Compile-time)\nint add(int a, int b) { return a + b; }\ndouble add(double a, double b) { return a + b; }\n\n// Method Overriding (Runtime)\nclass Shape { void draw() { } }\nclass Circle extends Shape { void draw() { System.out.println("Drawing Circle"); } }`,
+        example: 'Animal a = new Dog(); a.speak(); — calls Dog\'s speak() method even though the reference type is Animal. This is runtime polymorphism via method overriding.',
+        importantKeywords: ['Method Overloading (Compile-time)', 'Method Overriding (Runtime)', 'Dynamic Dispatch', 'Virtual Functions', 'Upcasting'],
+        memoryTips: 'Polymorphism = "Many Forms". Two types: Overloading (same name, different parameters — compile time) vs Overriding (same signature, different class — runtime).',
+        quickSummary: ['One interface, multiple implementations.', 'Compile-time: Method overloading (different parameters).', 'Runtime: Method overriding (child redefines parent method).'],
+        keyConcepts: ['Overloading: Same method name with different parameter lists in the same class.', 'Overriding: Child class provides specific implementation of parent\'s method.', 'Dynamic Binding: JVM decides at runtime which overridden method to call.']
+      },
+
+      encapsulation: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Encapsulation is an OOP principle of bundling data (variables) and methods (functions) that operate on that data within a single unit (class), while restricting direct access to internal state using access modifiers.',
+        easyExplanation: 'Think of a capsule pill — the medicine is wrapped inside a shell. Similarly, encapsulation wraps data inside a class and only allows access through controlled methods (getters and setters). You can\'t directly touch the internal data from outside.',
+        syntax: `class BankAccount {\n    private double balance = 0;\n    public double getBalance() { return balance; }\n    public void deposit(double amt) {\n        if (amt > 0) balance += amt;\n    }\n}`,
+        example: 'private fields with public getters/setters: balance is hidden (private), deposit() validates before modifying it, getBalance() provides read-only access.',
+        importantKeywords: ['private / public / protected', 'Getters & Setters', 'Data Hiding', 'Access Modifiers', 'Information Hiding'],
+        memoryTips: 'Encapsulation = "Data in a Capsule". Private = hidden, Public = visible. Always use getters/setters to control access. Think: ATM machine — you can\'t open it, but you can use its interface.',
+        quickSummary: ['Bundles data and methods into a single class.', 'Restricts direct access using private/protected modifiers.', 'Provides controlled access via public getter/setter methods.'],
+        keyConcepts: ['Access Modifiers: private (class only), protected (package + subclass), public (everywhere).', 'Getters/Setters: Methods that provide controlled read/write to private fields.', 'Data Hiding: Internal implementation is hidden from external code.']
+      },
+
+      abstraction: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Abstraction is an OOP principle of hiding complex implementation details and showing only the essential features of an object. It is achieved through abstract classes and interfaces.',
+        easyExplanation: 'When you drive a car, you use the steering wheel and pedals — you don\'t need to know how the engine works internally. Abstraction works the same way: it hides complexity and shows only what\'s necessary.',
+        syntax: `// Java Abstract Class\nabstract class Shape {\n    abstract double area(); // no body — must be implemented by subclass\n}\nclass Circle extends Shape {\n    double radius;\n    double area() { return Math.PI * radius * radius; }\n}`,
+        example: 'Interface example: interface Drawable { void draw(); } — any class implementing Drawable must provide its own draw() method. ArrayList, LinkedList both implement the List interface.',
+        importantKeywords: ['Abstract Class', 'Interface', 'abstract keyword', 'implements keyword', 'Hiding Complexity'],
+        memoryTips: 'Abstraction = "Show WHAT, hide HOW". Abstract class = partial abstraction (can have concrete methods). Interface = full abstraction (all methods must be implemented).',
+        quickSummary: ['Hides complex details, exposes only essential features.', 'Abstract class: Template with some implemented methods.', 'Interface: Contract that classes must fulfill.'],
+        keyConcepts: ['Abstract Class: Cannot be instantiated; may have abstract and concrete methods.', 'Interface: Pure contract — all methods are abstract (before Java 8).', 'Purpose: Reduces complexity and isolates impact of changes.']
       },
 
       oop: {
-        definition: 'Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects", which combine data attributes (fields/properties) and code behaviors (methods/functions).',
-        keyConcepts: [
-          'Encapsulation: Restricting direct access to object state by exposing public methods while keeping fields private.',
-          'Abstraction: Hiding complex implementation details, showing only essential functionality.',
-          'Inheritance: Allowing a child subclass to derive properties and methods from a parent superclass.',
-          'Polymorphism: Allowing different objects to respond to the same method interface in specialized ways.'
-        ],
-        features: [
-          'Promotes high code reusability, modular design, and maintainability.',
-          'Directly models real-world entities into software domain classes.'
-        ],
-        functions: [
-          'Used as the core architecture in Java, C++, Python, C#, Swift, and corporate enterprise software.'
-        ],
-        types: [
-          'Class-based OOP (Java, C++) vs Prototype-based OOP (JavaScript).'
-        ],
-        advantages: [
-          'Protects data integrity through encapsulated access control.',
-          'Simplifies code maintenance and large team collaboration.'
-        ],
-        disadvantages: [
-          'Can create larger code footprint and unnecessary object creation overhead.',
-          'Deep inheritance hierarchies can introduce class coupling complexity.'
-        ],
-        syntax: 'class Animal {\n  private String name;\n  public Animal(String name) { this.name = name; }\n  public void speak() { System.out.println(name + " makes a sound"); }\n}',
-        example: 'Creating a `Shape` base class with a virtual `calculateArea()` method overridden by `Circle` and `Rectangle` subclasses.',
-        examQuestions: [
-          { q: 'What is the difference between an Abstract Class and an Interface?', a: 'Abstract Classes can contain state (instance variables) and implemented methods. Interfaces contain only method contracts (until Java 8 default methods) and cannot hold state.' },
-          { q: 'Explain Encapsulation with an example.', a: 'Encapsulation hides internal fields (e.g. `private double balance`) and forces modifications through public methods (e.g. `deposit(amount)`), validating input before mutating state.' }
-        ]
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'Object-Oriented Programming (OOP) is a programming paradigm that organizes code around objects — instances of classes that bundle data (attributes) and behavior (methods). The four pillars are Encapsulation, Abstraction, Inheritance, and Polymorphism.',
+        easyExplanation: 'OOP models software like the real world. A "Car" class defines attributes (color, speed) and methods (drive, brake). Each real car is an object (instance) of that class. OOP makes code reusable, modular, and easier to maintain.',
+        syntax: `class Student {\n    String name;\n    int marks;\n    void display() {\n        System.out.println(name + ": " + marks);\n    }\n}\nStudent s = new Student();\ns.name = "Alice"; s.marks = 95;\ns.display();`,
+        example: 'Real-world OOP: Class = Blueprint of a House, Object = Actual House built from that blueprint. Each house (object) has its own color and rooms (attributes).',
+        importantKeywords: ['Class & Object', 'Encapsulation', 'Abstraction', 'Inheritance', 'Polymorphism'],
+        memoryTips: 'Four Pillars = "A PIE": Abstraction, Polymorphism, Inheritance, Encapsulation. Class = blueprint, Object = real thing built from it.',
+        quickSummary: ['Paradigm organizing code into objects with data and methods.', 'Four pillars: Encapsulation, Abstraction, Inheritance, Polymorphism.', 'Promotes code reuse, modularity, and real-world modeling.'],
+        keyConcepts: ['Class: Template/blueprint defining attributes and methods.', 'Object: Instance of a class with actual values.', 'Four Pillars: Encapsulation (data hiding), Abstraction (simplification), Inheritance (reuse), Polymorphism (flexibility).']
       },
 
-      photosynthesis: {
-        definition: 'Photosynthesis is the endothermic biochemical process by which autotrophic organisms (plants, algae, cyanobacteria) synthesize glucose (C₆H₁₂O₆) and oxygen (O₂) from carbon dioxide (CO₂), water (H₂O), and solar energy.',
-        keyConcepts: [
-          'Photolysis: Water molecules split using light energy, releasing O₂ as a byproduct.',
-          'Energy Carriers: Light energy is trapped as chemical energy in ATP and NADPH.',
-          'Carbon Fixation: CO₂ is incorporated into 3-carbon sugars during the Calvin Cycle.'
-        ],
-        features: [
-          'Occurs inside chloroplast organelles containing thylakoid membranes and stroma.',
-          'Driven by photosynthetic pigments (Chlorophyll a, Chlorophyll b, and Carotenoids).'
-        ],
-        functions: [
-          'Converts solar radiation into storable chemical bond energy.',
-          'Generates atmospheric oxygen essential for aerobic respiration in ecosystems.'
-        ],
-        types: [
-          'C3 Photosynthesis: Standard pathway (e.g., wheat, rice) forming 3-PGA.',
-          'C4 Photosynthesis: Spatial separation of CO₂ capture (e.g., corn, sugarcane) to minimize photorespiration.',
-          'CAM Photosynthesis: Temporal separation (nighttime CO₂ capture) in desert plants (e.g., cacti).'
-        ],
-        advantages: [
-          'Forms the primary trophic energy foundation of terrestrial and aquatic food chains.',
-          'Acts as a massive global carbon sink regulating atmospheric CO₂ levels.'
-        ],
-        disadvantages: [
-          'Low overall energy conversion efficiency (~1-2% in most crop plants).',
-          'Highly vulnerable to water stress, extreme temperatures, and photoinhibition.'
-        ],
-        syntax: '6CO₂ + 6H₂O + Light Energy → C₆H₁₂O₆ + 6O₂',
-        example: 'Oak tree leaves absorbing sunlight at 430nm (blue) and 660nm (red) wavelengths to manufacture starches.',
-        examQuestions: [
-          { q: 'What is the primary difference between Light-Dependent and Light-Independent reactions?', a: 'Light reactions occur in thylakoids and require direct sunlight to split H₂O and make ATP/NADPH. Light-independent reactions (Calvin cycle) occur in the stroma and use ATP/NADPH to fix CO₂ into glucose without requiring direct light.' },
-          { q: 'Why is photorespiration considered wasteful in C3 plants?', a: 'Because RuBisCO binds with O₂ instead of CO₂, consuming energy and releasing CO₂ without producing ATP or sugars.' }
-        ]
+      oops: { get subjectName() { return knowledgeBase.oop.subjectName; }, get isProgramming() { return knowledgeBase.oop.isProgramming; }, get definition() { return knowledgeBase.oop.definition; }, get easyExplanation() { return knowledgeBase.oop.easyExplanation; }, get syntax() { return knowledgeBase.oop.syntax; }, get example() { return knowledgeBase.oop.example; }, get importantKeywords() { return knowledgeBase.oop.importantKeywords; }, get memoryTips() { return knowledgeBase.oop.memoryTips; }, get quickSummary() { return knowledgeBase.oop.quickSummary; }, get keyConcepts() { return knowledgeBase.oop.keyConcepts; } },
+
+      dbms: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'A Database Management System (DBMS) is software that manages databases — it stores, retrieves, and manipulates data efficiently. Examples include MySQL, PostgreSQL, Oracle, and MongoDB.',
+        easyExplanation: 'A DBMS is like a librarian for data. Instead of you searching through thousands of files manually, the DBMS organizes everything into tables, lets you search with queries, and ensures data stays consistent and secure.',
+        syntax: `-- Creating a table\nCREATE TABLE students (\n    id INT PRIMARY KEY,\n    name VARCHAR(100),\n    marks INT\n);\n\n-- Querying data\nSELECT * FROM students WHERE marks > 80;`,
+        example: 'Normalization example: Splitting a single large table into Students and Courses tables linked by a foreign key (course_id) to reduce data redundancy.',
+        importantKeywords: ['Normalization (1NF, 2NF, 3NF, BCNF)', 'ACID Properties', 'ER Diagrams', 'Primary Key / Foreign Key', 'SQL Queries'],
+        memoryTips: 'ACID = Atomicity (all or nothing), Consistency (valid state), Isolation (no interference), Durability (permanent). Normal forms reduce redundancy step by step.',
+        quickSummary: ['Software system to store, retrieve, and manage structured data.', 'Uses tables with rows (records) and columns (fields).', 'ACID properties ensure reliable transactions.'],
+        keyConcepts: ['Normalization: Decompose tables to eliminate redundancy (1NF → 2NF → 3NF).', 'ER Model: Entity-Relationship diagrams represent database structure visually.', 'Transactions: ACID properties guarantee data integrity during operations.']
       },
 
-      programming: {
-        definition: 'Programming is the systematic process of designing, writing, testing, debugging, and maintaining instruction code for computing systems to perform automated algorithms.',
-        keyConcepts: [
-          'Control Flow: Executing code sequentially, conditionally (if/else), or iteratively (loops).',
-          'Data Abstraction: Storing values in variable types (integers, strings, arrays, objects).',
-          'Modularization: Dividing logic into reusable functions/methods to minimize code duplication.'
-        ],
-        features: [
-          'High readability through standardized syntax and naming conventions.',
-          'Extensibility via external libraries, modules, and framework ecosystems.'
-        ],
-        functions: [
-          'Translates human problem-solving logic into computer-executable instructions.',
-          'Processes input data stream and generates formatted output results.'
-        ],
-        types: [
-          'Imperative / Procedural Programming: Focuses on step-by-step state modification.',
-          'Object-Oriented Programming (OOP): Bundles state and behavior into classes/objects.',
-          'Functional Programming: Treats computation as evaluation of pure mathematical functions.'
-        ],
-        advantages: [
-          'Automates repetitive tasks with high precision and speed.',
-          'Scales computation to handle massive data sets efficiently.'
-        ],
-        disadvantages: [
-          'Requires rigorous debugging, testing, and memory management.',
-          'Susceptible to runtime exceptions, logic errors, and security vulnerabilities.'
-        ],
-        syntax: '// Function definition syntax\nfunction computeSum(a, b) {\n  return a + b;\n}',
-        example: 'Writing a binary search algorithm in Python to find a target value in a sorted list of 1 million records in O(log N) time.',
-        examQuestions: [
-          { q: 'What is the key difference between Compiled and Interpreted languages?', a: 'Compiled languages (e.g. C++) translate code directly into machine code before execution (faster runtime). Interpreted languages (e.g. Python) translate code line-by-line during execution (more flexible, easier debugging).' },
-          { q: 'What are the 4 main pillars of OOP?', a: 'Encapsulation, Abstraction, Inheritance, and Polymorphism.' }
-        ]
+      'operating system': {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'An Operating System (OS) is system software that manages computer hardware and software resources and provides services for application programs. Examples: Windows, Linux, macOS, Android.',
+        easyExplanation: 'The OS is the manager of your computer. It decides which program gets CPU time, how memory is shared, how files are organized, and how devices communicate. Without an OS, applications couldn\'t run.',
+        syntax: `// Process creation in C (Unix)\n#include <unistd.h>\npid_t pid = fork(); // Creates child process\nif (pid == 0) {\n    printf("Child process");\n} else {\n    printf("Parent process");\n}`,
+        example: 'CPU Scheduling: Round Robin assigns each process a fixed time slice (quantum). If process A gets 10ms, after 10ms it goes to the back of the queue and process B runs.',
+        importantKeywords: ['Process & Thread Management', 'CPU Scheduling (FCFS, SJF, Round Robin)', 'Memory Management (Paging, Segmentation)', 'Deadlock', 'File Systems'],
+        memoryTips: 'Deadlock conditions = "MHCN": Mutual Exclusion, Hold & Wait, Circular Wait, No Preemption — ALL four must hold for deadlock. Remove any one to prevent it.',
+        quickSummary: ['Manages hardware resources and provides services to applications.', 'Key functions: Process management, memory management, file systems, I/O.', 'Scheduling algorithms decide which process runs when.'],
+        keyConcepts: ['Process: A program in execution with its own memory space.', 'Paging: Divides memory into fixed-size pages to avoid external fragmentation.', 'Deadlock: Two or more processes blocked forever waiting for each other\'s resources.']
+      },
+
+      os: { get subjectName() { return knowledgeBase['operating system'].subjectName; }, get isProgramming() { return knowledgeBase['operating system'].isProgramming; }, get definition() { return knowledgeBase['operating system'].definition; }, get easyExplanation() { return knowledgeBase['operating system'].easyExplanation; }, get syntax() { return knowledgeBase['operating system'].syntax; }, get example() { return knowledgeBase['operating system'].example; }, get importantKeywords() { return knowledgeBase['operating system'].importantKeywords; }, get memoryTips() { return knowledgeBase['operating system'].memoryTips; }, get quickSummary() { return knowledgeBase['operating system'].quickSummary; }, get keyConcepts() { return knowledgeBase['operating system'].keyConcepts; } },
+
+      'data structure': {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'A Data Structure is a way of organizing and storing data in a computer so that it can be accessed and modified efficiently. Common types include arrays, linked lists, stacks, queues, trees, and graphs.',
+        easyExplanation: 'Data structures are like different types of containers. An array is like a row of numbered boxes, a stack is like a pile of plates (last in, first out), and a queue is like a line at a ticket counter (first in, first out). Choosing the right container makes your program faster.',
+        syntax: `// Stack in Java\nStack<Integer> stack = new Stack<>();\nstack.push(10);\nstack.push(20);\nint top = stack.pop(); // Returns 20 (LIFO)`,
+        example: 'Binary Search Tree: Left child < parent < right child. Searching for a value takes O(log n) time on average — much faster than scanning an array linearly.',
+        importantKeywords: ['Array & Linked List', 'Stack (LIFO) & Queue (FIFO)', 'Binary Tree & BST', 'Hash Table', 'Graph (BFS, DFS)'],
+        memoryTips: 'Stack = LIFO (Last In First Out, like a stack of plates). Queue = FIFO (First In First Out, like a line). Tree = Hierarchical, Graph = Network.',
+        quickSummary: ['Ways to organize data for efficient access and modification.', 'Linear: Array, Linked List, Stack, Queue.', 'Non-linear: Tree, Graph, Heap, Hash Table.'],
+        keyConcepts: ['Time Complexity: Measures how fast operations run (O(1), O(n), O(log n)).', 'Stack/Queue: LIFO vs FIFO data access patterns.', 'Trees: Hierarchical structures for fast searching and sorting.']
+      },
+
+      algorithm: {
+        subjectName: 'Computer Science & Programming', isProgramming: true,
+        definition: 'An Algorithm is a step-by-step procedure or formula for solving a problem. In computer science, algorithms are analyzed by their time complexity (Big O notation) and space complexity.',
+        easyExplanation: 'An algorithm is like a recipe. Just as a recipe gives step-by-step instructions to cook a dish, an algorithm gives step-by-step instructions to solve a problem. Some recipes (algorithms) are faster and use fewer ingredients (resources) than others.',
+        syntax: `// Binary Search Algorithm (Python)\ndef binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    while low <= high:\n        mid = (low + high) // 2\n        if arr[mid] == target: return mid\n        elif arr[mid] < target: low = mid + 1\n        else: high = mid - 1\n    return -1`,
+        example: 'Sorting comparison: Bubble Sort = O(n^2) — slow for large data. Merge Sort = O(n log n) — much faster. Quick Sort = O(n log n) average, O(n^2) worst case.',
+        importantKeywords: ['Big O Notation', 'Sorting (Bubble, Merge, Quick)', 'Searching (Linear, Binary)', 'Recursion', 'Dynamic Programming'],
+        memoryTips: 'Big O = "How does time grow with input size?" O(1) = constant, O(log n) = binary search, O(n) = linear scan, O(n^2) = nested loops.',
+        quickSummary: ['Step-by-step procedure to solve a computational problem.', 'Analyzed by time complexity (Big O) and space complexity.', 'Key types: Sorting, Searching, Graph, Dynamic Programming.'],
+        keyConcepts: ['Big O: Describes worst-case growth rate of time/space.', 'Divide & Conquer: Split problem into subproblems (Merge Sort, Quick Sort).', 'Dynamic Programming: Store solutions to overlapping subproblems (Fibonacci, Knapsack).']
+      },
+
+      /* ═══════ MATHEMATICS ═══════ */
+      'pythagoras theorem': {
+        subjectName: 'Mathematics', isProgramming: false,
+        definition: 'The Pythagoras Theorem states that in a right-angled triangle, the square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides: a² + b² = c².',
+        easyExplanation: 'Imagine a right-angled triangle. If you build squares on each of its three sides, the area of the biggest square (on the hypotenuse) will exactly equal the combined area of the two smaller squares. This is Pythagoras\' Theorem: a² + b² = c².',
+        example: 'If a right triangle has sides a = 3 cm and b = 4 cm, then c² = 3² + 4² = 9 + 16 = 25, so c = 5 cm. The (3, 4, 5) triple is the most famous Pythagorean triplet.',
+        importantKeywords: ['Right-Angled Triangle', 'Hypotenuse', 'a² + b² = c²', 'Pythagorean Triplets (3-4-5, 5-12-13)', 'Converse Theorem'],
+        memoryTips: 'Remember "3-4-5" — the simplest Pythagorean triplet. Legs Squared Added = Hypotenuse Squared. Also works with 5-12-13 and 8-15-17.',
+        quickSummary: ['In a right triangle: a² + b² = c² (c = hypotenuse).', 'Used to find unknown sides when two sides are known.', 'Pythagorean triplets: (3,4,5), (5,12,13), (8,15,17).'],
+        keyConcepts: ['Formula: a² + b² = c² applies only to right-angled triangles.', 'Converse: If a² + b² = c² holds, then the triangle is right-angled.', 'Applications: Distance between two points, construction, navigation.']
+      },
+
+      trigonometry: {
+        subjectName: 'Mathematics', isProgramming: false,
+        definition: 'Trigonometry is the branch of mathematics that studies relationships between angles and sides of triangles. The six trigonometric ratios — sin, cos, tan, cosec, sec, cot — are defined for right-angled triangles.',
+        easyExplanation: 'Trigonometry helps you find unknown sides or angles in a triangle using ratios. In a right triangle: sin(θ) = opposite/hypotenuse, cos(θ) = adjacent/hypotenuse, tan(θ) = opposite/adjacent. These ratios remain constant for any given angle.',
+        example: 'In a right triangle with angle θ = 30°: sin 30° = 1/2, cos 30° = √3/2, tan 30° = 1/√3. If the hypotenuse is 10 cm, opposite side = 10 × sin 30° = 5 cm.',
+        importantKeywords: ['sin, cos, tan', 'cosec, sec, cot', 'SOH-CAH-TOA', 'Trigonometric Identities', 'Unit Circle'],
+        memoryTips: 'SOH-CAH-TOA: Sin = Opposite/Hypotenuse, Cos = Adjacent/Hypotenuse, Tan = Opposite/Adjacent. "Some Old Houses Can Always Hide Their Old Age."',
+        quickSummary: ['Studies angle-side relationships in triangles.', 'Six ratios: sin, cos, tan and their reciprocals.', 'Key identity: sin²θ + cos²θ = 1.'],
+        keyConcepts: ['SOH-CAH-TOA: Defines the three primary trigonometric ratios.', 'Standard Angles: 0°, 30°, 45°, 60°, 90° have exact ratio values.', 'Identities: sin²θ + cos²θ = 1, 1 + tan²θ = sec²θ.']
       },
 
       calculus: {
-        definition: 'Calculus is the branch of mathematics studying continuous change, divided into Differential Calculus (rates of change) and Integral Calculus (accumulation of quantities).',
-        keyConcepts: [
-          'Limits: Evaluating function behavior as inputs approach a target point.',
-          'Derivatives: Instantaneous rate of change / tangent slope of f(x).',
-          'Integrals: Accumulation of quantities / exact net area under f(x).'
-        ],
-        features: [
-          'Connects rates of change to net accumulated quantities via Fundamental Theorem of Calculus.',
-          'Handles non-linear, continuous dynamic functions.'
-        ],
-        functions: [
-          'Models motion trajectories, rate equations, optimization maxima/minima, and area/volume calculations.'
-        ],
-        types: [
-          'Single-Variable Calculus: Functions with one independent variable f(x).',
-          'Multivariable / Vector Calculus: Functions with multiple variables f(x, y, z).'
-        ],
-        advantages: [
-          'Provides exact mathematical solutions for complex physical and economic systems.',
-          'Enables continuous optimization in engineering design.'
-        ],
-        disadvantages: [
-          'Requires function continuity and differentiability.',
-          'Symbolic integration can be intractable, requiring numerical approximation methods.'
-        ],
-        syntax: 'Derivative: d/dx(xⁿ) = n·xⁿ⁻¹\nIntegral: ∫ xⁿ dx = (xⁿ⁺¹)/(n+1) + C',
-        example: 'Computing the derivative of displacement function s(t) = 5t² + 3t to find instantaneous velocity v(t) = 10t + 3.',
-        examQuestions: [
-          { q: 'What does the Fundamental Theorem of Calculus state?', a: 'It proves that differentiation and integration are inverse operations: if F\'(x) = f(x), then ∫ₐᵇ f(x)dx = F(b) - F(a).' },
-          { q: 'How do you find local extrema (maxima/minima) using calculus?', a: 'Set the first derivative to zero (f\'(x) = 0) to find critical points, then test second derivative: f\'\'(x) > 0 is local minimum, f\'\'(x) < 0 is local maximum.' }
-        ]
+        subjectName: 'Mathematics', isProgramming: false,
+        definition: 'Calculus is the branch of mathematics that studies continuous change. It has two main branches: Differential Calculus (rates of change and slopes) and Integral Calculus (accumulation and areas under curves).',
+        easyExplanation: 'Calculus answers two big questions: (1) How fast is something changing right now? (differentiation — finding the slope at a point), and (2) How much has accumulated over time? (integration — finding the area under a curve).',
+        example: 'If distance s = t², then velocity v = ds/dt = 2t (derivative). If velocity v = 2t, then distance s = ∫2t dt = t² + C (integral). Differentiation and integration are inverse operations.',
+        importantKeywords: ['Differentiation', 'Integration', 'Limits', 'Derivative (dy/dx)', 'Fundamental Theorem of Calculus'],
+        memoryTips: 'Differentiation = "breaking down" (finding rate of change). Integration = "building up" (finding total area). They are inverse operations, like multiplication and division.',
+        quickSummary: ['Studies continuous change: Differentiation and Integration.', 'Derivative = instantaneous rate of change (slope of tangent).', 'Integral = total accumulation (area under curve).'],
+        keyConcepts: ['Limits: Foundation of calculus — what value a function approaches.', 'Derivatives: d/dx(xⁿ) = nxⁿ⁻¹ (Power Rule).', 'Integrals: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C (reverse of differentiation).']
       },
 
-      physics: {
-        definition: 'Physics is the natural science studying matter, motion, energy, and fundamental forces in the universe.',
-        keyConcepts: [
-          'Newton\'s Laws of Motion: Inertia, F = m·a, and Action-Reaction.',
-          'Conservation Laws: Conservation of Energy, Momentum, and Electric Charge.',
-          'Electromagnetism & Waves: Ohm\'s Law (V = I·R), wave optics, and electromagnetic radiation.'
-        ],
-        features: [
-          'Uses mathematical equations to formulate universal physical laws.',
-          'Validates theoretical models through quantitative empirical experiment.'
-        ],
-        functions: [
-          'Forms the core physical foundation of all technological engineering disciplines.'
-        ],
-        types: [
-          'Classical Mechanics, Electromagnetism, Thermodynamics, Quantum Mechanics, Relativity.'
-        ],
-        advantages: [
-          'Explains physical phenomena from subatomic particles to cosmic galaxies.',
-          'Drives technological innovations like semiconductors, lasers, and spaceflight.'
-        ],
-        disadvantages: [
-          'Requires high-level vector calculus and differential equations.',
-          'Idealized theoretical models simplify real-world friction and atmospheric drag.'
-        ],
-        syntax: 'F = m · a\nE = m · c²\nV = I · R',
-        example: 'Calculating projectile trajectory distance given initial velocity and launch angle using kinematic equations.',
-        examQuestions: [
-          { q: 'State Newton\'s Second Law of Motion.', a: 'Force equals mass times acceleration (F = m·a).' },
-          { q: 'What is the Law of Conservation of Energy?', a: 'Energy can neither be created nor destroyed; it only transforms from one form to another.' }
-        ]
+      algebra: {
+        subjectName: 'Mathematics', isProgramming: false,
+        definition: 'Algebra is the branch of mathematics dealing with symbols and rules for manipulating those symbols. It uses variables (like x, y) to represent unknown values and solves equations to find those values.',
+        easyExplanation: 'Algebra is like solving puzzles with letters. Instead of saying "what number plus 3 equals 7?", algebra writes it as x + 3 = 7 and solves for x = 4. It\'s a powerful tool for representing and solving real-world problems.',
+        example: 'Solving a quadratic equation: x² - 5x + 6 = 0 → (x-2)(x-3) = 0 → x = 2 or x = 3. The quadratic formula x = (-b ± √(b²-4ac)) / 2a works for any quadratic.',
+        importantKeywords: ['Variables & Constants', 'Linear Equations', 'Quadratic Equations', 'Polynomials', 'Factorization'],
+        memoryTips: 'Quadratic formula: "x equals negative b, plus or minus the square root, of b squared minus 4ac, all over 2a." Sing it to the tune of "Pop Goes the Weasel"!',
+        quickSummary: ['Uses variables (x, y) to represent unknowns and solve equations.', 'Linear: ax + b = 0; Quadratic: ax² + bx + c = 0.', 'Factorization and the quadratic formula are key solving tools.'],
+        keyConcepts: ['Equations: Statements of equality with unknowns to solve.', 'Factorization: Breaking expressions into products (x²-9 = (x+3)(x-3)).', 'Quadratic Formula: x = (-b ± √(b²-4ac)) / 2a solves any quadratic.']
       },
 
-      chemistry: {
-        definition: 'Chemistry is the scientific study of the properties, composition, structure, and reactivity of matter, elements, and compounds.',
-        keyConcepts: [
-          'Atomic Structure: Protons, neutrons, electrons, and periodic trends.',
-          'Chemical Bonding: Covalent (electron sharing), Ionic (electron transfer), and Metallic.',
-          'Stoichiometry & Equilibrium: Molar calculations, Le Chatelier\'s Principle, and pH scale.'
-        ],
-        features: [
-          'Explains physical matter transformations and energetic reaction changes.',
-          'Serves as the central science connecting physics and biology.'
-        ],
-        functions: [
-          'Used in pharmaceutical drug discovery, materials synthesis, battery technology, and chemical manufacturing.'
-        ],
-        types: [
-          'Organic Chemistry, Inorganic Chemistry, Physical Chemistry, Analytical Chemistry, Biochemistry.'
-        ],
-        advantages: [
-          'Enables creation of life-saving medicines and modern synthetic materials.',
-          'Provides quantitative methods to measure chemical concentrations and reaction yields.'
-        ],
-        disadvantages: [
-          'Hazardous chemical reactions require strict laboratory safety controls.',
-          'Complex reaction mechanisms require multi-step stoichiometric calculations.'
-        ],
-        syntax: '2H₂ + O₂ → 2H₂O\npH = -log10[H⁺]\nMoles = Mass / Molar Mass',
-        example: 'Titrating an acid against a standard base using phenolphthalein indicator to determine unknown concentration.',
-        examQuestions: [
-          { q: 'What is Le Chatelier\'s Principle?', a: 'If a chemical system at equilibrium is disturbed, the system shifts reaction direction to counteract the disturbance.' },
-          { q: 'Differentiate between Ionic and Covalent bonds.', a: 'Ionic bonds form via complete electron transfer between metals and non-metals. Covalent bonds form via electron pair sharing between non-metal atoms.' }
-        ]
+      /* ═══════ PHYSICS ═══════ */
+      'newton': {
+        subjectName: 'Physics', isProgramming: false,
+        definition: 'Newton\'s Laws of Motion are three fundamental laws that describe the relationship between a body and the forces acting upon it: (1) Law of Inertia, (2) F = ma, (3) Action-Reaction.',
+        easyExplanation: 'Newton\'s three laws explain why things move: (1) Objects stay still or keep moving unless a force acts — a ball won\'t roll by itself. (2) Push harder, it accelerates more (F = ma). (3) Every push has an equal pushback — when you jump, you push Earth down and Earth pushes you up.',
+        example: 'Second Law in action: A 10 kg box pushed with 50 N force accelerates at a = F/m = 50/10 = 5 m/s². Third Law: A rocket pushes gas downward, and the gas pushes the rocket upward.',
+        importantKeywords: ['Inertia (1st Law)', 'F = ma (2nd Law)', 'Action-Reaction (3rd Law)', 'Force & Acceleration', 'Momentum'],
+        memoryTips: 'Newton\'s Laws = "I-F-A": Inertia (1st), Force = ma (2nd), Action-Reaction (3rd). Remember F = ma as "Force Makes things Accelerate."',
+        quickSummary: ['1st Law: No net force → no change in motion (inertia).', '2nd Law: Force = mass × acceleration (F = ma).', '3rd Law: Every action has an equal and opposite reaction.'],
+        keyConcepts: ['Inertia: Resistance to change in state of motion.', 'F = ma: Net force equals mass times acceleration.', 'Action-Reaction: Forces always occur in pairs of equal magnitude.']
       },
 
-      biology: {
-        definition: 'Biology is the natural science studying life and living organisms, including structural cell biology, genetics, physiology, and ecosystems.',
-        keyConcepts: [
-          'Cell Theory: All living organisms are composed of cells; cells are the fundamental unit of life.',
-          'Genetics & DNA: Transmission of hereditary genetic information via DNA and RNA.',
-          'Homeostasis & Metabolism: Maintaining internal biological equilibrium through enzymatic regulation.'
-        ],
-        features: [
-          'Operates across biological levels: molecules → cells → tissues → organs → organisms → ecosystems.',
-          'Explains evolutionary adaptations and biological diversity.'
-        ],
-        functions: [
-          'Powers medical diagnostics, biotechnology, agriculture, disease treatment, and environmental conservation.'
-        ],
-        types: [
-          'Cellular Biology, Genetics, Human Physiology, Botany, Zoology, Ecology.'
-        ],
-        advantages: [
-          'Essential for health sciences, medical therapies, and biological conservation.',
-          'Helps understand human body mechanisms and disease prevention.'
-        ],
-        disadvantages: [
-          'Biological systems involve thousands of complex, interconnected metabolic pathways.',
-          'Requires memorizing extensive anatomical terminology and biochemical cycles.'
-        ],
-        syntax: 'Central Dogma: DNA → mRNA → Protein\nCellular Respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + 36-38 ATP',
-        example: 'Tracing cellular respiration inside mitochondria to generate ATP energy for metabolic work.',
-        examQuestions: [
-          { q: 'What is the difference between Mitosis and Meiosis?', a: 'Mitosis produces 2 identical diploid daughter cells for body growth. Meiosis produces 4 non-identical haploid gametes (sperm/egg) for sexual reproduction.' },
-          { q: 'What is Homeostasis and why is it vital?', a: 'Homeostasis is the biological process of maintaining stable internal physiological conditions despite external changes.' }
-        ]
+      gravity: {
+        subjectName: 'Physics', isProgramming: false,
+        definition: 'Gravity is the universal attractive force between any two objects with mass. Newton\'s Law of Universal Gravitation states F = G(m₁m₂)/r², where G is the gravitational constant (6.674 × 10⁻¹¹ N⋅m²/kg²).',
+        easyExplanation: 'Gravity is the invisible force that pulls everything with mass toward everything else. It keeps you on the ground, the Moon orbiting Earth, and Earth orbiting the Sun. The heavier the objects and the closer they are, the stronger the pull.',
+        example: 'On Earth\'s surface, g ≈ 9.8 m/s². A 1 kg apple falls with force F = mg = 1 × 9.8 = 9.8 N. On the Moon, g ≈ 1.6 m/s² — you\'d weigh about 1/6th of your Earth weight.',
+        importantKeywords: ['Universal Gravitation', 'F = Gm₁m₂/r²', 'g = 9.8 m/s²', 'Gravitational Constant G', 'Free Fall'],
+        memoryTips: 'g = 9.8 m/s² on Earth (round to 10 for quick calculations). Weight = mg (mass × gravity). Newton discovered it watching an apple fall (popular story).',
+        quickSummary: ['Universal force of attraction between all masses.', 'F = G(m₁m₂)/r² — decreases with distance squared.', 'Earth\'s surface gravity: g ≈ 9.8 m/s².'],
+        keyConcepts: ['Universal Law: Every mass attracts every other mass.', 'Inverse Square: Gravitational force decreases as distance squared increases.', 'Weight vs Mass: Weight (N) = mass (kg) × g; mass is constant, weight changes.']
       },
 
-      history: {
-        definition: 'History is the systematic study and critical interpretation of past human events, civilizations, political movements, economic transformations, and cultural developments recorded through historical evidence.',
-        keyConcepts: [
-          'Historiography & Evidence: Primary sources (eyewitness artifacts/diaries) vs Secondary sources (textbooks/essays).',
-          'Causation & Consequence: Analyzing immediate triggers vs long-term socio-political causes.',
-          'Institutional Transformation: Evolutions in governance, treaties, revolutions, and trade routes.'
-        ],
-        features: [
-          'Evaluates human experiences across chronological eras.',
-          'Analyzes historical bias, propaganda, and source reliability.'
-        ],
-        functions: [
-          'Explains modern geopolitical borders, constitutional democracy, and international relations.'
-        ],
-        types: [
-          'Political History, Socio-Cultural History, Economic History, Military & Diplomatic History.'
-        ],
-        advantages: [
-          'Prevents past policy mistakes by analyzing historical precedent.',
-          'Fosters critical thinking, source evaluation, and global cultural perspective.'
-        ],
-        disadvantages: [
-          'Archival records can contain ideological bias or missing documentation.',
-          'Requires memorizing chronologies, historical actors, and complex socio-political contexts.'
-        ],
-        syntax: 'Historical Framework:\nPre-existing Conditions → Trigger Event → Crisis / Conflict → Treaty / Resolution → Long-term Impact',
-        example: 'Analyzing how the Industrial Revolution led to rapid urban migration, trade union movements, and labor laws.',
-        examQuestions: [
-          { q: 'Why are Primary Sources crucial in historical analysis?', a: 'Primary sources provide unmediated first-hand evidence from contemporary participants, reflecting original attitudes without modern retrospective bias.' },
-          { q: 'What were the main causes of World War I?', a: 'Militarism, Alliances, Imperialism, Nationalism (MAIN), triggered by the assassination of Archduke Franz Ferdinand in 1914.' }
-        ]
+      'thermodynamics': {
+        subjectName: 'Physics', isProgramming: false,
+        definition: 'Thermodynamics is the branch of physics that deals with heat, work, temperature, and energy transfer. It is governed by four laws (0th, 1st, 2nd, 3rd) that describe how thermal energy is converted and flows between systems.',
+        easyExplanation: 'Thermodynamics explains how heat moves and transforms. When you boil water, heat energy from the flame transfers to the water. The First Law says energy can\'t be created or destroyed — only transformed (heat → steam → mechanical energy in an engine).',
+        example: 'Car engine: Chemical energy in fuel → heat → mechanical work (pistons). The Second Law says some energy is always lost as waste heat — no engine is 100% efficient.',
+        importantKeywords: ['First Law (Energy Conservation)', 'Second Law (Entropy)', 'Entropy', 'Heat Transfer (Conduction, Convection, Radiation)', 'Specific Heat Capacity'],
+        memoryTips: 'Laws order: 0th = Thermal equilibrium, 1st = Energy conserved (ΔU = Q - W), 2nd = Entropy always increases, 3rd = Absolute zero unreachable.',
+        quickSummary: ['Study of heat, energy transfer, and work.', '1st Law: Energy cannot be created or destroyed, only transformed.', '2nd Law: Entropy (disorder) of an isolated system always increases.'],
+        keyConcepts: ['First Law: ΔU = Q - W (internal energy change = heat added - work done).', 'Entropy: Measure of disorder; natural processes increase total entropy.', 'Heat Transfer: Conduction (contact), Convection (fluid flow), Radiation (waves).']
       },
 
-      geography: {
-        definition: 'Geography is the spatial science studying Earth\'s physical landforms, climate systems, environmental processes, population distributions, and human-environmental interactions.',
-        keyConcepts: [
-          'Physical Earth Systems: Plate tectonics, atmospheric circulation, hydrological cycle, biomes.',
-          'Spatial Analysis & Scale: Map projections, GIS (Geographic Information Systems), ground distance scales.',
-          'Human Geography: Urbanization, demographic transition, economic trade spatial patterns.'
-        ],
-        features: [
-          'Bridges physical sciences (geology, meteorology) with social sciences (demography, urban planning).',
-          'Analyzes spatial variation across Earth\'s surface.'
-        ],
-        functions: [
-          'Guides urban planning, natural disaster mitigation, climate change policy, and natural resource management.'
-        ],
-        types: [
-          'Physical Geography (Geomorphology, Climatology, Hydrology) and Human Geography (Population, Economic, Urban).'
-        ],
-        advantages: [
-          'Essential for spatial planning, environmental sustainability, and disaster response.',
-          'Combines digital satellite technology (GIS) with field environmental studies.'
-        ],
-        disadvantages: [
-          'Complex multi-variable interaction makes exact long-term climate prediction challenging.',
-          'Requires understanding both global macro-scale systems and local micro-level geography.'
-        ],
-        syntax: 'Map Scale Formula:\nReal World Distance = Map Distance × Scale Denominator',
-        example: 'Analyzing how ocean currents (Gulf Stream) modulate coastal European temperatures creating temperate climates.',
-        examQuestions: [
-          { q: 'What is Plate Tectonics and what geological features does it create?', a: 'Plate Tectonics is the movement of lithospheric plates over mantle convection currents, creating earthquakes, volcanoes, ocean trenches, and mountain ranges.' },
-          { q: 'Explain the Demographic Transition Model.', a: 'A model describing population shifts from high birth/death rates in pre-industrial societies to low birth/death rates in industrialized societies.' }
-        ]
+      /* ═══════ CHEMISTRY ═══════ */
+      'periodic table': {
+        subjectName: 'Chemistry', isProgramming: false,
+        definition: 'The Periodic Table is a tabular arrangement of chemical elements ordered by their atomic number (number of protons). Elements are organized into periods (rows) and groups (columns) based on their electron configuration and chemical properties.',
+        easyExplanation: 'The Periodic Table is like a seating chart for all 118 known elements. Elements in the same column (group) behave similarly — like a family. Moving across a row (period), elements change gradually from metals to non-metals.',
+        example: 'Group 1 (Alkali Metals): Li, Na, K — all are soft, reactive metals that explode in water. Group 18 (Noble Gases): He, Ne, Ar — all are stable and unreactive because their outer electron shell is full.',
+        importantKeywords: ['Atomic Number', 'Periods & Groups', 'Metals, Non-metals, Metalloids', 'Electron Configuration', 'Periodic Trends'],
+        memoryTips: 'First 20 elements: "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca". Groups: 1=Alkali, 2=Alkaline Earth, 17=Halogens, 18=Noble Gases.',
+        quickSummary: ['118 elements arranged by increasing atomic number.', 'Rows = Periods (energy levels), Columns = Groups (similar properties).', 'Periodic trends: Atomic size decreases across a period, increases down a group.'],
+        keyConcepts: ['Groups: Elements in the same column share similar chemical properties.', 'Periods: Elements in the same row have the same number of electron shells.', 'Trends: Electronegativity, ionization energy, atomic radius follow predictable patterns.']
       },
 
-      economics: {
-        definition: 'Economics is the social science studying how individuals, businesses, governments, and societies allocate scarce resources to satisfy unlimited human needs and market demands.',
-        keyConcepts: [
-          'Scarcity & Opportunity Cost: Evaluating trade-offs when allocating limited resources.',
-          'Supply & Demand Equilibrium: Price discovery where quantity supplied equals quantity demanded.',
-          'Macroeconomic Indicators: GDP, inflation rates, unemployment, fiscal and monetary policies.'
-        ],
-        features: [
-          'Uses mathematical models, supply-demand curves, and empirical statistical indicators.',
-          'Predicts human producer and consumer choices under incentive structures.'
-        ],
-        functions: [
-          'Guides central bank monetary policy, corporate pricing strategies, taxation, and international trade policies.'
-        ],
-        types: [
-          'Microeconomics (individual markets/firms) and Macroeconomics (aggregate national economy).'
-        ],
-        advantages: [
-          'Provides quantitative framework for maximizing market efficiency and social welfare.',
-          'Enables policymakers to control hyperinflation and mitigate economic recessions.'
-        ],
-        disadvantages: [
-          'Economic models often rely on simplifying assumptions (e.g. rational choice, ceteris paribus).',
-          'Unforeseen global supply shocks can disrupt economic forecasts.'
-        ],
-        syntax: 'Market Equilibrium: Qd = Qs\nGDP = C + I + G + (X - M)\nElasticity = (% Δ Quantity) / (% Δ Price)',
-        example: 'Analyzing how central banks raise interest rates to reduce consumer borrowing and cool inflationary pressure.',
-        examQuestions: [
-          { q: 'What is the difference between Fiscal Policy and Monetary Policy?', a: 'Fiscal policy is set by government taxation and public spending budgets. Monetary policy is managed by central banks via interest rates and money supply.' },
-          { q: 'Explain the Law of Supply and Demand.', a: 'Law of Demand: as price rises, quantity demanded falls (inverse). Law of Supply: as price rises, quantity supplied rises (direct).' }
-        ]
+      'chemical bonding': {
+        subjectName: 'Chemistry', isProgramming: false,
+        definition: 'Chemical Bonding is the process by which atoms combine to form molecules and compounds. The three main types are: Ionic (transfer of electrons), Covalent (sharing of electrons), and Metallic (sea of electrons).',
+        easyExplanation: 'Atoms bond to become stable (fill their outer shell). Ionic bonding is like giving — Na gives an electron to Cl (forming NaCl/salt). Covalent bonding is like sharing — two H atoms share electrons (forming H₂). Metallic bonding is like pooling — metal atoms share a "sea" of electrons.',
+        example: 'NaCl (table salt): Na loses 1 electron → Na⁺, Cl gains 1 electron → Cl⁻. Opposite charges attract = ionic bond. H₂O: Oxygen shares electrons with two hydrogens = covalent bonds.',
+        importantKeywords: ['Ionic Bond', 'Covalent Bond', 'Metallic Bond', 'Electronegativity', 'Octet Rule'],
+        memoryTips: 'Ionic = "I give" (electron transfer, metal + non-metal). Covalent = "Co-share" (electron sharing, non-metal + non-metal). Metallic = "sea of e⁻" (metal + metal).',
+        quickSummary: ['Atoms bond to achieve stable electron configuration (octet).', 'Ionic: Electron transfer (NaCl). Covalent: Electron sharing (H₂O). Metallic: Electron pool.', 'Bond type depends on electronegativity difference between atoms.'],
+        keyConcepts: ['Octet Rule: Atoms bond to achieve 8 electrons in their outer shell.', 'Ionic: Metal + Non-metal; forms crystal lattice; conducts electricity when dissolved.', 'Covalent: Non-metal + Non-metal; can be polar (HCl) or non-polar (O₂).']
+      },
+
+      /* ═══════ BIOLOGY & BIOCHEMISTRY ═══════ */
+      photosynthesis: {
+        subjectName: 'Biology & Biochemistry', isProgramming: false,
+        definition: 'Photosynthesis is the biological process by which green plants, algae, and some bacteria convert light energy (sunlight) into chemical energy (glucose), using carbon dioxide (CO₂) and water (H₂O), and releasing oxygen (O₂) as a byproduct.',
+        easyExplanation: 'Plants are nature\'s solar panels. They capture sunlight through chlorophyll (the green pigment in leaves), mix it with water from the soil and CO₂ from the air, and cook up glucose (food/energy). Oxygen is released as a bonus — which is what we breathe!',
+        example: 'Overall equation: 6CO₂ + 6H₂O + Light Energy → C₆H₁₂O₆ + 6O₂. This happens in two stages: Light Reactions (in thylakoids — capture sunlight) and Calvin Cycle (in stroma — build glucose).',
+        importantKeywords: ['Chlorophyll', 'Light Reactions & Calvin Cycle', '6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂', 'Chloroplast (Thylakoid & Stroma)', 'ATP & NADPH'],
+        memoryTips: 'Photosynthesis = "Photo" (light) + "Synthesis" (making). Plants use light to MAKE food. Equation: 6CO₂ + 6H₂O → Glucose + 6O₂. Remember "6-6-1-6" for the numbers!',
+        quickSummary: ['Plants convert sunlight + CO₂ + H₂O into glucose + O₂.', 'Occurs in chloroplasts: Light reactions (thylakoids) → Calvin Cycle (stroma).', 'Chlorophyll absorbs sunlight — that\'s why leaves are green.'],
+        keyConcepts: ['Light Reactions: Capture solar energy → produce ATP and NADPH in thylakoid membranes.', 'Calvin Cycle: Uses ATP and NADPH to fix CO₂ into glucose in the stroma.', 'Chlorophyll: Green pigment that absorbs red and blue light, reflects green.']
+      },
+
+      'cell division': {
+        subjectName: 'Biology & Biochemistry', isProgramming: false,
+        definition: 'Cell Division is the process by which a parent cell divides into two or more daughter cells. The two main types are Mitosis (producing identical cells for growth/repair) and Meiosis (producing gametes with half the chromosomes for reproduction).',
+        easyExplanation: 'Cell division is how living things grow and reproduce. Mitosis is like photocopying — one cell makes an exact copy of itself (for growth and healing). Meiosis is for reproduction — it creates sex cells (sperm/eggs) with half the DNA, so when they combine, the baby gets a full set.',
+        example: 'Mitosis: A skin cell with 46 chromosomes divides into 2 identical cells with 46 chromosomes each. Meiosis: A reproductive cell with 46 chromosomes produces 4 gametes with 23 chromosomes each.',
+        importantKeywords: ['Mitosis (PMAT)', 'Meiosis I & II', 'Chromosome', 'Cytokinesis', 'Crossing Over'],
+        memoryTips: 'Mitosis = "Makes Identical Two" (2 identical cells). Meiosis = "Makes Eggs/sperm" (4 unique cells). PMAT = Prophase, Metaphase, Anaphase, Telophase.',
+        quickSummary: ['Mitosis: 1 cell → 2 identical cells (46 chromosomes) for growth.', 'Meiosis: 1 cell → 4 unique cells (23 chromosomes) for reproduction.', 'Phases: Prophase → Metaphase → Anaphase → Telophase (PMAT).'],
+        keyConcepts: ['Mitosis: Prophase → Metaphase → Anaphase → Telophase; produces 2 diploid cells.', 'Meiosis: Two divisions (Meiosis I & II); produces 4 haploid gametes.', 'Crossing Over: Exchange of genetic material between homologous chromosomes in Meiosis I.']
+      },
+
+      mitosis: { get subjectName() { return knowledgeBase['cell division'].subjectName; }, get isProgramming() { return knowledgeBase['cell division'].isProgramming; }, get definition() { return knowledgeBase['cell division'].definition; }, get easyExplanation() { return knowledgeBase['cell division'].easyExplanation; }, get example() { return knowledgeBase['cell division'].example; }, get importantKeywords() { return knowledgeBase['cell division'].importantKeywords; }, get memoryTips() { return knowledgeBase['cell division'].memoryTips; }, get quickSummary() { return knowledgeBase['cell division'].quickSummary; }, get keyConcepts() { return knowledgeBase['cell division'].keyConcepts; } },
+
+      meiosis: { get subjectName() { return knowledgeBase['cell division'].subjectName; }, get isProgramming() { return knowledgeBase['cell division'].isProgramming; }, get definition() { return knowledgeBase['cell division'].definition; }, get easyExplanation() { return knowledgeBase['cell division'].easyExplanation; }, get example() { return knowledgeBase['cell division'].example; }, get importantKeywords() { return knowledgeBase['cell division'].importantKeywords; }, get memoryTips() { return knowledgeBase['cell division'].memoryTips; }, get quickSummary() { return knowledgeBase['cell division'].quickSummary; }, get keyConcepts() { return knowledgeBase['cell division'].keyConcepts; } },
+
+      dna: {
+        subjectName: 'Biology & Biochemistry', isProgramming: false,
+        definition: 'DNA (Deoxyribonucleic Acid) is a double-helix molecule that carries the genetic instructions for the development, functioning, growth, and reproduction of all known living organisms. It is made of nucleotides containing a sugar, phosphate, and one of four bases: Adenine (A), Thymine (T), Guanine (G), Cytosine (C).',
+        easyExplanation: 'DNA is like the instruction manual for building and running a living body. It\'s a twisted ladder (double helix) where the rungs are pairs of chemicals: A always pairs with T, and G always pairs with C. These "letters" spell out genes — recipes for making proteins.',
+        example: 'Base pairing: A strand reading A-T-G-C pairs with T-A-C-G on the opposite strand. During replication, the strands separate and each builds a new complementary strand — creating two identical DNA molecules.',
+        importantKeywords: ['Double Helix', 'Base Pairs (A-T, G-C)', 'Nucleotides', 'Replication', 'Genes & Chromosomes'],
+        memoryTips: 'Base pairing: "Apples in Trees" (A-T) and "Cars in Garages" (C-G). DNA = Deoxyribonucleic Acid. RNA uses Uracil (U) instead of Thymine (T).',
+        quickSummary: ['Double-helix molecule carrying genetic information.', 'Made of nucleotides with bases: A pairs with T, G pairs with C.', 'Replication creates two identical copies before cell division.'],
+        keyConcepts: ['Structure: Sugar-phosphate backbone with base pair rungs (A-T, G-C).', 'Replication: Semi-conservative — each strand serves as template for a new copy.', 'Central Dogma: DNA → RNA (transcription) → Protein (translation).']
+      },
+
+      /* ═══════ HISTORY ═══════ */
+      'french revolution': {
+        subjectName: 'History', isProgramming: false,
+        definition: 'The French Revolution (1789–1799) was a period of radical political and societal upheaval in France that overthrew the monarchy, established a republic, and fundamentally transformed French governance. It was driven by Enlightenment ideals of liberty, equality, and fraternity.',
+        easyExplanation: 'France in the 1780s was deeply unequal — the king and nobles lived in luxury while common people starved. Frustrated citizens stormed the Bastille prison on July 14, 1789, sparking a revolution that ended the monarchy, executed King Louis XVI, and gave rise to the ideals of "Liberty, Equality, Fraternity."',
+        example: 'Timeline: 1789 — Storming of the Bastille, Declaration of the Rights of Man. 1792 — France becomes a Republic. 1793 — King Louis XVI executed. 1799 — Napoleon Bonaparte seizes power in a coup, ending the Revolution.',
+        importantKeywords: ['Storming of the Bastille (1789)', 'Liberty, Equality, Fraternity', 'King Louis XVI', 'Reign of Terror', 'Napoleon Bonaparte'],
+        memoryTips: 'Key date: 1789 (Bastille). Three causes: "BET" = Bread crisis (famine), Enlightenment ideas, Taxation inequality. Three estates: Clergy, Nobility, Common People.',
+        quickSummary: ['1789–1799: Overthrew French monarchy, established a republic.', 'Causes: Social inequality, Enlightenment ideas, financial crisis, famine.', 'Legacy: Inspired democratic movements worldwide; "Liberty, Equality, Fraternity."'],
+        keyConcepts: ['Three Estates: Clergy (1st), Nobility (2nd), Common People (3rd — 97% of population).', 'Bastille: Symbol of royal tyranny; its storming on July 14, 1789 marks the start.', 'Reign of Terror (1793-94): Robespierre\'s radical phase; thousands executed by guillotine.']
+      },
+
+      'industrial revolution': {
+        subjectName: 'History', isProgramming: false,
+        definition: 'The Industrial Revolution (c. 1760–1840) was the transition from agrarian, handcraft economies to machine-based manufacturing. Beginning in Britain, it introduced the steam engine, factory system, and mass production, fundamentally transforming society.',
+        easyExplanation: 'Before the Industrial Revolution, most things were made by hand in homes and small workshops. Then machines were invented — especially the steam engine — and factories were built. People moved from farms to cities for factory jobs, changing how the world lived, worked, and traveled forever.',
+        example: 'James Watt improved the steam engine (1769), powering factories and trains. The spinning jenny and power loom mechanized textile production. The railway system (1825) revolutionized transportation.',
+        importantKeywords: ['Steam Engine', 'Factory System', 'Urbanization', 'Mass Production', 'Child Labor'],
+        memoryTips: 'Started in Britain (1760s). Key inventions: Steam engine (Watt), Spinning Jenny (Hargreaves), Power Loom (Cartwright). Effects: Urbanization + Pollution + New social classes.',
+        quickSummary: ['Transition from hand production to machine manufacturing (1760–1840).', 'Started in Britain with textile industry and steam power.', 'Led to urbanization, new social classes, and global economic transformation.'],
+        keyConcepts: ['Steam Power: James Watt\'s engine drove factories, railways, and ships.', 'Factory System: Centralized production replaced cottage industry.', 'Social Impact: Urbanization, middle class emergence, labor movements, child labor.']
+      },
+
+      'world war': {
+        subjectName: 'History', isProgramming: false,
+        definition: 'The World Wars were two global military conflicts. World War I (1914–1918) involved the Allied Powers vs Central Powers, triggered by the assassination of Archduke Franz Ferdinand. World War II (1939–1945) pitted the Allies against the Axis powers, sparked by Nazi Germany\'s aggression.',
+        easyExplanation: 'WWI started after the assassination of Austria\'s Archduke Franz Ferdinand, pulling nations into war through alliances. It introduced trench warfare and ended with the Treaty of Versailles. WWII began when Hitler\'s Germany invaded Poland. It included the Holocaust and ended with the atomic bombing of Japan.',
+        example: 'WWI: Treaty of Versailles (1919) punished Germany severely → economic hardship → rise of Hitler. WWII: D-Day invasion (June 6, 1944), Hiroshima/Nagasaki atomic bombs (August 1945), formation of United Nations.',
+        importantKeywords: ['Archduke Franz Ferdinand', 'Treaty of Versailles', 'Adolf Hitler / Nazi Germany', 'Pearl Harbor', 'United Nations'],
+        memoryTips: 'WWI: "MAIN" causes = Militarism, Alliances, Imperialism, Nationalism. WWII: "FART" = Fascism, Appeasement, Racism, Treaty of Versailles (consequences).',
+        quickSummary: ['WWI (1914–18): Allied vs Central Powers; trench warfare; Treaty of Versailles.', 'WWII (1939–45): Allies vs Axis; Holocaust; atomic bombs; UN formed.', 'Both wars reshaped borders, governments, and international relations globally.'],
+        keyConcepts: ['WWI Causes: MAIN — Militarism, Alliances, Imperialism, Nationalism.', 'Treaty of Versailles: Blamed Germany; imposed reparations; sowed seeds of WWII.', 'WWII Legacy: United Nations created; Cold War between USA and USSR began.']
+      },
+
+      /* ═══════ GEOGRAPHY ═══════ */
+      'plate tectonics': {
+        subjectName: 'Geography', isProgramming: false,
+        definition: 'Plate Tectonics is the scientific theory that Earth\'s outer shell (lithosphere) is divided into several large plates that float on the semi-fluid asthenosphere and move, collide, and separate — causing earthquakes, volcanic activity, and mountain formation.',
+        easyExplanation: 'Earth\'s surface is not one solid piece — it\'s made of giant puzzle pieces (tectonic plates) that slowly move on hot, soft rock beneath. When plates collide, mountains form (Himalayas). When they pull apart, volcanoes erupt (Mid-Atlantic Ridge). When they slide past each other, earthquakes happen (San Andreas Fault).',
+        example: 'The Himalayas formed because the Indian Plate collided with the Eurasian Plate about 50 million years ago and is still pushing north. The "Ring of Fire" around the Pacific Plate has 75% of the world\'s active volcanoes.',
+        importantKeywords: ['Lithosphere & Asthenosphere', 'Convergent / Divergent / Transform', 'Earthquakes & Volcanoes', 'Continental Drift', 'Ring of Fire'],
+        memoryTips: 'Three boundary types: Convergent = "Coming together" (mountains), Divergent = "Drifting apart" (rift valleys), Transform = "Sliding past" (earthquakes). Alfred Wegener proposed Continental Drift in 1912.',
+        quickSummary: ['Earth\'s lithosphere is divided into moving tectonic plates.', 'Three boundaries: Convergent (collision), Divergent (separation), Transform (sliding).', 'Plate movements cause earthquakes, volcanoes, and mountain formation.'],
+        keyConcepts: ['Continental Drift: Wegener\'s theory that continents were once joined (Pangaea).', 'Boundary Types: Convergent (subduction/mountains), Divergent (mid-ocean ridges), Transform (faults).', 'Ring of Fire: Zone around the Pacific Plate with intense seismic and volcanic activity.']
+      },
+
+      climate: {
+        subjectName: 'Geography', isProgramming: false,
+        definition: 'Climate is the long-term average of weather conditions (temperature, humidity, precipitation, wind) in a region over 30+ years. It is influenced by latitude, altitude, ocean currents, and proximity to water bodies.',
+        easyExplanation: 'Weather is what\'s happening outside right now; climate is the pattern over decades. India has a tropical monsoon climate (hot summers, rainy monsoon, mild winters). Factors like how close you are to the equator, the ocean, and mountains determine your region\'s climate.',
+        example: 'India has diverse climates: Thar Desert (arid), Kerala (tropical wet), Ladakh (cold desert), Meghalaya (highest rainfall — Mawsynram). The monsoon brings 80% of India\'s annual rainfall between June and September.',
+        importantKeywords: ['Temperature & Precipitation', 'Monsoon', 'Climate Zones (Tropical, Temperate, Polar)', 'Global Warming', 'El Niño & La Niña'],
+        memoryTips: 'Climate ≠ Weather. Climate = "Clothing" (what you put in your wardrobe for the season). Weather = "What you wear today." Five climate zones: Tropical, Dry, Temperate, Continental, Polar.',
+        quickSummary: ['Long-term pattern of weather in a region (30+ year average).', 'Factors: Latitude, altitude, ocean currents, distance from sea.', 'Climate change: Global temperatures rising due to greenhouse gas emissions.'],
+        keyConcepts: ['Climate Zones: Tropical (hot, wet), Temperate (moderate), Polar (cold).', 'Monsoon: Seasonal wind reversal bringing heavy rainfall to South/Southeast Asia.', 'Climate Change: Human activities (fossil fuels, deforestation) increase greenhouse gases.']
+      },
+
+      /* ═══════ ECONOMICS ═══════ */
+      'demand supply': {
+        subjectName: 'Economics', isProgramming: false,
+        definition: 'The Law of Demand states that as price rises, quantity demanded falls (inverse relationship). The Law of Supply states that as price rises, quantity supplied rises (direct relationship). Where the demand and supply curves intersect is the equilibrium price.',
+        easyExplanation: 'Demand and Supply are like a seesaw. When a product gets expensive, fewer people buy it (demand falls). But sellers want to make more of it (supply rises). The market "balances" at a price where buyers and sellers agree — that\'s the equilibrium price.',
+        example: 'If ice cream costs ₹10, demand is 100 units. At ₹50, demand drops to 20 units. Meanwhile, at ₹50, suppliers produce 80 units. Equilibrium might be at ₹30 where demand = supply = 50 units.',
+        importantKeywords: ['Law of Demand', 'Law of Supply', 'Equilibrium Price', 'Elasticity', 'Market Forces'],
+        memoryTips: 'Demand curve slopes DOWN (price up → quantity down). Supply curve slopes UP (price up → quantity up). They cross at EQUILIBRIUM. "Demand = Downward, Supply = Skyward."',
+        quickSummary: ['Demand: Price ↑ → Quantity demanded ↓ (inverse relationship).', 'Supply: Price ↑ → Quantity supplied ↑ (direct relationship).', 'Equilibrium: Where demand equals supply — the market-clearing price.'],
+        keyConcepts: ['Demand Curve: Downward sloping — consumers buy less at higher prices.', 'Supply Curve: Upward sloping — producers supply more at higher prices.', 'Elasticity: How sensitive quantity is to price changes (elastic vs inelastic).']
+      },
+
+      gdp: {
+        subjectName: 'Economics', isProgramming: false,
+        definition: 'GDP (Gross Domestic Product) is the total monetary value of all finished goods and services produced within a country\'s borders in a specific time period (usually one year). It is the broadest measure of a nation\'s economic activity.',
+        easyExplanation: 'GDP is like a country\'s report card for its economy. It adds up the value of everything produced — cars, food, services, software. A higher GDP means the economy is producing more. GDP per capita (GDP ÷ population) shows average economic output per person.',
+        example: 'India\'s GDP (2023): ~$3.7 trillion. USA: ~$25 trillion. GDP can be measured three ways: Production (output), Income (wages + profits), Expenditure (C + I + G + NX).',
+        importantKeywords: ['Nominal vs Real GDP', 'GDP Per Capita', 'GDP = C + I + G + (X-M)', 'Economic Growth', 'GNP vs GDP'],
+        memoryTips: 'GDP formula: "CIGN" = Consumption + Investment + Government spending + Net exports (X-M). Real GDP adjusts for inflation; Nominal GDP does not.',
+        quickSummary: ['Total value of goods and services produced in a country annually.', 'Formula: GDP = C + I + G + (X - M).', 'Real GDP adjusts for inflation; GDP per capita measures per-person output.'],
+        keyConcepts: ['Components: Consumption, Investment, Government spending, Net exports.', 'Real vs Nominal: Real GDP removes inflation effect for true comparison.', 'Limitations: Ignores income inequality, unpaid work, environmental costs.']
+      },
+
+      /* ═══════ POLITICAL SCIENCE ═══════ */
+      democracy: {
+        subjectName: 'Political Science', isProgramming: false,
+        definition: 'Democracy is a system of government where power is vested in the people, who exercise it directly or through elected representatives. Its core principles include universal adult suffrage, rule of law, fundamental rights, and free and fair elections.',
+        easyExplanation: 'Democracy means "rule by the people." Citizens vote to choose leaders who make decisions on their behalf. India is the world\'s largest democracy — every adult citizen (18+) has one vote, regardless of wealth, caste, or religion. The government is accountable to the people.',
+        example: 'India\'s democracy: Citizens elect Members of Parliament (MPs) through general elections every 5 years. The party with the most seats forms the government. The Constitution guarantees fundamental rights (Article 14-32) to every citizen.',
+        importantKeywords: ['Universal Adult Suffrage', 'Rule of Law', 'Fundamental Rights', 'Free & Fair Elections', 'Separation of Powers'],
+        memoryTips: 'Democracy = "Demo" (people) + "Cracy" (rule). Pillars: Legislature (makes laws), Executive (implements), Judiciary (interprets). India = Largest democracy, UK = Oldest parliamentary democracy.',
+        quickSummary: ['Government by the people, for the people, through elected representatives.', 'Core features: Universal suffrage, rule of law, fundamental rights.', 'India: World\'s largest democracy with 900+ million voters.'],
+        keyConcepts: ['Direct vs Representative: Direct (citizens vote on laws) vs Representative (citizens elect leaders).', 'Separation of Powers: Legislature, Executive, Judiciary operate independently.', 'Fundamental Rights: Constitutional guarantees of equality, freedom, and justice.']
+      },
+
+      constitution: {
+        subjectName: 'Political Science', isProgramming: false,
+        definition: 'A Constitution is the supreme law of a nation that defines the framework of government, fundamental rights of citizens, directive principles, and the relationship between the state and its people. India\'s Constitution, adopted on January 26, 1950, is the longest written constitution in the world.',
+        easyExplanation: 'A Constitution is the rulebook for running a country. It tells the government what it CAN and CANNOT do, and guarantees rights to citizens. India\'s Constitution — written by a committee led by Dr. B.R. Ambedkar — has 448 articles, 25 parts, and 12 schedules.',
+        example: 'Indian Constitution: Preamble declares India as a Sovereign, Socialist, Secular, Democratic Republic. Article 14 = Equality before law, Article 21 = Right to life, Article 32 = Right to Constitutional Remedies (Ambedkar called it the "heart and soul").',
+        importantKeywords: ['Preamble', 'Fundamental Rights (Part III)', 'Directive Principles (Part IV)', 'Dr. B.R. Ambedkar', 'Amendment Process'],
+        memoryTips: 'Constitution adopted: 26 November 1949 (Constitution Day), enacted: 26 January 1950 (Republic Day). "FRESH" Rights: Freedom, Right against Exploitation, Education/Cultural, right to constitutional remedieS, equality/rigHt to life.',
+        quickSummary: ['Supreme law defining government structure and citizen rights.', 'India\'s: Longest written constitution; 448 articles; adopted Jan 26, 1950.', 'Key parts: Preamble, Fundamental Rights, Directive Principles, Amendments.'],
+        keyConcepts: ['Preamble: States the ideals — Justice, Liberty, Equality, Fraternity.', 'Fundamental Rights: Six categories of guaranteed rights (Articles 14-32).', 'Amendments: 105+ amendments so far; require special majority in Parliament.']
+      },
+
+      /* ═══════ COMMERCE & ACCOUNTANCY ═══════ */
+      'balance sheet': {
+        subjectName: 'Commerce & Accountancy', isProgramming: false,
+        definition: 'A Balance Sheet is a financial statement that reports a company\'s assets, liabilities, and shareholders\' equity at a specific point in time. It follows the accounting equation: Assets = Liabilities + Equity.',
+        easyExplanation: 'A Balance Sheet is like a financial snapshot of a company on one specific day. The left side shows what the company OWNS (assets: cash, buildings, inventory). The right side shows what it OWES (liabilities: loans, bills) and what belongs to the owners (equity). Both sides must always be equal.',
+        example: 'If a company has Assets of ₹50 lakhs, Liabilities of ₹30 lakhs, then Equity = ₹20 lakhs. Assets (₹50L) = Liabilities (₹30L) + Equity (₹20L) — the equation balances.',
+        importantKeywords: ['Assets = Liabilities + Equity', 'Current vs Non-Current Assets', 'Shareholders\' Equity', 'Working Capital', 'Liquidity'],
+        memoryTips: 'Balance Sheet ALWAYS balances: A = L + E. Assets = what you OWN. Liabilities = what you OWE. Equity = what\'s LEFT for owners. Current = within 1 year; Non-current = beyond 1 year.',
+        quickSummary: ['Financial snapshot showing Assets, Liabilities, and Equity.', 'Accounting equation: Assets = Liabilities + Shareholders\' Equity.', 'Current (< 1 year) vs Non-current (> 1 year) classification.'],
+        keyConcepts: ['Assets: Resources owned — Cash, Inventory, Property, Equipment.', 'Liabilities: Obligations owed — Loans, Accounts Payable, Bonds.', 'Equity: Owner\'s residual interest = Assets minus Liabilities.']
+      },
+
+      /* ═══════ ENVIRONMENTAL SCIENCE ═══════ */
+      'global warming': {
+        subjectName: 'Environmental Science', isProgramming: false,
+        definition: 'Global Warming is the long-term increase in Earth\'s average surface temperature due to the enhanced greenhouse effect caused by human activities — primarily burning fossil fuels (coal, oil, gas), which release CO₂ and other greenhouse gases into the atmosphere.',
+        easyExplanation: 'Earth is wrapped in a blanket of gases (atmosphere). Normally, this blanket keeps Earth warm enough for life (greenhouse effect). But burning coal, oil, and gas pumps extra CO₂ into this blanket, making it thicker — trapping more heat. Earth is getting warmer like a car left in the sun with windows closed.',
+        example: 'Global average temperature has risen ~1.1°C since pre-industrial times. Effects: Arctic ice melting, sea levels rising (~20 cm since 1900), more extreme weather events (hurricanes, droughts, floods).',
+        importantKeywords: ['Greenhouse Gases (CO₂, CH₄, N₂O)', 'Greenhouse Effect', 'Fossil Fuels', 'Sea Level Rise', 'Paris Agreement (2015)'],
+        memoryTips: 'Greenhouse gases = "CNN": CO₂ (Carbon dioxide), N₂O (Nitrous oxide), CH₄ (Methane — cows and landfills). Paris Agreement goal: Limit warming to 1.5°C above pre-industrial levels.',
+        quickSummary: ['Earth\'s temperature rising due to excess greenhouse gases from human activities.', 'Main cause: Burning fossil fuels releases CO₂, trapping more heat.', 'Effects: Melting ice, rising seas, extreme weather, biodiversity loss.'],
+        keyConcepts: ['Greenhouse Effect: CO₂, CH₄, N₂O trap heat in the atmosphere.', 'Fossil Fuels: Coal, oil, natural gas — primary source of excess CO₂.', 'Solutions: Renewable energy, reforestation, reducing emissions (Paris Agreement).']
+      },
+
+      'climate change': { get subjectName() { return knowledgeBase['global warming'].subjectName; }, get isProgramming() { return knowledgeBase['global warming'].isProgramming; }, get definition() { return knowledgeBase['global warming'].definition; }, get easyExplanation() { return knowledgeBase['global warming'].easyExplanation; }, get example() { return knowledgeBase['global warming'].example; }, get importantKeywords() { return knowledgeBase['global warming'].importantKeywords; }, get memoryTips() { return knowledgeBase['global warming'].memoryTips; }, get quickSummary() { return knowledgeBase['global warming'].quickSummary; }, get keyConcepts() { return knowledgeBase['global warming'].keyConcepts; } },
+
+      /* ═══════ ENGLISH & LITERATURE ═══════ */
+      'shakespeare': {
+        subjectName: 'English & Literature', isProgramming: false,
+        definition: 'William Shakespeare (1564–1616) was an English playwright, poet, and actor, widely regarded as the greatest writer in the English language. He wrote 37 plays, 154 sonnets, and several narrative poems.',
+        easyExplanation: 'Shakespeare is called the "Bard of Avon." He wrote plays that people still perform 400+ years later — romantic tragedies (Romeo and Juliet), political dramas (Julius Caesar), comedies (A Midsummer Night\'s Dream), and psychological thrillers (Hamlet, Macbeth).',
+        example: 'Famous works: "Romeo and Juliet" (tragic love), "Hamlet" (revenge and existential crisis — "To be or not to be"), "Macbeth" (ambition and guilt), "The Merchant of Venice" (justice and mercy).',
+        importantKeywords: ['Tragedies & Comedies', 'Globe Theatre', 'Sonnets (154)', 'Elizabethan Era', 'Iambic Pentameter'],
+        memoryTips: 'Four great tragedies: "HOLM" = Hamlet, Othello, (King) Lear, Macbeth. Shakespeare invented 1,700+ English words including "lonely," "generous," and "assassination."',
+        quickSummary: ['Greatest English writer: 37 plays, 154 sonnets (1564–1616).', 'Genres: Tragedies (Hamlet, Macbeth), Comedies (Twelfth Night), Histories (Henry V).', 'Performed at the Globe Theatre; influenced English language and literature profoundly.'],
+        keyConcepts: ['Tragedies: Hamlet, Othello, King Lear, Macbeth — explore ambition, jealousy, power.', 'Sonnets: 154 poems in iambic pentameter with ABAB CDCD EFEF GG rhyme scheme.', 'Legacy: Invented thousands of words; shaped modern English drama and storytelling.']
+      },
+
+      /* ═══════ HINDI ═══════ */
+      sandhi: {
+        subjectName: 'Hindi Language & Literature', isProgramming: false,
+        definition: 'Sandhi (संधि) is a Hindi/Sanskrit grammar concept meaning the joining or combination of two sounds (letters/words) that are close together. The result is a change in the sounds at the junction point. Three main types: Swar Sandhi, Vyanjan Sandhi, Visarg Sandhi.',
+        easyExplanation: 'Sandhi means "joining" in Sanskrit. When two words or sounds come together in Hindi, the letters at the meeting point sometimes merge or change. For example, "विद्या + आलय = विद्यालय" — the आ sounds merge into one. It\'s like how "do not" becomes "don\'t" in English.',
+        example: 'Swar Sandhi: हिम + आलय = हिमालय (अ + आ = आ). Vyanjan Sandhi: जगत् + नाथ = जगन्नाथ. Visarg Sandhi: दुः + गम = दुर्गम. The type depends on what sounds meet at the junction.',
+        importantKeywords: ['Swar Sandhi (स्वर संधि)', 'Vyanjan Sandhi (व्यंजन संधि)', 'Visarg Sandhi (विसर्ग संधि)', 'Sandhi Viched (संधि विच्छेद)', 'Deergh Sandhi (दीर्घ संधि)'],
+        memoryTips: 'Three types = "SVV": Swar (vowel + vowel), Vyanjan (consonant + vowel/consonant), Visarg (visarg + vowel/consonant). संधि = जोड़ना, विच्छेद = तोड़ना.',
+        quickSummary: ['Joining of two sounds with change at the junction point.', 'Three types: Swar (vowels), Vyanjan (consonants), Visarg.', 'Sandhi Viched = breaking the combined word back into original parts.'],
+        keyConcepts: ['Swar Sandhi: Two vowels join (दीर्घ, गुण, वृद्धि, यण, अयादि subtypes).', 'Vyanjan Sandhi: Consonant meets vowel or consonant.', 'Sandhi Viched: Reverse process — splitting combined words into original components.']
+      },
+
+      /* ═══════ GENERAL KNOWLEDGE ═══════ */
+      'solar system': {
+        subjectName: 'General Knowledge', isProgramming: false,
+        definition: 'The Solar System consists of the Sun and all objects gravitationally bound to it: 8 planets, their moons, dwarf planets (like Pluto), asteroids, comets, and meteoroids. The Sun contains 99.86% of the system\'s mass.',
+        easyExplanation: 'Our Solar System is like a cosmic neighborhood with the Sun as the center. Eight planets orbit the Sun: 4 rocky inner planets (Mercury, Venus, Earth, Mars) and 4 gas giants (Jupiter, Saturn, Uranus, Neptune). Earth is the only planet known to support life.',
+        example: 'Planet order from the Sun: Mercury → Venus → Earth → Mars → Jupiter → Saturn → Uranus → Neptune. Jupiter is the largest (1,300 Earths could fit inside). Saturn has spectacular rings made of ice and rock.',
+        importantKeywords: ['Sun (Star)', '8 Planets', 'Inner (Rocky) vs Outer (Gas Giants)', 'Asteroid Belt', 'Dwarf Planets (Pluto)'],
+        memoryTips: 'Planet order mnemonic: "My Very Educated Mother Just Served Us Nachos" = Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.',
+        quickSummary: ['Sun + 8 planets + moons + asteroids + comets.', 'Inner rocky planets: Mercury, Venus, Earth, Mars.', 'Outer gas giants: Jupiter, Saturn, Uranus, Neptune.'],
+        keyConcepts: ['Inner Planets: Small, rocky, close to Sun (Mercury, Venus, Earth, Mars).', 'Outer Planets: Large, gaseous, farther from Sun (Jupiter, Saturn, Uranus, Neptune).', 'Asteroid Belt: Rocky debris between Mars and Jupiter; Kuiper Belt beyond Neptune.']
       }
     };
 
-    // Regex resolver for exact language/topic matching
-    if (/\b(c|c programming|c language|c coding|c basics)\b/i.test(t) && !/c\+\+|cpp|c\#|css/i.test(t)) {
-      return knowledgeBase.c;
-    }
-    if (/\b(java|java programming|java language|oops in java|jdk|jvm)\b/i.test(t) && !/javascript|js/i.test(t)) {
-      return knowledgeBase.java;
-    }
-    if (/\b(python|python programming|py|python3)\b/i.test(t)) {
-      return knowledgeBase.python;
-    }
-    if (/\b(c\+\+|cpp|c plus plus)\b/i.test(t)) {
-      return knowledgeBase.cpp;
-    }
-    if (/\b(javascript|js|es6|ecmascript|front end|frontend)\b/i.test(t)) {
-      return knowledgeBase.javascript;
-    }
-    if (/\b(sql|dbms|database|mysql|postgresql|sqlite|rdbms)\b/i.test(t)) {
-      return knowledgeBase.sql;
-    }
-    if (/\b(dsa|data structures|algorithms|data structure|sorting|searching|binary search|stack|queue|linked list|trees|graphs)\b/i.test(t)) {
-      return knowledgeBase.dsa;
-    }
-    if (/\b(operating system|operating systems|os|linux|process scheduling|deadlock)\b/i.test(t)) {
-      return knowledgeBase.os;
-    }
-    if (/\b(computer networks|networking|tcp\/ip|osi model|ip address|http|https)\b/i.test(t)) {
-      return knowledgeBase.networks;
-    }
-    if (/\b(html|css|web design|flexbox|grid)\b/i.test(t)) {
-      return knowledgeBase.html_css;
-    }
-    if (/\b(oop|oops|object oriented programming|object oriented)\b/i.test(t)) {
-      return knowledgeBase.oop;
-    }
-    if (/\b(photosynthesis|light reaction|calvin cycle)\b/i.test(t)) {
-      return knowledgeBase.photosynthesis;
-    }
-    if (/\b(periodic table|mendeleev|atomic number|elements)\b/i.test(t)) {
-      return knowledgeBase.periodicTable || knowledgeBase.chemistry;
-    }
-    if (/\b(calculus|derivative|integration|integrals|derivatives|differentiation)\b/i.test(t)) {
-      return knowledgeBase.calculus;
-    }
-    if (/\b(economics|microeconomics|macroeconomics|gdp|inflation|demand supply)\b/i.test(t)) {
-      return knowledgeBase.economics;
-    }
-    if (/\b(physics|newton|kinematics|thermodynamics|optics|gravity)\b/i.test(t)) {
-      return knowledgeBase.physics;
-    }
-    if (/\b(chemistry|organic chemistry|acids bases|chemical bonding|stoichiometry)\b/i.test(t)) {
-      return knowledgeBase.chemistry;
-    }
-    if (/\b(biology|cell biology|genetics|dna|genomics|anatomy|physiology)\b/i.test(t)) {
-      return knowledgeBase.biology;
-    }
-    if (/\b(history|world war|revolutions|ancient history|medieval history)\b/i.test(t)) {
-      return knowledgeBase.history;
-    }
-    if (/\b(geography|physical geography|plate tectonics|climatology|topography)\b/i.test(t)) {
-      return knowledgeBase.geography;
-    }
+    const enrich = (data) => {
+      if (!data) return data;
+      data.subjectName = data.subjectName || sub.subjectName;
+      data.isProgramming = (typeof data.isProgramming === 'boolean') ? data.isProgramming : sub.isProgramming;
 
-    // Substring fallback
-    for (const [key, data] of Object.entries(knowledgeBase)) {
-      if (t.includes(key)) {
-        return data;
+      if (!data.easyExplanation) {
+        data.easyExplanation = `In simple terms, ${topic} is a key concept in ${sub.subjectName}. Think of it as a foundational mechanism that organizes core processes and relationships in this subject.`;
+      }
+
+      if (!data.memoryTips) {
+        data.memoryTips = `Memory Trick: Focus on the core definition first, remember key operational rules, and connect concepts to practical examples.`;
+      }
+
+      if (!data.quickSummary || data.quickSummary.length === 0) {
+        if (data.keyConcepts && data.keyConcepts.length > 0) {
+          data.quickSummary = data.keyConcepts.slice(0, 4);
+        } else {
+          data.quickSummary = [
+            `Core definition of ${topic} in ${sub.subjectName}.`,
+            `Main principles and operational rules.`,
+            `High-yield exam takeaways and practical applications.`
+          ];
+        }
+      }
+
+      if (!data.importantKeywords || data.importantKeywords.length === 0) {
+        if (data.keyConcepts && data.keyConcepts.length > 0) {
+          data.importantKeywords = data.keyConcepts.map(k => k.split(':')[0]);
+        } else {
+          data.importantKeywords = [`${topic} Principle`, 'Core Definition', 'Practical Application'];
+        }
+      }
+
+      return data;
+    };
+
+    // Exact word boundary matching for curated knowledge base keys
+    for (const key in knowledgeBase) {
+      if (t === key || new RegExp('\\b' + key.replace(/[+]/g, '\\+') + '\\b', 'i').test(t)) {
+        return enrich(knowledgeBase[key]);
       }
     }
 
-    return this.generateGenericExplanation(topic);
+    return enrich(this.generateGenericExplanation(topic));
   },
+
 
   generateGenericExplanation(topic) {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
-    const lower = topic.toLowerCase();
+    const sub = this.detectSubject(topic);
 
-    // Comprehensive multi-domain detection
-    const isLit = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|narrative|author|literary|sonnet|gothic|romanticism|rhetoric|allegory/.test(lower);
-    const isHist = /history|historical|war|revolution|empire|century|king|queen|reign|dynasty|battle|treaty|civilization|colonial|independence|movement|ancient|medieval|world war|renaissance/.test(lower);
-    const isGeo = /geography|climate|map|river|mountain|tectonic|earth|ocean|continent|population|atmosphere|soil|biomes|latitude|longitude|ecosystem|glacier|volcano|weather|topography/.test(lower);
-    const isPol = /politic|constitution|democracy|government|parliament|judiciary|rights|state|election|governance|citizenship|policy|legislature|sovereign|liberty|justice|monarchy/.test(lower);
-    const isEcon = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|monopoly|demand|supply|fiscal|monetary|currency|trade|banking|revenue|utility|capitalism/.test(lower);
-    const isComm = /commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock|capital|entrepreneur|invoice/.test(lower);
-    const isLang = /language|grammar|linguistic|phonetics|syntax|tenses|noun|verb|adjective|translation|semantics|vocabulary|idiom|phrase|punctuation|preposition/.test(lower);
-    const isArt = /art|painting|music|sculpture|architecture|design|dance|theatre|aesthetic|baroque|impressionism|composition|harmony|melody|rhythm|canvas|artistic/.test(lower);
-    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure/.test(lower);
-    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number theory|logarithm/.test(lower);
-    const isBio = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|microbiology|photosynthesis|mitosis|meiosis|neuron/.test(lower);
-    const isChem = /chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|organic|inorganic|bond|thermodynamics|atom|solution|catalyst|oxidation/.test(lower);
-    const isPhys = /physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum|relativity|kinematics|friction|photon/.test(lower);
-    const isPsych = /psychology|sociology|philosophy|behavior|cognition|mind|brain|perception|personality|society|ethics|logic|moral|existential|consciousness|empathy/.test(lower);
+    /* ──────────────────────────────────────────────────────
+       Subject-specific rich generic templates
+       Instead of one bland generic, we provide different
+       high-quality templates per detected subject area.
+       ────────────────────────────────────────────────────── */
 
-    if (isLit) {
-      return {
-        definition: `${cap} is a significant literary subject or concept that explores human expression, narrative structures, stylistic devices, and thematic depth across artistic works.`,
-        keyConcepts: [
-          `Thematic Analysis: Uncovering underlying message, motifs, and moral/social commentary.`,
-          `Literary Devices: Use of metaphors, symbolism, imagery, and narrative perspective.`,
-          `Contextual Significance: How socio-cultural and historical settings influence textual interpretation.`
-        ],
-        features: [
-          `Employs figurative language and creative narrative techniques to convey meaning.`,
-          `Reflects human emotions, societal values, and philosophical reflections across eras.`
-        ],
-        functions: [
-          `Enhances critical thinking, textual analysis, and empathetic understanding of diverse human experiences.`,
-          `Provides historical and aesthetic appreciation of language and oral/written traditions.`
-        ],
-        types: [
-          `Prose & Fiction: Novels, short stories, and narrative essays.`,
-          `Poetry & Verse: Lyric, epic, sonnets, and free verse.`,
-          `Drama & Theatre: Tragedy, comedy, and theatrical performative works.`
-        ],
-        advantages: [
-          `Develops advanced critical interpretation and persuasive writing abilities.`,
-          `Fosters cross-cultural empathy and deep comprehension of symbolism.`
-        ],
-        disadvantages: [
-          `Interpretations can be subjective and open to multiple valid critical readings.`,
-          `Requires close reading skills and sensitivity to archaic or complex language.`
-        ],
-        syntax: `Form / Structure: Stanza / Scene / Chapter\nRhyme Scheme / Meter: e.g., iambic pentameter (da-DUM da-DUM)`,
-        example: `Analyzing how the central motif of light vs. darkness represents hope and despair in classic literature.`,
-        examQuestions: [
-          { q: `What is the role of theme and symbolism in ${cap}?`, a: `Theme provides the core message or insight into life, while symbolism uses concrete objects or actions to represent abstract literary ideas.` },
-          { q: `How does narrative perspective affect reader interpretation?`, a: `First-person POV offers intimate internal thoughts but may be unreliable; third-person omniscient provides an objective, all-knowing view of all characters.` }
-        ]
-      };
+    let definition, easyExplanation, example, importantKeywords, memoryTips, quickSummary, keyConcepts;
+
+    if (sub.isProgramming) {
+      definition = `${cap} is a key concept in ${sub.subjectName}. It refers to a specific technique, structure, or paradigm used in software development to solve problems efficiently, improve code organization, and build robust applications.`;
+      easyExplanation = `Think of ${cap} as a tool in a programmer's toolbox. Just like a carpenter uses different tools for different tasks, programmers use ${cap} to write cleaner, faster, and more maintainable code. Understanding it is essential for writing professional-level software.`;
+      example = `// Code Example for ${cap}\nclass ${cap.replace(/[^a-zA-Z0-9]/g, '')}Demo {\n    public static void main(String[] args) {\n        System.out.println("Demonstrating ${cap}");\n        // Implement ${cap} logic here\n    }\n}`;
+      importantKeywords = [`${cap} Definition`, 'Implementation Syntax', 'Use Cases & Best Practices', 'Time/Space Complexity', 'Real-world Applications'];
+      memoryTips = `To remember ${cap}: First understand WHAT it does (definition), then HOW it works (mechanism), then WHERE to use it (applications). Practice writing code examples from memory.`;
+      quickSummary = [`${cap} is a fundamental concept in ${sub.subjectName}.`, 'It solves specific problems in software design and development.', 'Master the definition, syntax, and at least one practical example for exams.'];
+      keyConcepts = [`Core Idea: The fundamental purpose and mechanism of ${cap}.`, 'Syntax & Implementation: How to write and use it in code.', 'Applications: Where and when to apply it in real projects.'];
+
+    } else if (sub.subjectName === 'History') {
+      definition = `${cap} is a significant event/concept in History that shaped political, social, and economic structures. It represents a turning point where established systems were challenged, transformed, or replaced by new ideas and institutions.`;
+      easyExplanation = `Imagine living during the time of ${cap} — the world was changing rapidly. Old systems were being questioned, people demanded change, and new ideas spread. Understanding ${cap} helps us see how today's world was shaped by yesterday's events.`;
+      example = `Historical Context of ${cap}: This event/concept influenced governance, social structures, and cultural movements. Key figures emerged who led change, and the consequences — both intended and unintended — continue to shape modern institutions.`;
+      importantKeywords = [`${cap} — Key Event`, 'Causes & Consequences', 'Important Figures & Dates', 'Social & Political Impact', 'Legacy & Modern Relevance'];
+      memoryTips = `For ${cap}, remember the chain: CAUSE → EVENT → CONSEQUENCE. Who were the key people? What was the timeline? What changed as a result? Connect it to something in today's world.`;
+      quickSummary = [`${cap} was a major historical event/concept that transformed society.`, 'Driven by specific social, economic, and political causes.', 'Its legacy continues to influence modern governance, culture, and rights.'];
+      keyConcepts = ['Causes: The social, economic, and political factors that led to the event.', 'Key Events & Timeline: Major milestones and turning points.', 'Consequences: Short-term and long-term impact on society and governance.'];
+
+    } else if (sub.subjectName === 'Mathematics') {
+      definition = `${cap} is a mathematical concept that provides a systematic method for solving problems involving numbers, shapes, or logical relationships. It establishes precise rules and formulas that produce reliable, repeatable results.`;
+      easyExplanation = `${cap} is a mathematical tool — like a formula or rule — that helps solve a specific type of problem step by step. Once you understand the pattern, you can apply it to many similar problems, from homework to real engineering challenges.`;
+      example = `Mathematical Application of ${cap}: Apply the relevant formula or theorem, substitute known values, and solve step by step. Always verify your answer by substituting it back into the original equation or condition.`;
+      importantKeywords = [`${cap} Formula/Theorem`, 'Variables & Constants', 'Step-by-Step Solution Method', 'Proof / Derivation', 'Applications in Problem Solving'];
+      memoryTips = `For ${cap}: Learn the FORMULA first, then practice 5 problems. Understand WHY the formula works (derivation), and you'll never forget it. Draw diagrams for geometry topics.`;
+      quickSummary = [`${cap} provides a systematic method for solving mathematical problems.`, 'Involves specific formulas, theorems, or rules.', 'Practice with examples and verify answers by substitution.'];
+      keyConcepts = ['Formula/Theorem: The core mathematical expression or rule.', 'Conditions: When and where this concept applies.', 'Solved Examples: Step-by-step application to specific problems.'];
+
+    } else if (sub.subjectName === 'Physics') {
+      definition = `${cap} is a fundamental concept in Physics that explains how matter, energy, or forces interact in the natural world. It is typically described by mathematical equations and verified through experiments and observations.`;
+      easyExplanation = `${cap} explains something about how the physical world works — whether it's how objects move, how energy transfers, or how forces interact. Physicists discovered these rules by observing nature and expressing patterns as mathematical laws.`;
+      example = `Physics Application of ${cap}: Use the relevant physical law or equation, identify known quantities (mass, velocity, force, etc.), substitute into the formula, and calculate the unknown. Units matter — always include them!`;
+      importantKeywords = [`${cap} Law/Principle`, 'Formula & Equations', 'SI Units', 'Experimental Verification', 'Real-world Applications'];
+      memoryTips = `For ${cap}: Remember the FORMULA and its UNITS. Physics = understanding + calculation. Draw free-body diagrams, label forces, and solve step by step.`;
+      quickSummary = [`${cap} describes fundamental interactions in the physical world.`, 'Expressed through mathematical equations and laws.', 'Verified through experiments; applicable to real-world engineering.'];
+      keyConcepts = ['Law/Principle: The core statement or equation governing the phenomenon.', 'Units & Dimensions: SI units ensure consistent, correct calculations.', 'Applications: How this concept is used in technology, engineering, and daily life.'];
+
+    } else if (sub.subjectName === 'Chemistry') {
+      definition = `${cap} is an important concept in Chemistry that explains how substances interact, combine, or transform at the molecular and atomic level. It involves understanding the structure, properties, and reactions of matter.`;
+      easyExplanation = `${cap} helps us understand what things are made of and how they change. Chemistry is everywhere — from cooking food (chemical reactions) to how medicines work in your body. ${cap} is one piece of this fascinating puzzle.`;
+      example = `Chemical Application of ${cap}: Identify the reactants and products, balance the equation, and note the type of reaction (combination, decomposition, displacement, etc.). Pay attention to molecular formulas and reaction conditions.`;
+      importantKeywords = [`${cap} Concept`, 'Atoms & Molecules', 'Chemical Reactions', 'Periodic Table Connection', 'Balancing Equations'];
+      memoryTips = `For ${cap}: Learn the KEY REACTION or STRUCTURE first. Draw molecular diagrams. Remember: "Chemistry is just atoms playing musical chairs with electrons!"`;
+      quickSummary = [`${cap} explains molecular/atomic interactions and transformations.`, 'Connected to the periodic table and chemical bonding principles.', 'Understand the reaction type, conditions, and products.'];
+      keyConcepts = ['Structure: Atomic/molecular arrangement relevant to this concept.', 'Reactions: How substances transform — types and conditions.', 'Applications: Industrial, biological, or environmental significance.'];
+
+    } else if (sub.subjectName === 'Biology & Biochemistry') {
+      definition = `${cap} is a fundamental concept in Biology that explains how living organisms function, grow, reproduce, or interact with their environment. It encompasses processes at the cellular, organ, or ecosystem level.`;
+      easyExplanation = `${cap} is about how life works. Whether it's how cells divide, how plants make food, or how animals adapt — biology reveals the beautiful machinery of living things. ${cap} is a key piece of this living puzzle.`;
+      example = `Biological Significance of ${cap}: This concept plays a vital role in maintaining life processes. It can be observed in cellular activity, organism behavior, or ecosystem dynamics. Understanding it is crucial for medicine, agriculture, and environmental science.`;
+      importantKeywords = [`${cap} Process`, 'Cell Biology', 'Organisms & Ecosystem', 'Genetics & Evolution', 'Biological Significance'];
+      memoryTips = `For ${cap}: Think of the PROCESS step by step — what happens first, then next? Draw labeled diagrams. Biology loves diagrams! Connect it to real organisms you know.`;
+      quickSummary = [`${cap} explains fundamental life processes in organisms.`, 'Operates at cellular, organ, or ecosystem level.', 'Essential for understanding health, medicine, and environmental science.'];
+      keyConcepts = ['Process: Step-by-step mechanism of how it works.', 'Structure: Cellular or molecular components involved.', 'Significance: Role in organism survival, health, or ecosystem balance.'];
+
+    } else if (sub.subjectName === 'Geography') {
+      definition = `${cap} is a key concept in Geography that relates to Earth's physical features, climate patterns, natural resources, or human-environment interactions. It helps explain why landscapes, weather, and populations vary across the globe.`;
+      easyExplanation = `${cap} helps us understand our planet — its mountains, rivers, climates, and how humans interact with the environment. Geography connects the dots between natural processes and human civilization.`;
+      example = `Geographic Relevance of ${cap}: This concept influences climate patterns, landforms, resource distribution, or population settlement. It can be observed through maps, satellite imagery, and field studies.`;
+      importantKeywords = [`${cap} Geographic Feature`, 'Climate & Weather', 'Physical & Human Geography', 'Maps & Data', 'Environmental Impact'];
+      memoryTips = `For ${cap}: Visualize it on a MAP. Geography = "Geo" (Earth) + "Graphy" (writing about). Connect concepts to real places you know — your city, country, or famous landmarks.`;
+      quickSummary = [`${cap} explains Earth's physical or human geographic features.`, 'Connected to climate, landforms, and natural resources.', 'Understanding it helps explain why places differ and how environments change.'];
+      keyConcepts = ['Physical Features: Mountains, rivers, climate zones related to this concept.', 'Human Impact: How human activities affect or are affected by this feature.', 'Global Patterns: How this concept varies across different regions of the world.'];
+
+    } else if (sub.subjectName === 'Economics') {
+      definition = `${cap} is an important concept in Economics that analyzes how individuals, businesses, or governments make decisions about allocating scarce resources to satisfy unlimited wants.`;
+      easyExplanation = `Economics is about choices — you have limited money and unlimited wants, so you must choose wisely. ${cap} helps explain how these choices are made, whether by a student buying lunch, a company setting prices, or a government planning its budget.`;
+      example = `Economic Application of ${cap}: Consider a real market scenario — how do price changes, government policies, or consumer behavior affect this concept? Use supply-demand analysis or relevant economic models.`;
+      importantKeywords = [`${cap} Principle`, 'Scarcity & Choice', 'Market Mechanism', 'Government Policy', 'Micro/Macroeconomic Impact'];
+      memoryTips = `For ${cap}: Economics = study of CHOICES under SCARCITY. Ask: Who benefits? Who pays? What are the trade-offs? Use graphs (supply-demand curves) to visualize.`;
+      quickSummary = [`${cap} analyzes resource allocation and decision-making.`, 'Involves understanding markets, prices, and government policies.', 'Key to understanding how economies function at micro and macro levels.'];
+      keyConcepts = ['Theory: The economic model or principle behind this concept.', 'Market Impact: How it affects prices, production, and consumption.', 'Policy: Government interventions related to this concept.'];
+
+    } else if (sub.subjectName === 'Political Science') {
+      definition = `${cap} is a significant concept in Political Science that relates to governance, power structures, citizen rights, or political institutions. It shapes how societies organize authority and make collective decisions.`;
+      easyExplanation = `${cap} is about how society is governed — who has power, how decisions are made, and what rights citizens have. Political Science studies these questions to build fairer, more effective governments and protect individual freedoms.`;
+      example = `Political Relevance of ${cap}: This concept shapes constitutional frameworks, government policies, and citizen participation. It can be studied through legal documents, political events, and comparative analysis of different countries.`;
+      importantKeywords = [`${cap} in Governance`, 'Rights & Duties', 'Government Structure', 'Constitution & Law', 'Democratic Principles'];
+      memoryTips = `For ${cap}: Connect it to the CONSTITUTION (which article?) and REAL EVENTS. Political Science = who gets WHAT, WHEN, and HOW (Harold Lasswell's definition).`;
+      quickSummary = [`${cap} relates to governance, rights, or political institutions.`, 'Shapes how societies organize power and make collective decisions.', 'Understanding it is key to being an informed, active citizen.'];
+      keyConcepts = ['Concept: The core political idea or institution.', 'Constitutional Basis: Legal framework and articles relevant to it.', 'Impact: How it affects governance, rights, and citizen participation.'];
+
+    } else if (sub.subjectName === 'Commerce & Accountancy') {
+      definition = `${cap} is a key concept in Commerce that relates to business operations, financial management, or accounting principles. It helps businesses track performance, make decisions, and comply with regulations.`;
+      easyExplanation = `${cap} is a concept that helps businesses manage money, track profits and losses, and make smart financial decisions. Whether you're running a small shop or a multinational corporation, understanding ${cap} is essential for financial success.`;
+      example = `Business Application of ${cap}: Apply this concept using journal entries, ledger accounts, or financial statements. Follow the relevant accounting standard and double-entry bookkeeping principles.`;
+      importantKeywords = [`${cap} Principle`, 'Double-Entry System', 'Financial Statements', 'Assets & Liabilities', 'Profit & Loss'];
+      memoryTips = `For ${cap}: Remember the golden rules: Real A/c (Debit what comes in), Personal A/c (Debit the receiver), Nominal A/c (Debit all expenses). Practice journal entries!`;
+      quickSummary = [`${cap} is essential for business financial management.`, 'Follows accounting principles and standards.', 'Applied through journal entries, ledgers, and financial statements.'];
+      keyConcepts = ['Accounting Principle: The rule or standard governing this concept.', 'Recording: How to record transactions related to it.', 'Financial Impact: How it appears in financial statements.'];
+
+    } else if (sub.subjectName === 'Environmental Science') {
+      definition = `${cap} is a concept in Environmental Science that addresses the relationship between human activities and the natural environment, including pollution, conservation, biodiversity, and sustainable development.`;
+      easyExplanation = `${cap} is about protecting our planet. Environmental Science studies how human actions (industry, farming, transportation) affect nature (air, water, soil, wildlife) and finds ways to live sustainably without destroying the ecosystems we depend on.`;
+      example = `Environmental Significance of ${cap}: This concept affects ecosystems, biodiversity, and human health. Solutions involve policy changes, technological innovation, and individual behavior modifications.`;
+      importantKeywords = [`${cap} Issue`, 'Ecosystem Impact', 'Pollution & Conservation', 'Sustainable Development', 'Government Policies'];
+      memoryTips = `For ${cap}: Remember the 3 R's: Reduce, Reuse, Recycle. Environmental problems have three dimensions: CAUSE (human activity), EFFECT (on nature), SOLUTION (policy + technology + behavior).`;
+      quickSummary = [`${cap} addresses human impact on the natural environment.`, 'Connected to pollution, conservation, and sustainability.', 'Solutions require combined effort: policy, technology, and individual action.'];
+      keyConcepts = ['Cause: Human activities contributing to this environmental issue.', 'Impact: Effects on ecosystems, biodiversity, and human health.', 'Solutions: Policy, technology, and behavioral changes to mitigate the problem.'];
+
+    } else if (sub.subjectName === 'English & Literature') {
+      definition = `${cap} is a concept in English Language & Literature that relates to literary analysis, language structure, or the study of written and spoken expression. It helps understand how language conveys meaning, emotion, and artistic beauty.`;
+      easyExplanation = `${cap} is about understanding and appreciating language — how words create stories, evoke emotions, and persuade readers. Literature is the art of writing; grammar is its toolkit. Understanding ${cap} makes you a better reader, writer, and communicator.`;
+      example = `Literary/Linguistic Application of ${cap}: This concept can be identified in poems, novels, speeches, and everyday language. Analyze examples by identifying the device/rule, its effect, and the author's purpose.`;
+      importantKeywords = [`${cap} in Literature`, 'Literary Devices', 'Grammar & Syntax', 'Author\'s Purpose', 'Critical Analysis'];
+      memoryTips = `For ${cap}: Read examples aloud — literature is meant to be heard! Identify the DEVICE → EFFECT → PURPOSE chain. Keep a vocabulary journal.`;
+      quickSummary = [`${cap} relates to language, literature, or communication.`, 'Involves understanding literary devices, grammar, or textual analysis.', 'Strengthens reading comprehension and writing skills.'];
+      keyConcepts = ['Concept: The literary device, grammatical rule, or language feature.', 'Examples: Famous works or sentences illustrating this concept.', 'Effect: How it enhances meaning, emotion, or persuasion.'];
+
+    } else if (sub.subjectName === 'Hindi Language & Literature') {
+      definition = `${cap} is a concept in Hindi Language & Literature related to Hindi grammar (Vyakaran), literary traditions (Sahitya), or the study of Hindi as a rich national language with deep cultural roots.`;
+      easyExplanation = `${cap} is part of Hindi\'s rich language tradition. Hindi grammar (Vyakaran) helps you speak and write correctly, while Hindi literature (Sahitya) — from Kabir and Tulsidas to modern writers — expresses India\'s culture, philosophy, and emotions through beautiful words.`;
+      example = `Hindi Application of ${cap}: This concept is used in Hindi grammar exercises, literature analysis, or creative writing. Practice with examples from textbooks and famous Hindi literary works.`;
+      importantKeywords = [`${cap} in Hindi`, 'Vyakaran (Grammar)', 'Sahitya (Literature)', 'Bhasha (Language)', 'Hindi Poets & Writers'];
+      memoryTips = `For ${cap}: Practice daily — write 5 sentences using this concept. Hindi grammar follows rules like any language. Connect literary concepts to the poet\'s life and era for deeper understanding.`;
+      quickSummary = [`${cap} is part of Hindi grammar or literary tradition.`, 'Connected to Hindi Vyakaran rules or Sahitya analysis.', 'Practice with examples from NCERT textbooks and classical Hindi literature.'];
+      keyConcepts = ['Grammar Rule: The Vyakaran principle or pattern.', 'Literary Context: How Hindi writers have used this concept.', 'Practice: Examples and exercises for mastery.'];
+
+    } else if (sub.subjectName === 'General Knowledge') {
+      definition = `${cap} is a General Knowledge topic covering facts, events, or information of broad educational significance. It spans geography, history, science, current affairs, and cultural awareness.`;
+      easyExplanation = `${cap} is something every well-informed person should know. General Knowledge covers a wide range — from world capitals and famous inventions to historical events and scientific discoveries. It\'s the kind of knowledge that helps in exams, quizzes, and everyday conversations.`;
+      example = `Key Facts about ${cap}: This topic appears frequently in competitive exams, quizzes, and academic assessments. Memorize key facts, dates, and associated names.`;
+      importantKeywords = [`${cap} Facts`, 'Key Dates & Events', 'Famous Personalities', 'World Records & Firsts', 'Current Affairs'];
+      memoryTips = `For ${cap}: Create flashcards with key facts. Use mnemonics and association techniques. Read newspapers daily for current affairs. Quiz yourself regularly.`;
+      quickSummary = [`${cap} covers important facts and general awareness.`, 'Frequently asked in competitive exams and quizzes.', 'Stay updated through newspapers, magazines, and educational apps.'];
+      keyConcepts = ['Facts: Core data points — names, dates, places.', 'Significance: Why this topic matters in the broader context.', 'Exam Relevance: Commonly tested aspects and question patterns.'];
+
+    } else {
+      // Ultimate fallback for any undetected subject
+      definition = `${cap} is an academic concept that encompasses key principles, theories, and practical applications within its field of study.`;
+      easyExplanation = `In simple terms, ${cap} is a foundational idea that helps us understand a specific aspect of the world. Learning it builds a strong base for more advanced topics.`;
+      example = `Practical Application of ${cap}: This concept is applied in academic study, professional practice, and real-world problem solving. Understanding the core definition and examples is essential.`;
+      importantKeywords = [`${cap} Definition`, 'Core Principles', 'Key Theories', 'Practical Applications', 'Exam-Relevant Facts'];
+      memoryTips = `For ${cap}: Start with the DEFINITION, then understand the MECHANISM, and finally memorize EXAMPLES. Teach it to someone else — that\'s the best way to remember!`;
+      quickSummary = [`${cap} is a key concept with broad academic significance.`, 'Understanding its definition and applications is essential.', 'Focus on core principles, examples, and exam-relevant details.'];
+      keyConcepts = ['Definition: The precise academic meaning and scope.', 'Principles: Core rules or theories that govern this concept.', 'Applications: Where and how this concept is used in practice.'];
     }
 
-    if (isHist) {
-      return {
-        definition: `${cap} is a major historical event, movement, era, or development that shaped political structures, socio-economic conditions, and human civilization.`,
-        keyConcepts: [
-          `Cause and Effect: Identifying immediate triggers and long-term socio-political causes.`,
-          `Primary vs. Secondary Sources: Evaluating eyewitness evidence against historical analysis.`,
-          `Historical Significance: Understanding how ${cap} transformed governance, society, or trade.`
-        ],
-        features: [
-          `Involves key historical figures, key timelines, treaties, or revolutionary shifts.`,
-          `Influences subsequent historical trajectories and modern institutional frameworks.`
-        ],
-        functions: [
-          `Explains how contemporary societies, borders, and political systems evolved over time.`,
-          `Teaches critical analysis of historical bias, historiography, and primary documentation.`
-        ],
-        types: [
-          `Political & Military History: Revolutions, treaties, dynastic rule, and conflicts.`,
-          `Social & Cultural History: Changes in daily life, popular movements, and rights.`,
-          `Economic History: Trade routes, industrialization, and financial systems.`
-        ],
-        advantages: [
-          `Provides essential context for understanding modern global politics and international relations.`,
-          `Prevents historical repetition by analyzing past strategic successes and policy failures.`
-        ],
-        disadvantages: [
-          `Historical records may contain ideological bias or incomplete source materials.`,
-          `Requires memorizing detailed chronologies, dates, key actors, and geopolitical contexts.`
-        ],
-        syntax: `Timeline Framework:\nCauses → Key Event / Crisis → Resolution / Treaty → Long-term Impact`,
-        example: `Examining how the industrial transformation during ${cap} altered urbanization and labor policies globally.`,
-        examQuestions: [
-          { q: `What were the primary causes and long-term consequences of ${cap}?`, a: `Immediate factors included social unrest and economic hardship, while long-term consequences led to modern democratic governance and institutional reform.` },
-          { q: `Why are primary sources essential when analyzing ${cap}?`, a: `Primary sources offer unmediated first-hand evidence from contemporary participants, reflecting original attitudes without modern retrospective bias.` }
-        ]
-      };
-    }
-
-    if (isGeo) {
-      return {
-        definition: `${cap} is a spatial geographic process, physical feature, or human-environmental system that shapes Earth's landscapes, ecosystems, and resources.`,
-        keyConcepts: [
-          `Physical Processes: Natural forces such as plate tectonics, erosion, weathering, and atmospheric circulation.`,
-          `Spatial Distribution: How features or phenomena are arranged across Earth's surface.`,
-          `Human-Environment Interaction: How human activity influences and adapts to physical geography.`
-        ],
-        features: [
-          `Interacts with Earth's spheres (lithosphere, atmosphere, hydrosphere, biosphere).`,
-          `Exhibits spatial variation across different latitudes, elevations, and climatic zones.`
-        ],
-        functions: [
-          `Helps predict weather patterns, natural hazards, landform evolution, and resource availability.`,
-          `Guides urban planning, environmental conservation, and sustainable development.`
-        ],
-        types: [
-          `Physical Geography: Geomorphology, climatology, hydrology, and biogeography.`,
-          `Human Geography: Population dynamics, economic geography, and urban settlements.`,
-          `GIS & Remote Sensing: Digital mapping and spatial satellite data analysis.`
-        ],
-        advantages: [
-          `Essential for managing natural resources, disaster mitigation, and climate policy.`,
-          `Combines physical science with social science to address global sustainability challenges.`
-        ],
-        disadvantages: [
-          `Complex multi-variable interaction makes exact long-term climate prediction challenging.`,
-          `Requires understanding both micro-level field observations and global macro-scale systems.`
-        ],
-        syntax: `Spatial Scale Formula:\nReal Distance = Map Distance × Scale Factor`,
-        example: `Analyzing how ocean currents and relief features create distinct local microclimates and vegetation zones.`,
-        examQuestions: [
-          { q: `How does ${cap} influence climate and ecosystem distribution?`, a: `By regulating heat distribution, moisture movement, and topographic barriers, creating specialized biomes and agricultural zones.` },
-          { q: `Differentiate between Physical and Human Geography in relation to ${cap}.`, a: `Physical Geography focuses on natural earth processes (landforms, weather), whereas Human Geography studies spatial human behaviors (settlements, trade).` }
-        ]
-      };
-    }
-
-    if (isPol) {
-      return {
-        definition: `${cap} is a foundational political science concept, constitutional mechanism, or governance structure that regulates state power, rights, and political behavior.`,
-        keyConcepts: [
-          `Sovereignty & Power: How political authority is established, exercised, and legitimized.`,
-          `Constitutional Rights: Legal protections, civil liberties, and duties of citizens.`,
-          `Institutional Checks: Division of powers among executive, legislative, and judicial branches.`
-        ],
-        features: [
-          `Codified through legal statutes, constitutional provisions, or international law.`,
-          `Provides mechanisms for public policy, lawmaking, conflict resolution, and representation.`
-        ],
-        functions: [
-          `Ensures social order, protects fundamental rights, and resolves conflicting political interests.`,
-          `Sustains democratic accountability and transparent administrative processes.`
-        ],
-        types: [
-          `Comparative Politics: Comparing democratic, parliamentary, and federal systems.`,
-          `International Relations: Global diplomacy, treaties, and international organizations.`,
-          `Political Theory: Liberalism, socialism, federalism, and constitutionalism.`
-        ],
-        advantages: [
-          `Prevents abuse of state power through rule of law and constitutional safeguards.`,
-          `Empowers citizens to participate effectively in civic life and electoral processes.`
-        ],
-        disadvantages: [
-          `Political consensus building can lead to legislative gridlock or slow policymaking.`,
-          `Implementation can be hindered by institutional corruption or bureaucratic delays.`
-        ],
-        syntax: `Constitutional Structure:\nPreamble → Fundamental Rights → State Directives → Judicial Review`,
-        example: `Examining how the separation of powers prevents autocratic consolidation by balancing statutory authorities.`,
-        examQuestions: [
-          { q: `What is the significance of ${cap} in a modern constitutional democracy?`, a: `It establishes the legal framework for citizen rights, prevents arbitrary state authority, and maintains institutional accountability.` },
-          { q: `How do Fundamental Rights differ from Directive Principles?`, a: `Fundamental Rights are legally enforceable in court (justiciable), while Directive Principles guide government policy but are non-justiciable.` }
-        ]
-      };
-    }
-
-    if (isEcon) {
-      return {
-        definition: `${cap} is a fundamental economic theory, market force, or policy tool used to analyze how scarce resources are allocated among competing human wants.`,
-        keyConcepts: [
-          `Scarcity & Opportunity Cost: Evaluating trade-offs when allocating limited resources.`,
-          `Market Equilibrium: Balance point where price equates quantity supplied with quantity demanded.`,
-          `Policy Instruments: Using monetary interest rates and fiscal taxation/spending to stabilize economic growth.`
-        ],
-        features: [
-          `Utilizes mathematical models, supply-demand curves, and empirical statistical indicators.`,
-          `Predicts producer and consumer behavioral choices under varying market incentives.`
-        ],
-        functions: [
-          `Guides government economic policy, corporate strategic pricing, and monetary management.`,
-          `Assesses national productivity, employment trends, trade balances, and inflation.`
-        ],
-        types: [
-          `Microeconomics: Individual consumer behavior, firm production costs, and market structures.`,
-          `Macroeconomics: Aggregate economy-wide output (GDP), inflation rates, and unemployment.`,
-          `International Economics: Global trade tariffs, exchange rates, and balance of payments.`
-        ],
-        advantages: [
-          `Provides quantitative framework for maximizing market efficiency and social welfare.`,
-          `Enables policymakers to mitigate economic recessions and control hyperinflation.`
-        ],
-        disadvantages: [
-          `Economic models often rely on simplifying assumptions (e.g., ceteris paribus, rational agents).`,
-          `Unforeseen external shocks (e.g., pandemics, geopolitical crises) can disrupt model accuracy.`
-        ],
-        syntax: `Equilibrium Formula: Qd = Qs\nElasticity = (% Δ Quantity) / (% Δ Price)`,
-        example: `Analyzing how raising central bank interest rates curbs inflationary pressure by reducing consumer borrowing.`,
-        examQuestions: [
-          { q: `Explain the core mechanism of ${cap} and its effect on market equilibrium.`, a: `When market conditions change, price adjusts dynamically until quantity demanded equals quantity supplied at a new equilibrium point.` },
-          { q: `How does Fiscal Policy differ from Monetary Policy?`, a: `Fiscal policy is controlled by government taxation and spending; Monetary policy is managed by the central bank via interest rates and money supply.` }
-        ]
-      };
-    }
-
-    if (isComm) {
-      return {
-        definition: `${cap} is an essential commerce, accounting, or business concept that deals with financial transactions, organizational governance, trade, or asset management.`,
-        keyConcepts: [
-          `Double-Entry Bookkeeping: Recording every transaction with equal debit and credit entries.`,
-          `Financial Auditing: Verifying accuracy, legal compliance, and transparency of financial statements.`,
-          `Working Capital Management: Balancing current assets and liabilities to ensure corporate liquidity.`
-        ],
-        features: [
-          `Adheres to Generally Accepted Accounting Principles (GAAP) or IFRS standards.`,
-          `Evaluates profitability, solvency, cash flows, and operational efficiency.`
-        ],
-        functions: [
-          `Facilitates commercial transactions, capital investment, and enterprise management.`,
-          `Provides investors and tax authorities with accurate financial reports.`
-        ],
-        types: [
-          `Financial Accounting: Balance sheets, income statements, and cash flow reports.`,
-          `Cost & Management Accounting: Budgeting, variance analysis, and internal decision-making.`,
-          `Corporate Finance: Risk management, capital structure, and stock market valuation.`
-        ],
-        advantages: [
-          `Ensures financial accountability, fraud prevention, and optimized capital allocation.`,
-          `Enables businesses to measure financial health and satisfy statutory compliance.`
-        ],
-        disadvantages: [
-          `Subject to regulatory changes, tax law revisions, and accounting complexities.`,
-          `Historical cost accounting may not reflect real-time market value fluctuations.`
-        ],
-        syntax: `Accounting Equation:\nAssets = Liabilities + Owner's Equity\nNet Income = Revenue - Expenses`,
-        example: `Preparing a trial balance for a corporation to ensure total debits match total credits before drafting financial statements.`,
-        examQuestions: [
-          { q: `What is the fundamental accounting equation and why must it always balance?`, a: `Assets = Liabilities + Equity. It balances because every financial asset is funded either by debt (liabilities) or capital (equity).` },
-          { q: `Differentiate between Capital Expenditure and Revenue Expenditure.`, a: `Capital expenditure provides long-term benefits beyond 1 year (e.g., buying machinery); Revenue expenditure covers day-to-day operational costs (e.g., rent, salaries).` }
-        ]
-      };
-    }
-
-    if (isLang) {
-      return {
-        definition: `${cap} is a structural linguistic rule, grammatical principle, or language mechanism that governs effective communication, word formation, and sentence syntax.`,
-        keyConcepts: [
-          `Syntax & Morphology: Structural arrangement of words and internal formation of vocabulary.`,
-          `Semantics & Pragmatics: Literal word meanings vs. contextual communicative intent.`,
-          `Grammatical Agreement: Ensuring subject-verb, gender, and tense consistency.`
-        ],
-        features: [
-          `Provides standardized rules for oral articulation, writing, and punctuation.`,
-          `Evolves through cultural usage, literature, and cross-linguistic borrowing.`
-        ],
-        functions: [
-          `Ensures clear, unambiguous communication across personal, academic, and professional contexts.`,
-          `Forms the basis for language learning, translation, and computational natural language processing.`
-        ],
-        types: [
-          `Prescriptive Grammar: Traditional normative rules of correct language usage.`,
-          `Descriptive Linguistics: Studying how native speakers actually use language in practice.`,
-          `Phonetics & Phonology: Study of speech sounds, intonation, and pronunciation.`
-        ],
-        advantages: [
-          `Improves reading comprehension, persuasive writing, and communication precision.`,
-          `Prevents grammatical ambiguity and misinterpretation in official documentation.`
-        ],
-        disadvantages: [
-          `Irregular grammatical exceptions and idioms require memorization rather than strict logic.`,
-          `Language evolution often creates tension between traditional rules and modern colloquial usage.`
-        ],
-        syntax: `Sentence Structure:\nSubject + Verb + Object (SVO)\nActive: [Actor] + [Action] + [Target]\nPassive: [Target] + [was/is Verb-ed] + by [Actor]`,
-        example: `Correcting subject-verb agreement in complex sentences containing compound subjects and modifying clauses.`,
-        examQuestions: [
-          { q: `Explain the rule governing ${cap} with a clear grammatical example.`, a: `The rule requires consistent agreement between grammatical elements; e.g., singular subjects demand singular verbs regardless of intervening prepositions.` },
-          { q: `What is the difference between Active and Passive Voice?`, a: `Active Voice emphasizes the subject performing the action; Passive Voice emphasizes the recipient or outcome of the action.` }
-        ]
-      };
-    }
-
-    if (isArt) {
-      return {
-        definition: `${cap} is a creative artistic discipline, aesthetic movement, or design principle that explores visual, auditory, or spatial expression of human imagination.`,
-        keyConcepts: [
-          `Elements of Design: Color theory, form, line, texture, value, and spatial perspective.`,
-          `Principles of Composition: Balance, contrast, emphasis, harmony, movement, and proportion.`,
-          `Aesthetic Criticism: Interpreting historical movement context and artistic intent.`
-        ],
-        features: [
-          `Uses physical or digital mediums (pigments, stone, acoustic sound, digital pixels).`,
-          `Communicates sensory experience, cultural identity, and emotional narratives.`
-        ],
-        functions: [
-          `Enriches cultural heritage, fosters creative innovation, and expresses societal commentary.`,
-          `Used in visual media, architectural design, performing arts, and therapeutic applications.`
-        ],
-        types: [
-          `Visual Arts: Painting, sculpture, printmaking, and photography.`,
-          `Performing Arts: Music composition, dance, theatre, and opera.`,
-          `Applied Arts & Architecture: Industrial design, fashion, and structural design.`
-        ],
-        advantages: [
-          `Stimulates creative problem-solving, visual literacy, and emotional intelligence.`,
-          `Preserves cultural traditions while inspiring contemporary design trends.`
-        ],
-        disadvantages: [
-          `Aesthetic evaluation is subjective and varies across different cultural paradigms.`,
-          `Mastery requires extensive physical practice, specialized tools, or creative incubation.`
-        ],
-        syntax: `Composition Rule:\nRule of Thirds / Golden Ratio (1 : 1.618) → Harmony of Focus Points`,
-        example: `Analyzing how complementary color schemes and directional lighting create emotional contrast in fine art.`,
-        examQuestions: [
-          { q: `How do the principles of design apply to ${cap}?`, a: `They guide the arrangement of visual elements (lines, colors) to create balance, focal emphasis, and visual rhythm in the artwork.` },
-          { q: `What distinguishes historical artistic movements from contemporary styles?`, a: `Historical movements followed strict academic canons, while contemporary art emphasizes conceptual freedom, mixed media, and personal narrative.` }
-        ]
-      };
-    }
-
-    if (isCS) {
-      return {
-        definition: `${cap} is a computer science concept, software engineering paradigm, or digital architecture used to build, process, and optimize computational systems.`,
-        keyConcepts: [
-          `Algorithms & Complexity: Designing efficient step-by-step procedures measured by Big-O notation.`,
-          `Data Abstraction & Structures: Organizing data in memory (arrays, trees, graphs, hash tables).`,
-          `System Architecture: Modular software components, database management, and network protocols.`
-        ],
-        features: [
-          `Provides high reliability, scalability, and automated logic execution.`,
-          `Supports cross-platform interoperability through standardized APIs and protocols.`
-        ],
-        functions: [
-          `Automates complex computations, powers web/mobile software, and protects digital data.`,
-          `Enables machine intelligence, cloud storage, and real-time global connectivity.`
-        ],
-        types: [
-          `Software Engineering: Systems development, web backends, and mobile applications.`,
-          `Data & AI: Machine learning, database management, and big data analytics.`,
-          `Cybersecurity & Networking: Cryptography, network routing, and system security.`
-        ],
-        advantages: [
-          `Automates manual workflows with lightning speed and zero human calculation errors.`,
-          `Scales compute power to handle millions of simultaneous user queries.`
-        ],
-        disadvantages: [
-          `Susceptible to software bugs, security vulnerabilities, and memory leaks.`,
-          `Requires continuous learning as tech stacks and security standards evolve.`
-        ],
-        syntax: `// Standard Algorithm Structure\nfunction execute(data) {\n  // Processing logic\n  return result;\n}`,
-        example: `Implementing a fast search index using a hash map to retrieve record values in O(1) average time.`,
-        examQuestions: [
-          { q: `What is the significance of time and space complexity in ${cap}?`, a: `Complexity dictates how runtime memory and CPU cycles scale as input size grows, determining software scalability.` },
-          { q: `Compare procedural programming with object-oriented programming.`, a: `Procedural focuses on sequential steps and standalone functions; OOP encapsulates state (data) and behavior (methods) into reusable objects.` }
-        ]
-      };
-    }
-
-    if (isMath) {
-      return {
-        definition: `${cap} is a mathematical branch, theorem, or operational method used to model quantities, geometric relationships, dynamic rates, or logical structures.`,
-        keyConcepts: [
-          `Axioms & Proofs: Establishing mathematical truth through rigorous deductive logic.`,
-          `Functional Relations: Mapping input values to unique output values via explicit equations.`,
-          `Optimization & Rate Evaluation: Solving for maximum/minimum bounds or continuous change.`
-        ],
-        features: [
-          `Provides exact, universal mathematical solutions independent of subjective interpretation.`,
-          `Expressible in standardized symbolic notation, equations, and graphical coordinate systems.`
-        ],
-        functions: [
-          `Essential for engineering calculations, physics modeling, financial forecasting, and computer algorithms.`,
-          `Provides tools for measuring physical space, statistical probability, and structural stability.`
-        ],
-        types: [
-          `Pure Mathematics: Algebra, geometry, number theory, and mathematical logic.`,
-          `Applied Mathematics: Calculus, statistics, differential equations, and numerical analysis.`,
-          `Discrete Mathematics: Graph theory, combinatorics, and boolean logic.`
-        ],
-        advantages: [
-          `Delivers precise, verifiable quantitative answers to complex physical problems.`,
-          `Develops logical reasoning skills applicable across science and technology.`
-        ],
-        disadvantages: [
-          `Abstract concepts can be challenging without strong foundational prerequisites.`,
-          `Symbolic calculations require high precision to avoid cascading calculation errors.`
-        ],
-        syntax: `Standard Formula / Notation:\nf(x) = ax² + bx + c  (Quadratic Form)\ny - y₁ = m(x - x₁)  (Line Equation)`,
-        example: `Evaluating the derivative of a cost function to determine the exact production volume that minimizes expenses.`,
-        examQuestions: [
-          { q: `State the fundamental theorem or formula associated with ${cap} and explain its variables.`, a: `The formula relates key variables through exact algebraic operations, where each parameter represents a physical or geometric dimension.` },
-          { q: `Why is step-by-step verification important in mathematical proofs?`, a: `Because each step must logically follow from previous axioms; an unverified assumption invalidates the entire mathematical proof.` }
-        ]
-      };
-    }
-
-    if (isBio) {
-      return {
-        definition: `${cap} is a biological concept, physiological process, or ecological system that governs living organisms, cellular mechanisms, or life cycles.`,
-        keyConcepts: [
-          `Cellular Mechanism: How organelles, membranes, and biochemical pathways sustain cellular life.`,
-          `Genetics & Inheritance: Transmission of hereditary information via nucleic acids (DNA/RNA).`,
-          `Homeostasis & Adaptation: Maintaining internal biological equilibrium in response to environment.`
-        ],
-        features: [
-          `Regulated by enzymatic reactions, feedback loops, and genetic code expression.`,
-          `Operates across hierarchical biological levels (molecules → cells → tissues → organs → ecosystems).`
-        ],
-        functions: [
-          `Sustains growth, reproduction, metabolic energy transformation, and species survival.`,
-          `Forms the basis of medical diagnostics, biotechnology, agriculture, and pharmacology.`
-        ],
-        types: [
-          `Molecular & Cell Biology: Genetics, cellular respiration, and enzyme kinetics.`,
-          `Organismal Biology: Human anatomy, plant physiology, and microbiology.`,
-          `Ecology & Evolution: Population dynamics, natural selection, and biodiversity.`
-        ],
-        advantages: [
-          `Enables medical breakthroughs, disease treatments, and sustainable agricultural yields.`,
-          `Fosters deep understanding of human health, ecology, and biological conservation.`
-        ],
-        disadvantages: [
-          `Biological systems involve thousands of interconnected metabolic pathways.`,
-          `Experimental studies require ethical considerations and controlled laboratory conditions.`
-        ],
-        syntax: `Biological Pathway:\nStimulus → Receptor → Signal Transduction → Cellular Response`,
-        example: `Tracing how hormone binding triggers downstream intracellular second messengers to regulate glucose levels.`,
-        examQuestions: [
-          { q: `Describe the biological mechanism of ${cap} and its role in homeostasis.`, a: `It acts through regulated biochemical pathways to keep physiological parameters within optimal living ranges.` },
-          { q: `Explain the structural difference between prokaryotic and eukaryotic organisms regarding ${cap}.`, a: `Eukaryotes possess membrane-bound organelles and a enclosed nucleus, whereas prokaryotes lack a nucleus and organelle compartmentalization.` }
-        ]
-      };
-    }
-
-    if (isChem) {
-      return {
-        definition: `${cap} is a chemical principle, reaction mechanism, or molecular property that governs matter composition, bonding, and energy transformation.`,
-        keyConcepts: [
-          `Atomic Structure & Bonding: Valence electron arrangements, ionic/covalent/metallic bonds.`,
-          `Chemical Reaction Dynamics: Reactants transforming into products following stoichiometry.`,
-          `Thermodynamics & Equilibrium: Energy changes (enthalpy ΔH, entropy ΔS) and reversible reaction balance.`
-        ],
-        features: [
-          `Governed by fundamental laws of conservation of mass and energy.`,
-          `Characterized by observable changes (color, gas release, precipitate, temperature shift).`
-        ],
-        functions: [
-          `Enables synthesis of new materials, pharmaceuticals, polymers, and clean energy fuels.`,
-          `Explains industrial chemical manufacturing, battery technology, and environmental chemistry.`
-        ],
-        types: [
-          `Physical Chemistry: Thermodynamics, reaction kinetics, and electrochemistry.`,
-          `Organic Chemistry: Carbon-based compounds, functional groups, and synthesis.`,
-          `Inorganic Chemistry: Metals, coordination complexes, and crystalline structures.`
-        ],
-        advantages: [
-          `Provides precise molecular control for manufacturing medicine, materials, and agrochemicals.`,
-          `Allows predicting reaction yields and energetic outcomes before laboratory mixing.`
-        ],
-        disadvantages: [
-          `Hazardous chemical reactions require strict laboratory safety and waste disposal protocols.`,
-          `Reaction kinetics can be sensitive to minute temperature or pressure variations.`
-        ],
-        syntax: `Balanced Equation:\naA + bB → cC + dD\nReaction Quotient: Keq = [C]^c [D]^d / ([A]^a [B]^b)`,
-        example: `Calculating the theoretical yield of a neutralization reaction using balanced stoichiometric ratios.`,
-        examQuestions: [
-          { q: `What is the significance of Le Chatelier’s Principle in relation to ${cap}?`, a: `If a chemical system at equilibrium is disturbed, the system shifts reaction direction to counteract the disturbance.` },
-          { q: `How do Exothermic and Endothermic reactions differ regarding enthalpy change (ΔH)?`, a: `Exothermic reactions release heat (negative ΔH); Endothermic reactions absorb heat from surroundings (positive ΔH).` }
-        ]
-      };
-    }
-
-    if (isPhys) {
-      return {
-        definition: `${cap} is a fundamental physical law, energy mechanism, or natural force that governs the behavior of matter, space, time, and radiation in the universe.`,
-        keyConcepts: [
-          `Conservation Laws: Conservation of energy, linear momentum, angular momentum, and electric charge.`,
-          `Field Theory & Forces: Gravitational, electromagnetic, strong nuclear, and weak nuclear interactions.`,
-          `Wave-Particle Dynamics: Oscillations, wave propagation, optics, and quantum energy quantization.`
-        ],
-        features: [
-          `Formulated through empirical experiment, vector mechanics, and mathematical equations.`,
-          `Applies universally across micro-atomic scales to macro-cosmological space.`
-        ],
-        functions: [
-          `Underpins mechanical engineering, electronics, aerospace technology, telecommunications, and energy generation.`,
-          `Explains planetary orbits, electrical circuits, optical lenses, and quantum devices.`
-        ],
-        types: [
-          `Classical Mechanics: Motion laws, kinematics, work, and energy dynamics.`,
-          `Electromagnetism & Optics: Electric fields, magnetic induction, light waves, and lasers.`,
-          `Modern Physics: Quantum mechanics, special/general relativity, and nuclear physics.`
-        ],
-        advantages: [
-          `Provides predictive mathematical laws for designing machine structures and electrical devices.`,
-          `Forms the core physical foundation of all technological engineering disciplines.`
-        ],
-        disadvantages: [
-          `Requires advanced calculus and vector mathematics for complete formal derivation.`,
-          `Idealized theoretical models (e.g., frictionless surfaces, point masses) require real-world correction.`
-        ],
-        syntax: `Fundamental Equations:\nF = m·a  (Newton's 2nd Law)\nE = m·c²  (Mass-Energy Equivalence)\nV = I·R  (Ohm's Law)`,
-        example: `Applying conservation of momentum to calculate rebound velocities after a two-body elastic collision.`,
-        examQuestions: [
-          { q: `State the primary physical law governing ${cap} and write its mathematical equation.`, a: `The law relates fundamental vector quantities (force, energy, field) showing direct proportionality between rate of change and applied force.` },
-          { q: `How does energy conservation apply during physical transformations in ${cap}?`, a: `Energy cannot be created or destroyed; it transforms between kinetic, potential, thermal, and radiative states while total energy remains constant.` }
-        ]
-      };
-    }
-
-    if (isPsych) {
-      return {
-        definition: `${cap} is a psychological or sociological concept, behavioral theory, or cognitive process that explains human mental function, social interactions, or societal structures.`,
-        keyConcepts: [
-          `Cognition & Perception: How the brain processes sensory inputs, forms memories, and makes decisions.`,
-          `Behavioral Conditioning: Learning mechanisms through reinforcement, classical conditioning, or observation.`,
-          `Social Dynamics: Group behavior, cultural norms, social stratification, and interpersonal relations.`
-        ],
-        features: [
-          `Evaluated through qualitative observations, psychological experiments, and statistical surveys.`,
-          `Examines interactions between biological neural processes and socio-cultural environments.`
-        ],
-        functions: [
-          `Improves mental healthcare, educational strategies, workplace productivity, and conflict resolution.`,
-          `Provides deep insight into human motivation, emotional regulation, and social harmony.`
-        ],
-        types: [
-          `Cognitive & Behavioral Psychology: Memory, learning theories, and behavioral therapy.`,
-          `Social & Organizational Psychology: Group dynamics, leadership, and social influence.`,
-          `Developmental Psychology: Human cognitive and emotional growth across life stages.`
-        ],
-        advantages: [
-          `Enhances self-awareness, emotional intelligence, and interpersonal communication skills.`,
-          `Helps design supportive social policies and evidence-based mental health interventions.`
-        ],
-        disadvantages: [
-          `Human behavior is complex and influenced by numerous uncontrolled psychological variables.`,
-          `Psychological experiments require strict ethical protocols regarding participant consent.`
-        ],
-        syntax: `Behavioral Framework:\nStimulus → Cognitive Processing → Emotional / Behavioral Response`,
-        example: `Studying how positive reinforcement increases desired habits by triggering brain reward pathways.`,
-        examQuestions: [
-          { q: `How does ${cap} influence human cognitive processing and behavior?`, a: `It shapes how individuals perceive sensory information, store memories, and select behavioral responses under social conditions.` },
-          { q: `Differentiate between Classical Conditioning and Operant Conditioning.`, a: `Classical conditioning associates involuntary responses with new stimuli; Operant conditioning shapes voluntary behavior through rewards or consequences.` }
-        ]
-      };
-    }
-
-    // Default versatile academic explanation
     return {
-      definition: `${cap} is a fundamental academic topic that encompasses key principles, theoretical models, and practical applications within its field.`,
-      keyConcepts: [
-        `Core Terminology: Understanding essential vocabulary, definitions, and foundational concepts of ${cap}.`,
-        `Governing Principles: The underlying rules, theories, and framework that define ${cap}.`,
-        `Practical Applications: How concepts of ${cap} are utilized in academic study and real-world scenarios.`
-      ],
-      features: [
-        `Combines theoretical foundation with practical problem-solving methodologies.`,
-        `Follows a structured learning progression from elementary concepts to advanced mastery.`
-      ],
-      functions: [
-        `Provides essential analytical tools and background knowledge required for competitive exams.`,
-        `Helps students analyze complex problems and draw evidence-based conclusions.`
-      ],
-      types: [
-        `Theoretical Study: Focuses on core concepts, definitions, and conceptual understanding.`,
-        `Applied Practice: Focuses on practical problem solving, case studies, and real-world implementation.`
-      ],
-      advantages: [
-        `Develops critical thinking, structured reasoning, and comprehensive domain knowledge.`,
-        `Prepares students for academic excellence, examinations, and professional applications.`
-      ],
-      disadvantages: [
-        `Mastery requires consistent revision, practice questions, and active recall.`,
-        `Some sub-topics can be abstract and require clear foundational understanding.`
-      ],
-      syntax: null,
-      example: `A student studying ${cap} applies foundational rules to analyze textbook cases and answer examination questions accurately.`,
-      examQuestions: [
-        { q: `Define ${cap} and outline its core significance in examinations.`, a: `${cap} is the systematic study of its core principles. It is essential because it forms the basis for structured exam questions and practical problem solving.` },
-        { q: `List three major features of ${cap} and explain one practical application.`, a: `Features: 1. Structured principles. 2. Wide applicability. 3. Logical framework. Application: Solves real-world problems using domain rules.` }
-      ]
+      subjectName: sub.subjectName,
+      isProgramming: sub.isProgramming,
+      definition,
+      easyExplanation,
+      example,
+      importantKeywords,
+      memoryTips,
+      quickSummary,
+      keyConcepts
     };
   },
 
-  /* ---- 2b. Notes Summarizer Engine ---- */
-  summarizeNotes(text) {
-    // 1. Clean and separate prose lines vs code lines
-    let cleanedText = text
-      .replace(/\r\n/g, '\n')
-      .replace(/([^\n])\s*(>>>|\bpython>|\bIn \[\d+\]:)\s*/g, '$1\n$2 ')
-      .replace(/(>>>|\bpython>|\bIn \[\d+\]:)\s*/g, '\n>>> ');
 
+
+      /* ---- 2b. Notes Summarizer Engine ---- */
+  summarizeNotes(text) {
+    const cleanedText = text.replace(/\r\n/g, '\n').trim();
+
+    // 1. Distinguish genuine code lines vs prose lines
     const rawLines = cleanedText.split('\n').map(l => l.trim()).filter(Boolean);
     const codeLines = [];
     const proseLines = [];
 
-    const isCodeLine = line => /^>>>|^\s*(def\s|class\s|import\s|from\s|if\s|for\s|while\s|return\s|print\(|\w+\.\w+\(|\w+\[.*\]|\bValueError:|\bTypeError:|\bIndexError:|\bSyntaxError:|\b\w+\s*=\s*\[|^\s*[\{\[\(])/i.test(line);
+    const isCodeLine = line => /^>>>|^\s*(#include|import\s|from\s|def\s|public\s+class|class\s+\w+\s*\{|var\s+|const\s+|let\s+|function\s+|public\s+static|system\.out\.println|printf\(|console\.log\(|<\?php|SELECT\s+.*FROM|CREATE\s+TABLE)\b/i.test(line);
 
     rawLines.forEach(line => {
       if (isCodeLine(line)) {
@@ -1395,57 +858,46 @@ const AI = {
       }
     });
 
-    // 2. Extract clean sentences from prose lines
-    const proseText = proseLines.join(' ');
-    const rawSentences = proseText
-      .split(/(?<=[.!?])\s+|(?<=\n)\s*/g)
-      .map(s => s.trim())
-      .filter(s => s.length > 15 && !isCodeLine(s));
+    // 2. Read complete document from beginning to end in sequential section order
+    const sections = cleanedText
+      .split(/\n\s*\n/)
+      .map(sec => sec.trim())
+      .filter(sec => sec.length > 10);
 
-    // Deduplicate while preserving order
-    const sentences = Array.from(new Set(rawSentences));
+    const keyPoints = [];
+    const quickRevisionPoints = [];
+    const allSentences = [];
 
-    // 3. Score sentences by importance
-    const scored = sentences.map(sentence => {
-      let score = 0;
-      const lower = sentence.toLowerCase();
+    sections.forEach((sec, idx) => {
+      const sLines = sec.split(/(?<=[.!?])\s+|\n+/).map(s => s.trim()).filter(s => s.length > 15 && !isCodeLine(s));
+      allSentences.push(...sLines);
 
-      if (/define|definition|is called|known as|refers to|is defined as|means/.test(lower)) score += 6;
-      if (/important|key|main|essential|fundamental|critical|primary|significant|vital|major/.test(lower)) score += 5;
-      if (/therefore|thus|hence|as a result|consequently|because|due to|leads to|causes/.test(lower)) score += 3;
-      if (/first|second|third|finally|lastly|in conclusion|in summary|types of|kinds of|classified/.test(lower)) score += 3;
-      if (/always|never|must|should|required|necessary|rule|law|principle|formula/.test(lower)) score += 3;
-      if (/example|for instance|such as|e\.g\.|like|including/.test(lower)) score += 2;
-      if (/difference|unlike|whereas|compared to|distinction|on the other hand/.test(lower)) score += 2;
-      if (sentence.length > 40 && sentence.length < 200) score += 1;
-      if (/\d+/.test(sentence)) score += 1;
+      if (sLines.length > 0) {
+        const headingOrFirst = sLines[0];
+        const detailPoint = sLines.length > 1 ? sLines[1] : sLines[0];
 
-      return { sentence, score };
+        keyPoints.push(`Part ${idx + 1}: ${headingOrFirst}`);
+
+        let cleanQRP = detailPoint.replace(/^[\d-•\s]+/, '');
+        if (cleanQRP.length > 120) cleanQRP = cleanQRP.substring(0, 117) + '...';
+        quickRevisionPoints.push(cleanQRP);
+      }
     });
 
-    const sortedSentences = [...scored].sort((a, b) => b.score - a.score);
-    const topCount = Math.min(6, Math.max(3, Math.ceil(sentences.length * 0.35)));
-    const topSentences = sortedSentences.slice(0, topCount).map(s => s.sentence);
-
-    // Short Summary
-    let shortSummary = topSentences.slice(0, 2).join(' ');
-    if (!shortSummary || shortSummary.length < 30) {
-      shortSummary = sentences.slice(0, 2).join(' ') || (text.replace(/>>>/g, '').slice(0, 180) + '...');
+    // Fallback if no distinct sections exist
+    if (keyPoints.length === 0) {
+      const fallbackSentences = Array.from(new Set(allSentences.length > 0 ? allSentences : rawLines));
+      fallbackSentences.slice(0, 6).forEach((s, i) => {
+        keyPoints.push(`Part ${i + 1}: ${s}`);
+        quickRevisionPoints.push(s.length > 110 ? s.substring(0, 107) + '...' : s);
+      });
     }
 
-    // Quick Revision Points (distilled crisp 1-line takeaways)
-    const quickRevisionPoints = sortedSentences.slice(0, Math.min(4, sortedSentences.length)).map(item => {
-      let cleanStr = item.sentence.replace(/^[\d-•\s]+/, '');
-      if (cleanStr.length > 110) cleanStr = cleanStr.substring(0, 107) + '...';
-      return cleanStr;
-    });
+    const shortSummary = keyPoints.slice(0, 2).join(' ') || (cleanedText.slice(0, 180) + '...');
 
-    // Key Points (detailed)
-    const keyPoints = topSentences.length > 0 ? topSentences : (sentences.length > 0 ? sentences.slice(0, 4) : [text.slice(0, 100)]);
-
-    // Clean Keywords
-    const words = text.match(/\b[A-Z][a-z]{2,}\b|\b[a-z]{4,}\b/g) || [];
-    const stopWords = /which|where|there|their|these|those|should|always|before|after|between|through|during|about|would|could|being|other|every|under|above|below|along|since|while|still|using|used|also|from|with|into|that|this|have|been|were|will|they|them|each|some|than|then|when|what|more|most|only|very|such|just|like|make|made|does|done|much|many|well|back|even|give|over|both|come|take|good|long|know|help|tell|call|find|here|look|want|first|last|next|came|seem|valueerror|typeerror|indexerror/;
+    // Extract Keywords across whole text
+    const words = cleanedText.match(/\b[A-Z][a-z]{2,}\b|\b[a-z]{4,}\b/g) || [];
+    const stopWords = /which|where|there|their|these|those|should|always|before|after|between|through|during|about|would|could|being|other|every|under|above|below|along|since|while|still|using|used|also|from|with|into|that|this|have|been|were|will|they|them|each|some|than|then|when|what|more|most|only|very|such|just|like|make|made|does|done|much|many|well|back|even|give|over|both|come|take|good|long|know|help|tell|call|find|here|look|want|first|last|next|came|seem/;
     const freq = {};
     words.forEach(w => {
       const lower = w.toLowerCase();
@@ -1453,63 +905,51 @@ const AI = {
         freq[lower] = (freq[lower] || 0) + 1;
       }
     });
-    const keywordEntries = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
-    const keywords = keywordEntries.map(([w]) => w.charAt(0).toUpperCase() + w.slice(1));
+    const keywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([w]) => w.charAt(0).toUpperCase() + w.slice(1));
 
-    // "Remember This" callout content
-    const ruleOrDef = scored.find(s => /rule|law|principle|formula|must|always|never|definition|refers to/.test(s.sentence.toLowerCase()));
-    const rememberThis = ruleOrDef 
-      ? ruleOrDef.sentence 
-      : (sortedSentences[0] ? sortedSentences[0].sentence : 'Focus on foundational concepts and primary definitions during exam revision.');
-
-    // Memory Tip / Mnemonics
-    let memoryTip = 'Read key points aloud and test yourself using active recall.';
+    // Memory Tip
+    let memoryTip = 'Read key points aloud in order and test yourself using active recall.';
     if (keywords.length >= 3) {
-      const mnemonicWords = keywords.slice(0, 5);
-      const acronym = mnemonicWords.map(k => k.charAt(0).toUpperCase()).join('');
-      memoryTip = `Mnemonic Hook: "${acronym}" → ${mnemonicWords.join(' • ')}. Associate each letter with its core concept for rapid exam recall.`;
+      const mWords = keywords.slice(0, 5);
+      const acronym = mWords.map(k => k.charAt(0).toUpperCase()).join('');
+      memoryTip = `Mnemonic Hook: "${acronym}" → ${mWords.join(' • ')}. Associate each letter with its sequential section concept for rapid exam recall.`;
     }
 
-    // Exam Point
-    const defSentence = scored.find(s => /define|definition|is called|known as|refers to|is defined as/.test(s.sentence.toLowerCase()));
-    const examPoint = defSentence ? defSentence.sentence : (sortedSentences[0] ? sortedSentences[0].sentence : 'Focus on core definitions and standard syntax usage.');
+    // Remember This Callout
+    const rememberThis = keyPoints[0] ? keyPoints[0].replace(/^Part \d+:\s*/, '') : 'Focus on foundational section definitions and primary concepts during revision.';
 
-    // Code Snippets formatted
+    // Exam Point
+    const examPoint = keyPoints[0] ? keyPoints[0].replace(/^Part \d+:\s*/, '') : 'Focus on core definitions and standard principles.';
+
+    // Formatted Code Block ONLY if genuine code syntax is detected
     let formattedCodeBlock = null;
     if (codeLines.length > 0) {
       formattedCodeBlock = codeLines.map(l => l.replace(/^>>>\s*/, '')).join('\n');
     }
 
-    // Revision Tips
-    const lower = text.toLowerCase();
-    const revisionTips = [];
-    if (/definition|define|is called|known as/.test(lower)) {
-      revisionTips.push('Memorize key definitions — examiners award direct marks for standard terminology.');
-    }
-    if (/difference|compare|unlike|whereas/.test(lower)) {
-      revisionTips.push('Draw a structured comparison table for contrasting concepts.');
-    }
-    if (/formula|equation|calculate|compute|code|function|list|array/.test(lower)) {
-      revisionTips.push('Practice writing syntax and formulas on paper without looking at reference notes.');
-    }
-    if (/example|for instance|such as|e\.g/.test(lower)) {
-      revisionTips.push('Include at least one concrete example for every main concept in your answers.');
-    }
-    revisionTips.push('Self-test by writing down these key points from memory.');
-    revisionTips.push('Revise these notes 24 hours before the exam for maximum long-term retention.');
+    // Revision Tips in logical sequence
+    const revisionTips = [
+      'Memorize key section definitions in logical order — examiners award direct marks for precise terminology.',
+      'Draw clean flowcharts or sequence diagrams following the document flow.',
+      'Practice explaining each section summary from memory from Part 1 to the end.',
+      'Include at least one concrete example for every main section concept.',
+      'Revise these notes 24 hours before your exam for maximum retention.'
+    ];
 
     return {
       shortSummary,
-      quickRevisionPoints: quickRevisionPoints.length > 0 ? quickRevisionPoints : [shortSummary],
+      quickRevisionPoints,
       rememberThis,
       keyPoints,
-      keywords: keywords.length > 0 ? keywords : ['Concept', 'Definition', 'Syntax', 'Example'],
+      keywords: keywords.length > 0 ? keywords : ['Concept', 'Definition', 'Section Point', 'Example'],
       memoryTip,
       examPoint,
       formattedCodeBlock,
-      revisionTips: revisionTips.slice(0, 5)
+      revisionTips
     };
   },
+
+
 
   /* ---- 2c. Quiz Generator Engine ---- */
   generateQuiz(topic) {
@@ -2455,394 +1895,84 @@ const AI = {
    * Apply difficulty filter and count limit to a question pool.
    * opts: { difficulty: 'easy'|'medium'|'hard', numQuestions: number }
    */
+    /**
+   * Helper to generate dynamic single question based on subject, difficulty, and index
+   */
+  generateSingleQuestion(topic, difficulty, idx) {
+    const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
+    const sub = this.detectSubject(topic);
+
+    if (difficulty === 'easy') {
+      return {
+        q: `[Easy] What is the basic definition or primary role of ${cap} in ${sub.subjectName}?`,
+        options: [
+          `The foundational principle/mechanism that defines ${cap}`,
+          `An unrelated secondary concept with no direct role`,
+          `A temporary fallback used only in deprecated legacy systems`,
+          `An arbitrary naming convention with no functional effect`
+        ],
+        answer: 0,
+        explanation: `Easy Level Question: Focuses on basic definition and direct fundamental understanding of ${cap}.`,
+        difficulty: 'easy'
+      };
+    } else if (difficulty === 'hard') {
+      return {
+        q: `[Hard] Analytical Case Study #${idx}: In a complex ${sub.subjectName} scenario involving ${cap} under strict constraints, which evaluation is correct?`,
+        options: [
+          `${cap} optimizes system performance by dynamically balancing boundary conditions and eliminating single points of failure.`,
+          `${cap} causes structural degradation under all conditions regardless of constraints.`,
+          `${cap} operates independently without responding to parameter changes.`,
+          `${cap} produces unpredictable outcomes that violate foundational domain rules.`
+        ],
+        answer: 0,
+        explanation: `Hard Level Question: Requires analytical evaluation, multi-concept synthesis, and constraint analysis for ${cap}.`,
+        difficulty: 'hard'
+      };
+    } else {
+      return {
+        q: `[Medium] Application Scenario #${idx}: How is ${cap} applied in practical ${sub.subjectName} problem solving?`,
+        options: [
+          `By implementing standard procedures to transform inputs into predictable outputs`,
+          `By bypassing core rules to achieve temporary execution`,
+          `By replacing all structural components with unverified assumptions`,
+          `By restricting operational access to a single static condition`
+        ],
+        answer: 0,
+        explanation: `Medium Level Question: Evaluates conceptual understanding and practical application of ${cap}.`,
+        difficulty: 'medium'
+      };
+    }
+  },
+
+  /**
+   * Apply difficulty filter and count limit to a question pool.
+   * opts: { difficulty: 'easy'|'medium'|'hard', numQuestions: number }
+   */
   applyQuizOpts(pool, opts = {}) {
     const { difficulty = 'medium', numQuestions = 5 } = opts;
     const n = parseInt(numQuestions, 10) || 5;
 
-    // Difficulty tags embedded in q text
-    const diffMap = { easy: ['Easy', 'easy'], medium: ['Medium', 'medium'], hard: ['Hard', 'hard'] };
-    const tags = diffMap[difficulty] || diffMap.medium;
+    const diffTagMap = { easy: '[Easy]', medium: '[Medium]', hard: '[Hard]' };
+    const targetTag = diffTagMap[difficulty] || '[Medium]';
 
-    let filtered = pool.filter(q =>
-      tags.some(tag => q.q.includes(`[${tag}]`))
-    );
+    let filtered = pool.filter(q => q.q.includes(targetTag) || q.difficulty === difficulty);
+    if (filtered.length === 0) {
+      filtered = [...pool];
+    }
 
-    // If no tagged questions exist in pool, serve all (curated banks have no tags)
-    if (filtered.length === 0) filtered = [...pool];
-
-    // Shuffle deterministically to vary output
     const shuffled = filtered.slice().sort(() => 0.5 - Math.random());
+    const result = [...shuffled];
 
-    // If we need more questions than available, pad from full pool
-    if (shuffled.length < n) {
-      const extra = pool.filter(q => !shuffled.includes(q)).sort(() => 0.5 - Math.random());
-      shuffled.push(...extra);
+    const topicName = (pool[0] && pool[0].q) ? pool[0].q.replace(/\[.*?\]/g, '').slice(0, 30).trim() : 'Subject Topic';
+
+    while (result.length < n) {
+      const qObj = this.generateSingleQuestion(topicName, difficulty, result.length + 1);
+      result.push(qObj);
     }
 
-    return shuffled.slice(0, n);
+    return result.slice(0, n);
   },
 
-  /**
-   * Generate quiz questions from user-provided notes text.
-   * Extracts factual statements and creates fill-in-the-blank style MCQs.
-   */
-  generateNotesBasedQuiz(sentences) {
-    const questions = [];
-    const usedSentences = sentences.slice(0, 7);
-
-    usedSentences.forEach((sentence, i) => {
-      const s = sentence.trim();
-      if (s.length < 25) return;
-
-      // Extract key terms from the sentence
-      const words = s.split(/\s+/).filter(w => w.length > 3);
-      const stopWords = /which|where|there|their|these|those|should|always|before|after|between|through|during|about|would|could|being|other|every|under|above|below|have|been|were|will|they|them|each|some|than|then|when|what|more|most|only|very|such|just|like|make|made|does|done|much|many|from|with|into|that|this|also|used|using/;
-      const keyTerms = words.filter(w => !stopWords.test(w.toLowerCase()) && w.length > 4);
-
-      if (keyTerms.length >= 2) {
-        const keyTerm = keyTerms[0];
-        const correctOption = s.length > 80 ? s.substring(0, 77) + '...' : s;
-        const wrongOptions = [
-          `${keyTerm} is not related to this topic`,
-          `${keyTerm} has the opposite effect of what is described`,
-          `${keyTerm} is only a theoretical concept with no practical use`
-        ];
-
-        // Deterministic placement: correct answer position based on question index
-        const correctPos = i % 4;
-        const options = [...wrongOptions];
-        options.splice(correctPos, 0, correctOption);
-
-        questions.push({
-          q: `Based on the notes, which statement about "${keyTerm}" is correct?`,
-          options: options.slice(0, 4),
-          answer: correctPos,
-          explanation: `As stated in your notes: "${s}"`
-        });
-      } else {
-        // True/false style as MCQ
-        questions.push({
-          q: `According to your notes, is the following statement true?\n"${s.length > 90 ? s.substring(0, 87) + '...' : s}"`,
-          options: ['True, as stated in the notes', 'False, the opposite is true', 'Partially true, but incomplete', 'Not mentioned in the notes'],
-          answer: 0,
-          explanation: `This statement is directly from your notes: "${s}"`
-        });
-      }
-    });
-
-    return questions.slice(0, 5);
-  },
-
-  generateGenericQuiz(topic) {
-    const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
-    const lower = topic.toLowerCase();
-
-    // Domain classification
-    const isCS = /code|program|python|java|c\+\+|c#|js|javascript|sql|api|web|script|html|css|php|ruby|swift|kotlin|rust|go|typescript|database|algorithm|network|cyber|software|ai|machine learning|data structure|os|operating system|dev/.test(lower);
-    const isSci = /biology|cell|genetics|dna|rna|organism|botany|zoology|anatomy|physiology|ecosystem|evolution|enzyme|protein|photosynthesis|mitosis|chemistry|acid|base|reaction|element|compound|molecule|periodic table|stoichiometry|bond|atom|physics|force|motion|energy|velocity|gravity|mass|momentum|wave|optics|electric|magnetic|thermodynamics|quantum/.test(lower);
-    const isMath = /math|calculus|algebra|geometry|trigonometry|matrix|vector|derivative|integral|probability|statistics|equation|theorem|function|arithmetic|number/.test(lower);
-    const isHumanities = /literature|poem|poetry|novel|drama|play|shakespear|metaphor|character|prose|fiction|theme|history|historical|war|revolution|empire|century|king|battle|treaty|geography|climate|map|river|mountain|tectonic|earth|ocean|politic|constitution|democracy|government|rights|law|judiciary|state/.test(lower);
-    const isComm = /economic|microeconomic|macroeconomic|market|gdp|inflation|elasticity|demand|supply|fiscal|monetary|commerce|account|finance|business|audit|ledger|balance sheet|taxation|debit|credit|marketing|management|asset|liability|stock/.test(lower);
-
-    if (isCS) {
-      return [
-        {
-          q: `[Easy] What is the primary focus when studying ${cap} in Computer Science?`,
-          options: [
-            `Understanding core algorithm logic, language syntax, and software execution rules`,
-            `Managing physical CPU power voltage levels`,
-            `Designing analog telephone switching circuits`,
-            `Optimizing printing paper feed mechanisms`
-          ],
-          answer: 0,
-          explanation: `In computer science, studying ${cap} focuses on mastering underlying computational logic, structural syntax, and execution models.`
-        },
-        {
-          q: `[Easy] Which fundamental computing principle is essential in ${cap}?`,
-          options: [
-            `Modular code organization and systematic data abstraction`,
-            `Bypassing CPU instruction execution entirely`,
-            `Eliminating runtime memory allocation`,
-            `Executing code without binary translation`
-          ],
-          answer: 0,
-          explanation: `${cap} relies on modular code architecture, structured data types, and clear procedural/object abstraction.`
-        },
-        {
-          q: `[Medium] What is a major engineering trade-off associated with ${cap}?`,
-          options: [
-            `Balancing time complexity (speed) against space complexity (memory utilization)`,
-            `Choosing between display pixel resolution and keyboard font size`,
-            `Sacrificing source code readability to remove comments`,
-            `Replacing database queries with CSS keyframes`
-          ],
-          answer: 0,
-          explanation: `A key software trade-off involves optimizing CPU execution time versus memory footprint efficiency.`
-        },
-        {
-          q: `[Medium] Which runtime issue or exception can occur when developing applications with ${cap}?`,
-          options: [
-            `Logic flaws, null reference exceptions, or memory leak overhead`,
-            `Physical monitor screen flicker`,
-            `Hard drive magnetic motor speed loss`,
-            `Keyboard USB cable disconnection`
-          ],
-          answer: 0,
-          explanation: `Software execution can encounter runtime errors such as unhandled null references, bounds exceptions, or memory leaks.`
-        },
-        {
-          q: `[Hard] What represents industry best practice when engineering solutions in ${cap}?`,
-          options: [
-            `Writing clean, documented code with thorough unit testing and error handling`,
-            `Using uninitialized global variables across all functions`,
-            `Placing all application logic into a single monolithic loop`,
-            `Suppressing all compiler warnings and runtime logs`
-          ],
-          answer: 0,
-          explanation: `Exam-ready software engineering emphasizes clean code principles, structured exception handling, and automated unit testing.`
-        }
-      ];
-    }
-
-    if (isSci) {
-      return [
-        {
-          q: `[Easy] What is the primary objective of studying ${cap} in natural sciences?`,
-          options: [
-            `Analyzing physical laws, biochemical pathways, or experimental phenomena`,
-            `Writing commercial advertising slogans`,
-            `Formatting corporate financial income statements`,
-            `Studying poetic rhythm and stanza structures`
-          ],
-          answer: 0,
-          explanation: `Scientific investigation of ${cap} involves empirical observation, hypothesis testing, and quantitative analysis of natural laws.`
-        },
-        {
-          q: `[Easy] Which fundamental scientific principle governs processes in ${cap}?`,
-          options: [
-            `Conservation laws (energy, mass, or charge equilibrium)`,
-            `Random guessing without control variables`,
-            `Ignoring physical measurement units`,
-            `Relying solely on unverified folklore`
-          ],
-          answer: 0,
-          explanation: `Scientific mechanisms in ${cap} strictly adhere to fundamental physical conservation laws and chemical/biological equilibrium.`
-        },
-        {
-          q: `[Medium] How do researchers experimentally measure or verify factors in ${cap}?`,
-          options: [
-            `By conducting controlled experiments with isolated dependent and independent variables`,
-            `By changing all experimental variables simultaneously`,
-            `By skipping experimental calibration steps`,
-            `By relying exclusively on personal opinion`
-          ],
-          answer: 0,
-          explanation: `Scientific method requires controlled testing, isolating independent variables to measure precise empirical effects.`
-        },
-        {
-          q: `[Medium] What quantitative property is critical when analyzing ${cap}?`,
-          options: [
-            `Standardized SI units of measurement (e.g. Joules, Moles, Meters, Volts)`,
-            `Arbitrary uncalibrated counts`,
-            `Word counts in textbook chapters`,
-            `Pixel dimensions on a screen`
-          ],
-          answer: 0,
-          explanation: `Quantitative scientific analysis requires standard SI units to ensure reproducible empirical calculations.`
-        },
-        {
-          q: `[Hard] When evaluating real-world applications of ${cap}, what factor is essential?`,
-          options: [
-            `System efficiency, reaction energy thresholds, and thermodynamic equilibrium`,
-            `Ignoring conservation of energy`,
-            `Assuming 100% theoretical energy conversion with zero loss`,
-            `Disregarding laboratory safety protocols`
-          ],
-          answer: 0,
-          explanation: `Practical scientific application evaluates thermodynamics, reaction rates, and environmental system equilibrium.`
-        }
-      ];
-    }
-
-    if (isMath) {
-      return [
-        {
-          q: `[Easy] What is the primary objective when studying ${cap} in mathematics?`,
-          options: [
-            `Formulating exact mathematical equations, proofs, and quantitative relationships`,
-            `Analyzing literary metaphor and poetic imagery`,
-            `Writing corporate marketing copy`,
-            `Studying ancient geopolitical treaties`
-          ],
-          answer: 0,
-          explanation: `Mathematics uses rigorous logical axioms, symbolic equations, and quantitative proofs to model functional relationships.`
-        },
-        {
-          q: `[Easy] Which mathematical property is fundamental when solving problems in ${cap}?`,
-          options: [
-            `Logical consistency, algebraic rules, and step-by-step symbolic manipulation`,
-            `Guessing numerical values randomly`,
-            `Ignoring negative signs in equations`,
-            `Skipping intermediate calculation steps`
-          ],
-          answer: 0,
-          explanation: `Mathematical problem solving demands rigorous adherence to algebraic axioms and operational rules.`
-        },
-        {
-          q: `[Medium] In mathematical analysis of ${cap}, what does a functional derivative or rate of change evaluate?`,
-          options: [
-            `The instantaneous rate of change or tangent slope of a curve f(x)`,
-            `The perimeter of a geometric polygon`,
-            `The maximum storage size of a hard drive`,
-            `The historical age of a textbook`
-          ],
-          answer: 0,
-          explanation: `Derivatives measure instantaneous rate of change dy/dx or slope of the tangent line at a point.`
-        },
-        {
-          q: `[Medium] What is the role of proof and verification in ${cap}?`,
-          options: [
-            `Ensuring every logical step follows deductively from established mathematical axioms`,
-            `Asking a classmate for their opinion`,
-            `Rounding all intermediate numbers to zero`,
-            `Assuming true statements without proof`
-          ],
-          answer: 0,
-          explanation: `Deductive proofs guarantee mathematical truth by verifying every step against accepted mathematical axioms.`
-        },
-        {
-          q: `[Hard] When applying ${cap} to real-world optimization problems, what step is required?`,
-          options: [
-            `Setting first derivatives to zero f'(x) = 0 and testing boundary constraint conditions`,
-            `Multiplying all variables together at random`,
-            `Ignoring boundary constraints entirely`,
-            `Assuming all functions are linear`
-          ],
-          answer: 0,
-          explanation: `Optimization identifies critical points where rate of change is zero (f'=0) and evaluates system boundary conditions.`
-        }
-      ];
-    }
-
-    if (isHumanities || isComm) {
-      return [
-        {
-          q: `[Easy] What is the central focus when studying ${cap} for academic exams?`,
-          options: [
-            `Understanding core definitions, structural frameworks, and contextual principles`,
-            `Calculating atomic electron orbital radii`,
-            `Writing binary machine language compilers`,
-            `Measuring atmospheric pressure changes`
-          ],
-          answer: 0,
-          explanation: `Studying ${cap} centers on mastering foundational concepts, structural models, and domain methodologies.`
-        },
-        {
-          q: `[Easy] Which element is key to delivering a top-scoring exam answer on ${cap}?`,
-          options: [
-            `Stating a clear definition, key bullet points, and a relevant structured example`,
-            `Writing a single unpunctuated block of text`,
-            `Leaving answer spaces blank`,
-            `Memorizing random dates without context`
-          ],
-          answer: 0,
-          explanation: `High-scoring academic answers require structured definitions, organized key points, and illustrative examples.`
-        },
-        {
-          q: `[Medium] How is knowledge in ${cap} typically organized for analysis?`,
-          options: [
-            `Divided into Theoretical (conceptual fundamentals) and Applied (practical scenario analysis)`,
-            `Divided into fast and slow subjects`,
-            `Divided into heavy and light topics`,
-            `Organized alphabetically without category`
-          ],
-          answer: 0,
-          explanation: `Academic topics split into core theoretical principles and practical application scenarios.`
-        },
-        {
-          q: `[Medium] What critical skill is developed through studying ${cap}?`,
-          options: [
-            `Analytical reasoning, critical evidence evaluation, and structured problem-solving`,
-            `Instant photographic memory without study`,
-            `Bypassing logical analysis`,
-            `Ignoring source evidence`
-          ],
-          answer: 0,
-          explanation: `Mastery of ${cap} enhances logical synthesis, critical thinking, and structured evidence evaluation.`
-        },
-        {
-          q: `[Hard] When evaluating complex scenario-based questions in ${cap}, what approach yields optimal marks?`,
-          options: [
-            `Identifying core principles, analyzing underlying cause-effect dynamics, and supporting conclusions with evidence`,
-            `Focusing only on superficial details`,
-            `Giving emotional opinions without factual basis`,
-            `Restating the question without providing analysis`
-          ],
-          answer: 0,
-          explanation: `Advanced examination questions reward identifying core principles, analyzing systemic cause-and-effect, and citing evidence.`
-        }
-      ];
-    }
-
-    // Default universal fallback
-    return [
-      {
-        q: `[Easy] What is the core definition and primary scope of ${cap}?`,
-        options: [
-          `The systematic study and practical application of foundational principles in ${cap}`,
-          `A physical laboratory apparatus for chemical distillation`,
-          `A musical score notation for orchestral brass instruments`,
-          `A mechanical gear assembly for automotive engines`
-        ],
-        answer: 0,
-        explanation: `${cap} encompasses foundational definitions, core principles, and domain methodologies.`
-      },
-      {
-        q: `[Easy] Which approach is essential when revising ${cap} for examinations?`,
-        options: [
-          `Following a structured revision strategy based on key definitions and principles`,
-          `Memorizing random numbers without understanding context`,
-          `Ignoring textbook definitions entirely`,
-          `Studying for only 2 minutes before the exam`
-        ],
-        answer: 0,
-        explanation: `Effective exam preparation requires understanding core definitions and structured revision of key principles.`
-      },
-      {
-        q: `[Medium] How are core concepts in ${cap} categorized for systematic evaluation?`,
-        options: [
-          `Into Theoretical (concept-based) and Applied (practical problem-solving) domains`,
-          `Into fast and slow topics`,
-          `Into heavy and light subjects`,
-          `Into arbitrary unsorted lists`
-        ],
-        answer: 0,
-        explanation: `Most subjects are categorized into theoretical principles and practical applied problem-solving.`
-      },
-      {
-        q: `[Medium] What is a primary benefit of mastering ${cap}?`,
-        options: [
-          `Enhancing analytical reasoning and domain problem-solving capabilities`,
-          `Guaranteeing instant perfection without practice`,
-          `Eliminating the need for future study`,
-          `Disconnecting knowledge from real-world utility`
-        ],
-        answer: 0,
-        explanation: `Mastering ${cap} builds strong analytical reasoning skills applicable to academic and professional challenges.`
-      },
-      {
-        q: `[Hard] What strategy secures maximum marks when answering long-form exam questions on ${cap}?`,
-        options: [
-          `Providing a crisp definition, listing key structured points, and including a concrete example`,
-          `Writing one unpunctuated sentence`,
-          `Leaving the answer sheet blank`,
-          `Copying the question prompt repeatedly`
-        ],
-        answer: 0,
-        explanation: `Examiners award full marks for structured responses containing clear definitions, organized points, and concrete examples.`
-      }
-    ];
-  },
 
   /* ---- 2d. Study Planner Engine ---- */
   generateStudyPlan(subjects, prepLevel = 'intermediate') {
@@ -3010,200 +2140,80 @@ const AI = {
     return plan;
   },
 
-  /* ---- 2e. Flashcard Generator Engine ---- */
+    /* ---- 2e. Flashcard Generator Engine ---- */
   generateFlashcards(topic) {
     const t = topic.trim().toLowerCase();
+    const sub = this.detectSubject(topic);
 
-    const flashcardBank = {
-      c: [
-        { tag: 'DEFINITION', q: 'What is a Pointer in C and how is its memory address accessed?', a: 'A pointer is a variable storing the memory address of another variable. `&var` retrieves the address; `*ptr` dereferences the pointer to access the stored value.' },
-        { tag: 'KEY DIFFERENCE', q: 'How does `malloc()` differ from `calloc()` in C memory management?', a: '`malloc(size)` allocates uninitialized heap memory (contains garbage values). `calloc(n, size)` allocates contiguous memory and initializes all bytes to zero.' },
-        { tag: 'OPERATOR RULE', q: 'What happens during integer division in C (e.g. `5 / 2`)?', a: 'Standard C truncates any fractional decimal remainder during integer division, returning integer `2` instead of `2.5`.' },
-        { tag: 'DATA STRUCTURE', q: 'How does a `struct` differ from a `union` in C?', a: 'In a `struct`, every member has its own separate memory allocation. In a `union`, all members share the same starting memory location (size equals largest member).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: Explain Pass by Value vs Pass by Reference in C functions.', a: 'Pass by Value passes a copy of the argument (modifications do not affect original). Pass by Reference passes the memory address using pointers (modifications alter original).' }
-      ],
-      java: [
-        { tag: 'DEFINITION', q: 'What is the JVM and what is its role in Java execution?', a: 'The Java Virtual Machine (JVM) executes compiled Java bytecode (.class files), making Java platform-independent ("Write Once, Run Anywhere").' },
-        { tag: 'KEY DIFFERENCE', q: 'How does `extends` differ from `implements` in Java?', a: '`extends` is used for single-class inheritance (`class B extends A`). `implements` is used to implement one or multiple interfaces (`class B implements I1, I2`).' },
-        { tag: 'MEMORY MANAGEMENT', q: 'How does Garbage Collection operate in Java?', a: 'The JVM automatically identifies unreachable objects on the heap (objects with zero active references) and reclaims their memory space in background.' },
-        { tag: 'EXCEPTION HANDLING', q: 'What is the difference between Checked and Unchecked Exceptions in Java?', a: 'Checked Exceptions (e.g. IOException) must be caught or declared at compile time. Unchecked Exceptions (e.g. NullPointerException) extend RuntimeException and occur at runtime.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: Why are Java Strings immutable and what class should be used for modifications?', a: 'Strings are immutable for security, thread-safety, and String Pool caching. Use `StringBuilder` or `StringBuffer` for efficient string mutations.' }
-      ],
-      python: [
-        { tag: 'DEFINITION', q: 'What are Mutable vs Immutable data types in Python?', a: 'Mutable types (Lists, Dicts, Sets) can be altered in-place after creation. Immutable types (Tuples, Strings, Ints, Floats) cannot be modified after instantiation.' },
-        { tag: 'SYNTAX', q: 'What is List Comprehension in Python and what is its syntax?', a: 'A concise syntax to create lists: `[expr for item in iterable if condition]`. Example: `[x**2 for x in range(5) if x % 2 == 0]` returns `[0, 4, 16]`.' },
-        { tag: 'PARAMETERS', q: 'How do `*args` and `**kwargs` function in Python parameters?', a: '`*args` collects arbitrary positional arguments into a tuple. `**kwargs` collects arbitrary keyword arguments into a dictionary.' },
-        { tag: 'KEY DIFFERENCE', q: 'How do `==` and `is` operators differ in Python?', a: '`==` checks equality of values (do they hold the same data). `is` checks identity of objects (do they occupy the exact same memory address).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Python Generator and why is `yield` used instead of `return`?', a: 'A generator produces values lazily one at a time using `yield`, saving memory compared to generating entire lists in memory.' }
-      ],
-      cpp: [
-        { tag: 'DEFINITION', q: 'What is Function Overloading vs Function Overriding in C++?', a: 'Overloading: functions in same scope share same name with different parameter signatures (compile-time). Overriding: derived class redefines base class virtual function (runtime).' },
-        { tag: 'POLYMORPHISM', q: 'What is a Virtual Function and why is it used in C++?', a: 'A function declared `virtual` in a base class enables runtime dynamic polymorphism, ensuring derived class overrides are called when accessed via base pointers.' },
-        { tag: 'RESOURCE MANAGEMENT', q: 'What is RAII (Resource Acquisition Is Initialization) in C++?', a: 'RAII binds resource allocation to object lifetime: resources are acquired in constructor and released automatically in destructor when going out of scope.' },
-        { tag: 'KEY DIFFERENCE', q: 'How does `new`/`delete` differ from `malloc()`/`free()` in C++?', a: '`new` allocates memory AND invokes object constructors; `delete` invokes destructors AND frees memory. `malloc()`/`free()` only allocate/free raw bytes without constructors.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Copy Constructor and when is it invoked in C++?', a: 'A constructor `ClassName(const ClassName &obj)` invoked when initializing an object from another existing object of the same class.' }
-      ],
-      javascript: [
-        { tag: 'DEFINITION', q: 'What is a Closure in JavaScript?', a: 'A closure is an inner function that retains access to variables in its outer enclosing lexical scope even after the outer function has returned.' },
-        { tag: 'KEY DIFFERENCE', q: 'How does `==` differ from `===` in JavaScript?', a: '`==` performs type coercion before comparison. `===` (strict equality) requires both value and type match without coercion.' },
-        { tag: 'ASYNCHRONOUS ENGINE', q: 'How does the JavaScript Event Loop handle asynchronous operations?', a: 'JS is single-threaded. The Event Loop monitors the Call Stack and moves callbacks from Microtask Queue (Promises) and Macrotask Queue (setTimeout) when the stack is empty.' },
-        { tag: 'SCOPING', q: 'How do `var`, `let`, and `const` differ in JavaScript?', a: '`var` is function-scoped and hoisted. `let` and `const` are block-scoped; `const` prevents re-assignment after declaration.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Prototypal Inheritance in JavaScript?', a: 'Objects inherit properties and methods directly from other prototype objects via a prototype chain ending at `Object.prototype`.' }
-      ],
-      sql: [
-        { tag: 'DEFINITION', q: 'What are Primary Keys and Foreign Keys in relational databases?', a: 'Primary Key uniquely identifies each row in a table. Foreign Key is a column referencing the Primary Key of another table to maintain referential integrity.' },
-        { tag: 'KEY DIFFERENCE', q: 'How does `WHERE` differ from `HAVING` in SQL?', a: '`WHERE` filters individual rows BEFORE grouping. `HAVING` filters aggregated groups AFTER a `GROUP BY` clause.' },
-        { tag: 'TRANSACTIONS', q: 'What do ACID properties stand for in DBMS?', a: 'Atomicity (all or nothing), Consistency (valid state), Isolation (concurrent safety), Durability (persisted changes).' },
-        { tag: 'COMMAND DIFFERENCE', q: 'How do `DELETE`, `TRUNCATE`, and `DROP` commands differ in SQL?', a: '`DELETE` removes specific rows (DML, logged, rollbackable). `TRUNCATE` removes all rows quickly (DDL). `DROP` removes both table structure and data permanently.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Database Normalization (1NF, 2NF, 3NF)?', a: 'The process of organizing data to eliminate redundancy and improve integrity: 1NF removes repeating groups; 2NF removes partial dependencies; 3NF removes transitive dependencies.' }
-      ],
-      dsa: [
-        { tag: 'DATA STRUCTURES', q: 'How does a Stack differ from a Queue?', a: 'Stack operates on LIFO (Last-In, First-Out) via push/pop. Queue operates on FIFO (First-In, First-Out) via enqueue/dequeue.' },
-        { tag: 'COMPLEXITY', q: 'What are the best, average, and worst-case time complexities of QuickSort?', a: 'Best/Average: O(N log N). Worst-case: O(N²) occurring when poor pivot selections divide subarrays unequally (e.g. already sorted array).' },
-        { tag: 'HASHING', q: 'How does a Hash Table achieve O(1) average lookup time?', a: 'A hash function computes array indices from keys, allowing direct index lookups. Collisions are handled via Chaining or Open Addressing.' },
-        { tag: 'TREES', q: 'What is a Binary Search Tree (BST) property?', a: 'For every node: all keys in left subtree are strictly smaller, and all keys in right subtree are strictly larger. Search/Insert takes O(log N) in balanced BST.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: How do BFS and DFS graph traversals differ in implementation and order?', a: 'BFS uses a Queue and visits level-by-level (finds shortest path). DFS uses a Stack (or recursion) and explores down each branch as deep as possible before backtracking.' }
-      ],
-      os: [
-        { tag: 'PROCESSES', q: 'What is the key difference between a Process and a Thread?', a: 'A Process has an independent isolated virtual address space. Threads within the same process share memory, heap, and OS resources, resulting in faster context switching.' },
-        { tag: 'SYNCHRONIZATION', q: 'What are the 4 necessary conditions for Deadlock to occur?', a: '1. Mutual Exclusion. 2. Hold and Wait. 3. No Preemption. 4. Circular Wait.' },
-        { tag: 'SCHEDULING', q: 'How does Round Robin CPU scheduling operate?', a: 'Preemptive algorithm assigning fixed time quanta (slices) to ready queue processes in cyclic order.' },
-        { tag: 'MEMORY', q: 'What is Virtual Memory and Paging in OS?', a: 'Virtual Memory maps virtual memory addresses to physical RAM/disk pages, enabling execution of programs larger than physical memory.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is a Semaphore and how do Wait/Signal operations work?', a: 'An integer variable used for synchronization: `wait()` decrements counter (blocks if ≤ 0); `signal()` increments counter (wakes waiting process).' }
-      ],
-      networks: [
-        { tag: 'OSI MODEL', q: 'List the 7 layers of the OSI reference model from bottom to top.', a: '1. Physical, 2. Data Link, 3. Network, 4. Transport, 5. Session, 6. Presentation, 7. Application.' },
-        { tag: 'PROTOCOLS', q: 'How do TCP and UDP transport protocols differ?', a: 'TCP is connection-oriented, reliable, ordered with 3-way handshake. UDP is connectionless, fast, unreliable with no ordering (ideal for streaming).' },
-        { tag: 'ADDRESSING', q: 'How does IPv4 differ from IPv6 addressing?', a: 'IPv4 uses 32-bit numerical dotted-decimal addresses (4.3B limit). IPv6 uses 128-bit hexadecimal colon-separated addresses.' },
-        { tag: 'DNS', q: 'What is the exact role of DNS in web networking?', a: 'DNS (Domain Name System) translates human-readable domain names (e.g. google.com) into numerical IP addresses needed for routing.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: Explain the TCP 3-Way Handshake connection process.', a: 'Client sends SYN → Server responds with SYN-ACK → Client sends ACK. Connection is established.' }
-      ],
-      html_css: [
-        { tag: 'HTML5', q: 'Why are semantic HTML tags (`<nav>`, `<article>`, `<footer>`) important?', a: 'They describe content meaning to browsers, screen readers, and search engine crawlers, improving SEO and web accessibility.' },
-        { tag: 'CSS BOX MODEL', q: 'Explain the 4 layers of the CSS Box Model.', a: '1. Content (inner text/elements), 2. Padding (inner space), 3. Border (frame edge), 4. Margin (outer space between elements).' },
-        { tag: 'FLEXBOX', q: 'How do `justify-content` and `align-items` differ in Flexbox?', a: '`justify-content` aligns items along the Main Axis. `align-items` aligns items along the Cross Axis.' },
-        { tag: 'CSS POSITIONING', q: 'What does `z-index` control in CSS styling?', a: 'Controls the vertical stacking order of positioned elements (relative, absolute, fixed, sticky) along the z-axis.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: How do `display: none` and `visibility: hidden` differ?', a: '`display: none` removes element from layout flow (occupies 0 space). `visibility: hidden` hides element visually while keeping its layout space.' }
-      ],
-      oop: [
-        { tag: 'PILLARS', q: 'List and define the 4 fundamental pillars of OOP.', a: '1. Encapsulation (data hiding), 2. Abstraction (simplifying interface), 3. Inheritance (code reuse), 4. Polymorphism (many forms).' },
-        { tag: 'ENCAPSULATION', q: 'How is Encapsulation enforced in object-oriented code?', a: 'By declaring instance variables `private` and exposing public getter/setter methods to control access.' },
-        { tag: 'POLYMORPHISM', q: 'What is the difference between Compile-time and Runtime Polymorphism?', a: 'Compile-time: Function/Operator Overloading. Runtime: Method Overriding achieved via Virtual Functions and Interface implementation.' },
-        { tag: 'ABSTRACT CLASSES', q: 'How does an Abstract Class differ from an Interface in OOP?', a: 'Abstract classes can hold state (fields) and concrete methods. Interfaces contain contract method declarations (all abstract by default).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: Why is "Composition over Inheritance" recommended in OOP design?', a: 'Composition combines simple objects (has-a) for greater flexibility and dynamic behavior without rigid tight coupling of inheritance (is-a).' }
-      ],
-      physics: [
-        { tag: 'LAWS OF MOTION', q: 'State Newton’s 3 Laws of Motion.', a: '1st: Inertia (body remains at rest/constant velocity unless acted on by force).\n2nd: F = m·a.\n3rd: Action & Reaction are equal and opposite.' },
-        { tag: 'CONSERVATION', q: 'State the Law of Conservation of Energy.', a: 'Energy cannot be created or destroyed; it can only be transformed from one form to another (e.g. Potential to Kinetic).' },
-        { tag: 'ELECTRICITY', q: 'What is Ohm’s Law and its mathematical formula?', a: 'Voltage (V) is directly proportional to Current (I) through a conductor: V = I · R.' },
-        { tag: 'THERMODYNAMICS', q: 'What is the 1st Law of Thermodynamics?', a: 'The change in internal energy ΔU equals heat added to system Q minus work done by system W: ΔU = Q - W.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is the speed of light in vacuum and standard gravitational acceleration on Earth?', a: 'Speed of light c ≈ 3.0 × 10⁸ m/s. Acceleration due to gravity g ≈ 9.81 m/s².' }
-      ],
-      chemistry: [
-        { tag: 'ACIDS & BASES', q: 'Define Acid and Base according to Brønsted-Lowry theory.', a: 'Acid is a proton (H⁺) donor. Base is a proton (H⁺) acceptor. Neutral pH = 7 ([H⁺] = 10⁻⁷ M).' },
-        { tag: 'BONDING', q: 'How do Ionic Bonds differ from Covalent Bonds?', a: 'Ionic: transfer of electrons between metal & non-metal. Covalent: sharing of electron pairs between non-metal atoms.' },
-        { tag: 'EQUILIBRIUM', q: 'State Le Chatelier’s Principle.', a: 'If a system at equilibrium is disturbed by change in concentration, temperature, or pressure, it shifts to counteract the change.' },
-        { tag: 'THERMOCHEMISTRY', q: 'How do Exothermic and Endothermic reactions differ in Enthalpy ΔH?', a: 'Exothermic releases heat (ΔH < 0, products lower energy). Endothermic absorbs heat (ΔH > 0, products higher energy).' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Avogadro’s Number and the Moles formula?', a: '1 Mole = 6.022 × 10²³ particles. Moles (n) = Mass (g) / Molar Mass (g/mol).' }
-      ],
-      biology: [
-        { tag: 'CELL BIOLOGY', q: 'What is the function of Mitochondria vs Ribosomes in a cell?', a: 'Mitochondria: site of cellular respiration producing ATP energy. Ribosomes: site of protein synthesis.' },
-        { tag: 'GENETICS', q: 'How do DNA and RNA differ in structure and sugar component?', a: 'DNA: double-stranded helix containing Deoxyribose sugar and Thymine (T). RNA: single-stranded containing Ribose sugar and Uracil (U).' },
-        { tag: 'CELL DIVISION', q: 'How does Mitosis differ from Meiosis in cell count and chromosome number?', a: 'Mitosis: 1 division → 2 identical diploid (2n) somatic cells. Meiosis: 2 divisions → 4 genetically unique haploid (n) gametes.' },
-        { tag: 'ENZYMES', q: 'How do Enzymes accelerate biological biochemical reactions?', a: 'Enzymes are biological catalysts that speed up reactions by lowering the activation energy barrier.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Photosynthesis equation and where do light/dark reactions occur?', a: '6CO₂ + 6H₂O + Sunlight → C₆H₁₂O₆ + 6O₂. Light reactions in Thylakoids; Calvin Cycle in Stroma.' }
-      ],
-      history: [
-        { tag: 'WORLD WAR I', q: 'What was the immediate spark that triggered World War I in July 1914?', a: 'The assassination of Archduke Franz Ferdinand of Austria in Sarajevo by Gavrilo Princip.' },
-        { tag: 'HISTORIOGRAPHY', q: 'What is a Primary Source vs Secondary Source in historical evidence?', a: 'Primary: original first-hand artifact/document created during event (e.g. letter, treaty). Secondary: later analysis by historians (e.g. textbook).' },
-        { tag: 'INDUSTRIAL REVOLUTION', q: 'What was the main economic transformation during the Industrial Revolution?', a: 'Transition from agrarian manual handcraft economy to mechanized factory manufacturing powered by steam engines.' },
-        { tag: 'RENAISSANCE', q: 'What was the central cultural philosophy of the European Renaissance?', a: 'Humanism — revival of classical Greek & Roman art, science, literature, and individual critical inquiry.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What was the Cold War and what key events defined it?', a: 'Geopolitical tension between US and USSR (1947-1991) characterized by proxy wars, nuclear arms race, Cuban Missile Crisis, and Space Race.' }
-      ],
-      geography: [
-        { tag: 'ATMOSPHERE', q: 'Which layer of Earth’s atmosphere contains the Ozone Layer and what is its role?', a: 'Stratosphere. The Ozone layer (O₃) absorbs and shields Earth from harmful solar Ultraviolet (UV) radiation.' },
-        { tag: 'TECTONICS', q: 'What drives Plate Tectonics and causes earthquakes?', a: 'Convection currents in Earth’s asthenosphere (mantle) move lithospheric plates. Friction along plate boundaries causes seismic shocks.' },
-        { tag: 'MAP SKILLS', q: 'What is Map Scale and how is it expressed?', a: 'Ratio between distance on map and actual ground distance (e.g. Representative Fraction 1:50,000 means 1 cm = 500 m).' },
-        { tag: 'PACIFIC BASIN', q: 'What is the Pacific "Ring of Fire"?', a: 'A major Pacific ocean perimeter basin subject to frequent seismic earthquakes and 75% of world’s active volcanoes.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: How does Weathering differ from Erosion?', a: 'Weathering breaks down rocks in-place (chemically/mechanically). Erosion transports weathered rock particles away by water, wind, or ice.' }
-      ],
-      economics: [
-        { tag: 'SUPPLY & DEMAND', q: 'State the Law of Demand and Law of Supply.', a: 'Law of Demand: Price ↑ → Quantity Demanded ↓ (inverse). Law of Supply: Price ↑ → Quantity Supplied ↑ (direct).' },
-        { tag: 'OPPORTUNITY COST', q: 'What is Opportunity Cost with a practical exam example?', a: 'The value of the next best alternative forgone when making a decision (e.g. choosing to study yields higher grades but foregoes income from a job).' },
-        { tag: 'MACROECONOMICS', q: 'What is GDP (Gross Domestic Product) and how is it calculated?', a: 'Total monetary value of final goods/services produced in a country annually. Expenditure approach: GDP = C + I + G + (X - M).' },
-        { tag: 'POLICY DIFFERENCE', q: 'How does Fiscal Policy differ from Monetary Policy?', a: 'Fiscal: Government tax rates & public spending. Monetary: Central Bank interest rates & money supply control.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: What is Inflation and how is it measured?', a: 'Persistent rise in general price level reducing purchasing power over time, measured using Consumer Price Index (CPI).' }
-      ],
-      calculus: [
-        { tag: 'DERIVATIVES', q: 'What is the geometric meaning of the first derivative f’(x)?', a: 'The slope of the tangent line to the curve f(x) at point x, measuring instantaneous rate of change dy/dx.' },
-        { tag: 'INTEGRATION', q: 'What does a Definite Integral ∫ₐᵇ f(x)dx represent geometrically?', a: 'The exact net area bounded between the function curve f(x) and x-axis from x=a to x=b.' },
-        { tag: 'POWER RULE', q: 'State the Power Rule for differentiation and integration.', a: 'Derivative: d/dx(xⁿ) = n·xⁿ⁻¹. Integral: ∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C (n ≠ -1).' },
-        { tag: 'THEOREMS', q: 'State the Fundamental Theorem of Calculus (FTC).', a: 'If F’(x) = f(x) on [a,b], then ∫ₐᵇ f(x)dx = F(b) - F(a), proving integration is the inverse of differentiation.' },
-        { tag: 'EXAM QUESTION', q: 'Exam QA: How do you optimize a function f(x) to find local extrema?', a: 'Step 1: Find f’(x). Step 2: Set f’(x) = 0 to find critical points. Step 3: Use second derivative test f’’(x) (<0 max, >0 min).' }
-      ]
-    };
-
-    // Topic Regex Resolver for exact topic matching
-    if (/\b(c|c programming|c language|c coding|c basics)\b/i.test(t) && !/c\+\+|cpp|c\#|css/i.test(t)) return flashcardBank.c;
-    if (/\b(java|java programming|java language|oops in java|jdk|jvm)\b/i.test(t) && !/javascript|js/i.test(t)) return flashcardBank.java;
-    if (/\b(python|python programming|py|python3)\b/i.test(t)) return flashcardBank.python;
-    if (/\b(c\+\+|cpp|c plus plus)\b/i.test(t)) return flashcardBank.cpp;
-    if (/\b(javascript|js|es6|ecmascript|front end|frontend)\b/i.test(t)) return flashcardBank.javascript;
-    if (/\b(sql|dbms|database|mysql|postgresql|sqlite|rdbms)\b/i.test(t)) return flashcardBank.sql;
-    if (/\b(dsa|data structures|algorithms|data structure|sorting|searching|stack|queue|linked list|tree)\b/i.test(t)) return flashcardBank.dsa;
-    if (/\b(operating system|operating systems|os|linux|process scheduling|deadlock)\b/i.test(t)) return flashcardBank.os;
-    if (/\b(computer networks|networking|tcp\/ip|osi model|ip address|http|https)\b/i.test(t)) return flashcardBank.networks;
-    if (/\b(html|css|web design|flexbox|grid)\b/i.test(t)) return flashcardBank.html_css;
-    if (/\b(oop|oops|object oriented programming|object oriented)\b/i.test(t)) return flashcardBank.oop;
-    if (/\b(physics|newton|kinematics|thermodynamics|optics|gravity)\b/i.test(t)) return flashcardBank.physics;
-    if (/\b(chemistry|acids bases|chemical bonding|stoichiometry|moles)\b/i.test(t)) return flashcardBank.chemistry;
-    if (/\b(biology|cell biology|genetics|dna|mitosis|meiosis)\b/i.test(t)) return flashcardBank.biology;
-    if (/\b(history|world war|revolutions|industrial revolution|renaissance)\b/i.test(t)) return flashcardBank.history;
-    if (/\b(geography|atmosphere|plate tectonics|ring of fire|weathering)\b/i.test(t)) return flashcardBank.geography;
-    if (/\b(economics|microeconomics|macroeconomics|gdp|inflation|demand supply)\b/i.test(t)) return flashcardBank.economics;
-    if (/\b(calculus|derivative|integration|integrals|derivatives|differentiation)\b/i.test(t)) return flashcardBank.calculus;
-
-    // Substring fallback check
-    for (const [key, cards] of Object.entries(flashcardBank)) {
-      if (t.includes(key)) return cards;
+    if (this.flashcardBank && this.flashcardBank[t]) {
+      return this.flashcardBank[t];
     }
 
-    // Dynamic high-yield topic-aware generator for custom user queries
-    return this.generateSmartFlashcards(topic.trim());
-  },
-
-  generateSmartFlashcards(topic) {
     const cap = topic.charAt(0).toUpperCase() + topic.slice(1);
 
-    return [
-      {
-        tag: 'EXAM DEFINITION',
-        q: `What is the precise academic definition of ${cap}?`,
-        a: `${cap} is defined as the systematic principle, system, or framework that governs core operations and functional relationships within this domain.`
-      },
-      {
-        tag: 'CORE MECHANISM',
-        q: `What is the fundamental working mechanism of ${cap}?`,
-        a: `The core mechanism operates in 3 steps:\n1. Input/Initial State: initial parameters or environmental conditions are established.\n2. Processing/Action: core rules or reactions transform inputs.\n3. Output/Final State: target state or calculated result is derived.`
-      },
-      {
-        tag: 'KEY RULE & FORMULA',
-        q: `What is the most critical rule, law, or equation governing ${cap}?`,
-        a: `In examinations, ${cap} relies on strict operational rules: always verify boundary conditions, maintain structural consistency, and apply standard formulas or syntax conventions.`
-      },
-      {
-        tag: 'COMMON EXAM PITFALL',
-        q: `What common mistake do students make in ${cap} exam questions?`,
-        a: `1. Confusing core definitions with secondary features.\n2. Omitting units, conditions, or required steps in calculations.\n3. Giving vague general answers instead of citing key technical terms.`
-      },
-      {
-        tag: 'MODEL EXAM QUESTION',
-        q: `Exam QA: Explain the importance and practical application of ${cap}.`,
-        a: `Model Answer structure:\n• Definition (1 mark)\n• 2-3 Core Features (2 marks)\n• Real-world application example (1 mark)\n• Key conclusion/summary statement (1 mark)`
-      }
-    ];
+    if (sub.isProgramming) {
+      return [
+        {
+          tag: 'CONCEPT & OVERVIEW',
+          q: `What is the core programming concept behind ${cap}?`,
+          a: `${cap} is a fundamental computing mechanism in ${sub.subjectName} designed to structure control flow, process data structures, or execute algorithmic tasks.`
+        },
+        {
+          tag: 'SYNTAX & SIGNATURE',
+          q: `What is the standard syntax pattern and declaration for ${cap}?`,
+          a: `Standard Syntax:\n// Declaration & syntax for ${cap}\nType ${cap.replace(/[^a-zA-Z0-9]/g, '')}(parameters) {\n    // Implementation statement\n}`
+        },
+        {
+          tag: 'CODE IMPLEMENTATION',
+          q: `Write a clean code snippet demonstrating ${cap}.`,
+          a: `Executable Example:\nfunction demo${cap.replace(/[^a-zA-Z0-9]/g, '')}() {\n    let data = [1, 2, 3];\n    console.log("Executing ${cap}:", data);\n}`
+        },
+        {
+          tag: 'OPERATIONAL RULES',
+          q: `What are the key execution rules, scope, and memory considerations for ${cap}?`,
+          a: `1. Validate boundary conditions and non-null states.\n2. Manage scope lifecycle and allocation.\n3. Optimize space and time complexity.`
+        },
+        {
+          tag: 'EXAM QA & PITFALL',
+          q: `Exam QA: What common mistake should be avoided when programming with ${cap}?`,
+          a: `Common Pitfall: Off-by-one errors or unhandled edge cases.\nFix: Use strict condition checks and trace variables.`
+        }
+      ];
+    } else {
+      return [
+        {
+          tag: 'ACADEMIC DEFINITION',
+          q: `What is the precise academic definition of ${cap}?`,
+          a: `${cap} is defined as the foundational principle or system governing relationships and processes within ${sub.subjectName}.`
+        },
+        {
+          tag: 'FORMULA & CORE LAWS',
+          q: `What fundamental formula, equation, or governing law applies to ${cap}?`,
+          a: `Core Rule/Formula:\nAlways state initial parameters, apply the standard quantitative or conceptual equation for ${cap}, and verify units/conditions.`
+        },
+        {
+          tag: 'IMPORTANT FACTS & DATES',
+          q: `What key facts, historical context, or essential points define ${cap}?`,
+          a: `Key Facts & Context:\n• Established as a core milestone in ${sub.subjectName}.\n• Operates according to verified empirical laws and structural rules.\n• Serves as a prerequisite for advanced study.`
+        },
+        {
+          tag: 'PRACTICAL APPLICATION',
+          q: `How is ${cap} applied in real-world scenarios or modern study?`,
+          a: `In practice, ${cap} is used to model real-world phenomena, make predictions, analyze case studies, and optimize practical solutions.`
+        },
+        {
+          tag: 'EXAM REVISION POINT',
+          q: `Exam QA: State the key examination takeaway for ${cap}.`,
+          a: `Model Answer Point:\nGive the exact definition (1 mark), 2 key characteristics (2 marks), governing formula/context (1 mark), and a real-world example (1 mark).`
+        }
+      ];
+    }
   },
+
 };
+
+if (typeof global !== "undefined") global.AI = AI;
+if (typeof window !== "undefined") window.AI = AI;
 
 function $(id) { return document.getElementById(id); }
 
@@ -3422,8 +2432,9 @@ function initExplainer() {
     try {
       const data = AI.explainTopic(topic);
       const capTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+      const subInfo = data.subjectName ? ` — ${data.subjectName}` : '';
 
-      let html = `<div class="output-topic-title"><i data-lucide="book-open" class="inline-icon"></i> ${capTopic} — Exam Revision Guide</div>`;
+      let html = `<div class="output-topic-title"><i data-lucide="book-open" class="inline-icon"></i> ${capTopic} ${subInfo}</div>`;
 
       // 1. Definition
       if (data.definition) {
@@ -3432,116 +2443,100 @@ function initExplainer() {
             <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
               <i data-lucide="book" class="inline-icon"></i> 1. Definition
             </div>
-            <p class="output-intro" style="margin-bottom:0;line-height:1.6;">${data.definition}</p>
+            <p class="output-intro" style="margin-bottom:0;line-height:1.6;">${escapeHtml(data.definition)}</p>
           </div>`;
       }
 
-      // 2. Key Concepts
-      if (data.keyConcepts && data.keyConcepts.length > 0) {
-        const items = data.keyConcepts.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
+      // 2. Easy Explanation
+      if (data.easyExplanation) {
         html += `
           <div style="margin-bottom:1.2rem;">
             <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="key" class="inline-icon"></i> 2. Key Concepts
+              <i data-lucide="smile" class="inline-icon"></i> 2. Easy Explanation
             </div>
-            <ul class="output-key-points">${items}</ul>
+            <div style="background:rgba(37,99,235,0.05);padding:0.75rem 1rem;border-left:3px solid var(--clr-primary);border-radius:4px;font-size:0.92rem;line-height:1.6;color:var(--clr-text-primary);">${escapeHtml(data.easyExplanation)}</div>
           </div>`;
       }
 
-      // 3. Features
-      if (data.features && data.features.length > 0) {
-        const items = data.features.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
+      // 3. Practical Example (Code example for programming topics; clear non-code example for theory topics)
+      if (data.example) {
+        if (data.isProgramming) {
+          html += `
+            <div style="margin-bottom:1.2rem;">
+              <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
+                <i data-lucide="code" class="inline-icon"></i> 3. Code Example & Syntax
+              </div>
+              <div style="background:var(--clr-surface-2);border:1px solid var(--clr-border);padding:0.75rem 1rem;border-radius:var(--radius-md);font-family:monospace;font-size:0.88rem;white-space:pre-wrap;color:var(--clr-text-primary);overflow-x:auto;">${escapeHtml(data.example)}</div>
+            </div>`;
+        } else {
+          html += `
+            <div style="margin-bottom:1.2rem;">
+              <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
+                <i data-lucide="zap" class="inline-icon"></i> 3. Practical Example
+              </div>
+              <div style="background:var(--clr-surface-2);border:1px solid var(--clr-border);padding:0.75rem 1rem;border-radius:var(--radius-md);font-size:0.9rem;line-height:1.6;color:var(--clr-text-primary);">${escapeHtml(data.example)}</div>
+            </div>`;
+        }
+      }
+
+      // 4. Important Keywords
+      if (data.importantKeywords && data.importantKeywords.length > 0) {
+        const kwList = data.importantKeywords.map((k, i) => `<li style="animation-delay:${i * 0.05}s">${escapeHtml(k)}</li>`).join('');
         html += `
           <div style="margin-bottom:1.2rem;">
             <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="layers" class="inline-icon"></i> 3. Features
+              <i data-lucide="key" class="inline-icon"></i> 4. Important Keywords
             </div>
-            <ul class="output-key-points">${items}</ul>
+            <ul class="output-key-points">${kwList}</ul>
           </div>`;
       }
 
-      // 4. Functions
-      if (data.functions && data.functions.length > 0) {
-        const items = data.functions.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
+      // 5. Memory Tips
+      if (data.memoryTips) {
         html += `
           <div style="margin-bottom:1.2rem;">
-            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="cpu" class="inline-icon"></i> 4. Functions
+            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-warning);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
+              <i data-lucide="lightbulb" class="inline-icon"></i> 5. Memory Tip / Mnemonic
             </div>
-            <ul class="output-key-points">${items}</ul>
+            <div style="background:rgba(245,158,11,0.08);border-left:3px solid var(--clr-warning);padding:0.75rem 1rem;border-radius:4px;font-size:0.9rem;line-height:1.5;color:var(--clr-text-primary);">${escapeHtml(data.memoryTips)}</div>
           </div>`;
       }
 
-      // 5. Types
-      if (data.types && data.types.length > 0) {
-        const items = data.types.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
-        html += `
-          <div style="margin-bottom:1.2rem;">
-            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="git-branch" class="inline-icon"></i> 5. Types & Classifications
-            </div>
-            <ul class="output-key-points">${items}</ul>
-          </div>`;
-      }
-
-      // 6. Advantages
-      if (data.advantages && data.advantages.length > 0) {
-        const items = data.advantages.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
+      // 6. Quick Summary
+      if (data.quickSummary && data.quickSummary.length > 0) {
+        const sumList = data.quickSummary.map((s, i) => `<li style="animation-delay:${i * 0.05}s">${escapeHtml(s)}</li>`).join('');
         html += `
           <div style="margin-bottom:1.2rem;">
             <div style="font-weight:700;font-size:0.8rem;color:var(--clr-success);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="check-circle" class="inline-icon"></i> 6. Advantages
+              <i data-lucide="check-circle" class="inline-icon"></i> 6. Quick Summary
+            </div>
+            <ul class="output-key-points">${sumList}</ul>
+          </div>`;
+      }
+
+      // Auxiliary Revision Fields (if available)
+      if (data.keyConcepts && data.keyConcepts.length > 0) {
+        const items = data.keyConcepts.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${escapeHtml(item)}</li>`).join('');
+        html += `
+          <div style="margin-bottom:1.2rem;">
+            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
+              <i data-lucide="layers" class="inline-icon"></i> Key Concepts & Principles
             </div>
             <ul class="output-key-points">${items}</ul>
           </div>`;
       }
 
-      // 7. Disadvantages
-      if (data.disadvantages && data.disadvantages.length > 0) {
-        const items = data.disadvantages.map((item, i) => `<li style="animation-delay:${i * 0.05}s">${item}</li>`).join('');
-        html += `
-          <div style="margin-bottom:1.2rem;">
-            <div style="font-weight:700;font-size:0.8rem;color:#f43f5e;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="alert-triangle" class="inline-icon"></i> 7. Disadvantages & Limitations
-            </div>
-            <ul class="output-key-points">${items}</ul>
-          </div>`;
-      }
-
-      // 8. Syntax
-      if (data.syntax) {
-        html += `
-          <div style="margin-bottom:1.2rem;">
-            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="code" class="inline-icon"></i> 8. Syntax / Formula
-            </div>
-            <div style="background:var(--clr-surface-2);border:1px solid var(--clr-border);padding:0.75rem 1rem;border-radius:var(--radius-md);font-family:monospace;font-size:0.9rem;white-space:pre-wrap;color:var(--clr-text-primary);">${data.syntax}</div>
-          </div>`;
-      }
-
-      // 9. Example
-      if (data.example) {
-        html += `
-          <div style="margin-bottom:1.2rem;">
-            <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="zap" class="inline-icon"></i> 9. Practical Example
-            </div>
-            <p class="output-intro" style="margin-bottom:0;line-height:1.6;">${data.example}</p>
-          </div>`;
-      }
-
-      // 10. Frequently Asked Exam Questions
       if (data.examQuestions && data.examQuestions.length > 0) {
         const qaHtml = data.examQuestions.map((qa, i) => `
           <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.18);padding:0.75rem 1rem;border-radius:var(--radius-md);margin-bottom:0.6rem;">
-            <div style="font-weight:700;font-size:0.9rem;color:var(--clr-primary);margin-bottom:0.25rem;">Q${i + 1}: ${qa.q}</div>
-            <div style="font-size:0.88rem;color:var(--clr-text-primary);line-height:1.5;"><strong>Answer:</strong> ${qa.a}</div>
+            <div style="font-weight:700;font-size:0.9rem;color:var(--clr-primary);margin-bottom:0.25rem;">Q${i + 1}: ${escapeHtml(qa.q)}</div>
+            <div style="font-size:0.88rem;color:var(--clr-text-primary);line-height:1.5;"><strong>Answer:</strong> ${escapeHtml(qa.a)}</div>
           </div>
         `).join('');
         html += `
           <div style="margin-bottom:0.5rem;">
             <div style="font-weight:700;font-size:0.8rem;color:var(--clr-primary);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:0.4rem;">
-              <i data-lucide="help-circle" class="inline-icon"></i> 10. Frequently Asked Exam Questions
+              <i data-lucide="help-circle" class="inline-icon"></i> Frequently Asked Exam Questions
             </div>
             ${qaHtml}
           </div>`;
@@ -3553,6 +2548,7 @@ function initExplainer() {
       }
       showToast('Topic explained successfully!', 'success');
     } catch (e) {
+      console.error(e);
       showToast('Something went wrong. Please try again.', 'error');
     } finally {
       hideLoading(btn);
@@ -3561,7 +2557,6 @@ function initExplainer() {
 
   btn.addEventListener('click', explain);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') explain(); });
-
   clearBtn.addEventListener('click', () => {
     input.value = '';
     clearOutput('explainer-placeholder', 'explainer-content', output);
