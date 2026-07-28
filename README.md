@@ -1,8 +1,8 @@
-# StudyMate AI – Smart AI Study Assistant
+# SmartPrep AI – Smart AI Study Assistant
 
 ## Project Overview
 
-StudyMate AI is a modern AI-powered web application designed to help students prepare for exams efficiently. The application focuses on four core features only, making it beginner-friendly, easy to understand, and easy to demonstrate.
+SmartPrep AI is a modern AI-powered web application designed to help students prepare for exams efficiently. The application focuses on four core features only, making it beginner-friendly, easy to understand, and easy to demonstrate.
 
 The application should have a clean, modern, responsive interface with smooth animations and should be built using HTML, CSS, and JavaScript only. Use Local Storage wherever required. Do not use any backend or database.
 
@@ -19,13 +19,18 @@ Students can enter any study topic and receive a simple, beginner-friendly expla
 Students can paste long notes or upload photos/documents (PNG, JPG, PDF, DOCX, TXT), and the application automatically extracts text using AI OCR/parsers and generates concise revision notes highlighting the important points.
 
 ### 3. Quiz Generator
-Students enter any topic, and the application generates five multiple-choice questions (MCQs) along with the correct answers.
+Students enter any topic, and the application generates five multiple-choice questions (MCQs) along with difficulty level and timer to complete the quiz.
 
-### 4. Smart Study Planner
+### 4. AI Flashcard Generator
+Students enter any topic, and the application generates five-flashcards along  with the correct answers.
+
+### 5. Smart Study Planner
 Students enter:
 - Exam schedule
 - Subject names
-- Daily available study hours
+- Subject Priority
+- Preparation Level
+- Daily study hours
 
 The application automatically creates a personalized study timetable that suggests which subject to study each day until the exam.
 
